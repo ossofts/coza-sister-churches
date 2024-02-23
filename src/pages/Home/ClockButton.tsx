@@ -7,7 +7,7 @@ import { Spinner } from "@/components/Loaders";
 import animationData from "@/assets/json/clock-button-animation.json";
 import showAlert from "@/hooks/useAlert";
 import { Coordinates, customError } from "@/types/global.type";
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAppContext from "@/contexts/AppContext";
 import { useClockIn, useClockOut } from "@/services/attendance";
 import useUserStore from "@/store/userStore";
