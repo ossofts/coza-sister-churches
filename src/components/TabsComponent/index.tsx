@@ -1,0 +1,32 @@
+import { ReactNode } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { twMerge } from "tailwind-merge";
+
+type Props = {
+  tabs: {
+    title: string;
+    component: ReactNode;
+  }[];
+  extraClass?: string;
+};
+
+const TabsComponent = ({ tabs, extraClass }: Props) => {
+  return (
+    <Tabs defaultValue="0" className={twMerge("w-full mt-2", extraClass)}>
+      <TabsList className={twMerge("flex justify-center")}>
+        {tabs?.map((tabItem, idx) => (
+          <TabsTrigger key={idx} value={idx?.toString()}>
+            {tabItem.title}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {tabs?.map((content, idx) => (
+        <TabsContent key={idx} value={idx?.toString()}>
+          {content.component}
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+};
+
+export default TabsComponent;
