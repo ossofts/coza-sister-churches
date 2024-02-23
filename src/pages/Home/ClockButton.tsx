@@ -17,25 +17,33 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 type Props = {
   isInRange: boolean;
   deviceCoordinates: Coordinates;
-  verifyRangeBeforeAction: (successCallback: () => any, errorCallback: () => any) => void;
+  verifyRangeBeforeAction: (
+    successCallback: () => any,
+    errorCallback: () => any
+  ) => void;
 };
 
-const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: Props) => {
+const ClockButton = ({
+  isInRange,
+  deviceCoordinates,
+  verifyRangeBeforeAction,
+}: Props) => {
   const [clockedOut, setClockedOut] = useState(false);
-  const [openClockOutConfirmation, setOpenClockOutConfirmation] = useState(false);
+  const [openClockOutConfirmation, setOpenClockOutConfirmation] =
+    useState(false);
   const user = useUserStore((state) => state.user);
 
   const {
     latestService: {
       data: latestServiceData,
-      error: latestServiceError,
-      isLoading: latestServiceLoading
+      isError: isLatestServiceError,
+      isLoading: latestServiceLoading,
     },
     lastestAttendance: {
       data: latestAttendanceData,
       refetch: refetchAttendance,
-      isLoading: latestAttendanceLoading
-    }
+      isLoading: latestAttendanceLoading,
+    },
   } = useAppContext();
 
   const clockInMutation = useClockIn();
@@ -49,11 +57,11 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
       serviceId: latestServiceData?.data?._id as string,
       coordinates: {
         lat: `${deviceCoordinates.latitude}`,
-        long: `${deviceCoordinates.longitude}`
+        long: `${deviceCoordinates.longitude}`,
       },
       campusId: user!.campus._id,
       departmentId: user!.department._id,
-      roleId: user!.role._id
+      roleId: user!.role._id,
     });
   };
 
@@ -72,7 +80,8 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
     if (clockInMutation.error) {
       showAlert(
         "warning",
-        customError(clockInMutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
+        customError(clockInMutation.error)?.response?.data?.message ??
+          "Oops! Something went wrong"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,7 +100,8 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
     if (clockOutMutation.error) {
       showAlert(
         "warning",
-        customError(clockOutMutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
+        customError(clockOutMutation.error)?.response?.data?.message ??
+          "Oops! Something went wrong"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,9 +113,13 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
       : !!latestServiceData?.data !== undefined &&
         moment().diff(moment(latestServiceData?.data?.clockInStartTime)) > 0;
   const disabled =
-    latestServiceError || latestServiceLoading || clockedOut || latestAttendanceLoading;
+    isLatestServiceError ||
+    latestServiceLoading ||
+    clockedOut ||
+    latestAttendanceLoading;
   const clockedIn = latestAttendanceData?.data?.length
-    ? (!!clockInMutation.data?.data?.clockIn || !!latestAttendanceData?.data?.[0].clockIn) &&
+    ? (!!clockInMutation.data?.data?.clockIn ||
+        !!latestAttendanceData?.data?.[0].clockIn) &&
       latestServiceData?.data
     : false && !!latestServiceData?.data; // Truthiness should only be resolved from latest Attendance clock in record
   const canClockIn = isInRange && assertClockinStartTime && !clockedIn;
@@ -135,6 +149,7 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
   };
 
   const handlePress = async () => {
+    console.log("here");
     if (!assertClockinStartTime) {
       showAlert(
         "info",
@@ -170,14 +185,9 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
     }
   };
 
-  const onClickButton = (e: MouseEvent<HTMLButtonElement>) => {
-    e?.stopPropagation();
-    handlePress();
-  };
-
   return (
     <>
-      <div className="relative">
+      <div className="relative" onClick={handlePress}>
         {canClockIn && (
           <Lottie
             animationData={animationData}
@@ -186,7 +196,7 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
               left: -40,
               top: -40,
               position: "absolute",
-              width: 320
+              width: 320,
               // zIndex: 0
             }}
             autoPlay
@@ -196,7 +206,6 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
 
         <div className="flex justify-center items-center">
           <button
-            onClick={onClickButton}
             className={twMerge(
               "w-[200px] h-[200px] rounded-full shadow-lg",
               canClockIn && !disabled
@@ -211,13 +220,21 @@ const ClockButton = ({ isInRange, deviceCoordinates, verifyRangeBeforeAction }: 
             <span>
               <span className="flex flex-col items-center">
                 <ReactIf
-                  condition={clockInMutation.isPending || clockOutMutation.isPending}
+                  condition={
+                    clockInMutation.isPending || clockOutMutation.isPending
+                  }
                   component={<Spinner color="white" size={60} />}
                   fallback={
                     <span className="flex flex-col items-center gap-4">
                       <PiHandTap color="white" size={110} />
                       <span className="font-light text-md text-white select-none">
-                        {disabled ? "" : canClockIn ? "CLOCK IN" : canClockOut ? "CLOCK OUT" : ""}
+                        {disabled
+                          ? ""
+                          : canClockIn
+                            ? "CLOCK IN"
+                            : canClockOut
+                              ? "CLOCK OUT"
+                              : ""}
                       </span>
                     </span>
                   }
