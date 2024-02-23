@@ -17,13 +17,17 @@ const ServiceManagement = lazy(() => import("@/pages/ServiceManagement"));
 const ManualClockIn = lazy(() => import("@/pages/ManualClockIn"));
 const ExportData = lazy(() => import("@/pages/ExportData"));
 const CreateUser = lazy(() => import("@/pages/WorkforceManagement/CreateUser"));
-const CreateDepartment = lazy(() => import("@/pages/WorkforceManagement/CreateDepartment"));
+const CreateDepartment = lazy(
+  () => import("@/pages/WorkforceManagement/CreateDepartment")
+);
 
 export type RouteObj = {
   path: string;
   isPrivate: boolean;
   component: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  React.LazyExoticComponent<(...props: any) => JSX.Element> | (() => JSX.Element) | (() => null);
+  | React.LazyExoticComponent<(...props: any) => JSX.Element>
+    | (() => JSX.Element)
+    | (() => null);
   title: string;
   roles?: string[];
 };
@@ -33,87 +37,96 @@ const ROUTES: Record<string, RouteObj> = {
     path: "/",
     isPrivate: false,
     component: Welcome,
-    title: "Welcome"
+    title: "Welcome",
   },
   LOGIN: {
     path: "/login",
     isPrivate: false,
     component: Login,
-    title: "Login"
+    title: "Login",
   },
   REGISTER: {
     path: "/register",
     isPrivate: false,
     component: Register,
-    title: "Register"
+    title: "Register",
   },
   FORGOT_PASSWORD: {
     path: "/forgot-password",
     isPrivate: false,
     component: ForgotPassword,
-    title: "ForgotPassword"
+    title: "ForgotPassword",
   },
   HOME: {
     path: "/home",
     isPrivate: true,
     component: Home,
     title: "Home",
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   ATTENDANCE: {
     path: "/attendance",
     isPrivate: true,
     component: Attendance,
     title: "Attendance",
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   CGWC: {
     path: "/cgwc",
     isPrivate: true,
     component: Cgwc,
     title: "CGWC",
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   CGWC_DETAILS: {
     path: "/cgwc/:id",
     isPrivate: true,
     component: CgwcDetails,
     title: "CGWC",
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   CGWC_RESOURCES: {
     path: "/cgwc/cgwc-resources",
     isPrivate: true,
     component: CgwcResources,
-    title: "CGWC"
+    title: "CGWC",
   },
   PROFILE: {
     path: "/profile",
     isPrivate: true,
     component: Profile,
     title: "Profile",
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   SERVICE_MANAGEMENT: {
     path: "/service-management",
     isPrivate: true,
     component: ServiceManagement,
     title: "Service Management",
-    roles: [roles["Super Admin"], roles["Global Admin"], roles["Global Pastor"]]
+    roles: [
+      roles["Super Admin"],
+      roles["Global Admin"],
+      roles["Global Pastor"],
+    ],
   },
   MANUAL_CLOCK_IN: {
     path: "/manual-clock-in",
     isPrivate: true,
     component: ManualClockIn,
     title: "Manual Clock In",
-    roles: [roles["Super Admin"], roles.QC, roles.Internship]
+    roles: [
+      roles["Super Admin"],
+      roles.QC,
+      roles.Internship,
+      roles["Internship HOD"],
+    ],
   },
   EXPORT_DATA: {
     path: "/export-data",
     isPrivate: true,
     component: ExportData,
     title: "Export Data",
-    roles: [...Object.values(roles).filter((item) => item !== roles.Worker)]
+    roles: [...Object.values(roles).filter((item) => item !== roles.Worker)],
   },
   CREATE_USER: {
     path: "/create-user",
@@ -124,8 +137,8 @@ const ROUTES: Record<string, RouteObj> = {
       roles["Super Admin"],
       roles["Global Admin"],
       roles["Global Pastor"],
-      roles["Internship HOD"]
-    ]
+      roles["Internship HOD"],
+    ],
   },
   CREATE_DEPARTMENT: {
     path: "/create-department",
@@ -136,8 +149,8 @@ const ROUTES: Record<string, RouteObj> = {
       roles["Super Admin"],
       roles["Global Admin"],
       roles["Global Pastor"],
-      roles["Internship HOD"]
-    ]
+      roles["Internship HOD"],
+    ],
   },
   GO_TO_HOME: {
     title: "Go home",
@@ -146,9 +159,9 @@ const ROUTES: Record<string, RouteObj> = {
     component: () =>
       Navigate({
         to: "/home",
-        replace: true
+        replace: true,
       }),
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   REDIRECT_: {
     title: "Go home",
@@ -157,9 +170,9 @@ const ROUTES: Record<string, RouteObj> = {
     component: () =>
       Navigate({
         to: "/",
-        replace: true
+        replace: true,
       }),
-    roles: [...Object.values(roles)]
+    roles: [...Object.values(roles)],
   },
   REDIRECT: {
     title: "Go home",
@@ -168,10 +181,10 @@ const ROUTES: Record<string, RouteObj> = {
     component: () =>
       Navigate({
         to: "/",
-        replace: true
+        replace: true,
       }),
-    roles: [...Object.values(roles)]
-  }
+    roles: [...Object.values(roles)],
+  },
 };
 
 export default ROUTES;

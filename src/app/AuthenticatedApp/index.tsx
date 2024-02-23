@@ -18,7 +18,7 @@ const AuthenticatedApp = () => {
     isHOD,
     isInternshipHOD,
     isQC,
-    isInternship
+    isInternship,
   } = useRole();
 
   const allowedRoutes = () => {
@@ -36,27 +36,36 @@ const AuthenticatedApp = () => {
       );
     if (isSuperAdmin)
       return Object.values(ROUTES)?.filter(
-        (route) => route?.isPrivate && route?.roles?.includes(roles["Super Admin"])
+        (route) =>
+          route?.isPrivate && route?.roles?.includes(roles["Super Admin"])
       );
     if (isCampusPastor)
       return Object.values(ROUTES)?.filter(
-        (route) => route?.isPrivate && route?.roles?.includes(roles["Campus Pastor"])
+        (route) =>
+          route?.isPrivate && route?.roles?.includes(roles["Campus Pastor"])
       );
     if (isGlobalPastor)
       return Object.values(ROUTES)?.filter(
-        (route) => route?.isPrivate && route?.roles?.includes(roles["Global Pastor"])
+        (route) =>
+          route?.isPrivate && route?.roles?.includes(roles["Global Pastor"])
       );
     if (isGroupHead)
       return Object.values(ROUTES)?.filter(
         (route) => route?.isPrivate && route?.roles?.includes(roles["HOD"])
       );
-    if (isInternshipHOD || isQC || isInternship)
+    if (isQC)
+      return Object.values(ROUTES)?.filter(
+        (route) => route?.isPrivate && route?.roles?.includes(roles["QC"])
+      );
+    if (isInternship)
       return Object.values(ROUTES)?.filter(
         (route) =>
-          route?.isPrivate &&
-          route?.roles?.includes(roles["QC"]) &&
-          route?.roles?.includes(roles["Internship"]) &&
-          route?.roles?.includes(roles["Internship HOD"])
+          route?.isPrivate && route?.roles?.includes(roles["Internship"])
+      );
+    if (isInternshipHOD)
+      return Object.values(ROUTES)?.filter(
+        (route) =>
+          route?.isPrivate && route?.roles?.includes(roles["Internship HOD"])
       );
 
     return Object.values(ROUTES)?.filter(
@@ -71,19 +80,21 @@ const AuthenticatedApp = () => {
   return (
     <AppProvider>
       <Routes>
-        {isAllowedAndCGWCApproved.map(({ component: Element, ...rest }, index) => (
-          <Route
-            element={
-              <Suspense fallback={<FullPageSpinner />}>
-                <Layout>
-                  <Element />
-                </Layout>
-              </Suspense>
-            }
-            path={rest.path}
-            key={`auth-route-${index}`}
-          />
-        ))}
+        {isAllowedAndCGWCApproved.map(
+          ({ component: Element, ...rest }, index) => (
+            <Route
+              element={
+                <Suspense fallback={<FullPageSpinner />}>
+                  <Layout>
+                    <Element />
+                  </Layout>
+                </Suspense>
+              }
+              path={rest.path}
+              key={`auth-route-${index}`}
+            />
+          )
+        )}
       </Routes>
     </AppProvider>
   );
