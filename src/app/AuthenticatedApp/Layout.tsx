@@ -1,9 +1,7 @@
 import { ReactNode } from "react";
 import Nav from "./Nav";
 import TopBar from "./TopBar";
-import ReactPullToRefresh from "react-pull-to-refresh";
-import { Spinner } from "@/components/Loaders";
-import { COLORS } from "@/theme/colors";
+import PullToRefresh from "pull-to-refresh-react";
 
 type Props = {
   children: ReactNode;
@@ -12,20 +10,18 @@ type Props = {
 const Layout = ({ children }: Props) => {
   const handleRefresh = async () => window.location.reload();
   return (
-    <ReactPullToRefresh
+    <PullToRefresh
+      options={{ pullDownHeight: 100 }}
       onRefresh={handleRefresh}
-      loading={
-        <span className="flex justify-center">
-          <Spinner color={COLORS.primary} />{" "}
-        </span>
-      }
+      textReady={"Refresh"}
+      textRefresh={"Refreshing..."}
     >
       <div className="h-svh pt-[55px] dark:bg-black">
         <TopBar />
         <div className="pb-16">{children}</div>
         <Nav />
       </div>
-    </ReactPullToRefresh>
+    </PullToRefresh>
   );
 };
 
