@@ -23,7 +23,6 @@ import TeamAttendanceSummary from "./TeamAttendanceSummary";
 
 const Home = () => {
   const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
   const { isSuperAdmin, isHOD } = useRoles();
 
   const { data: latestService } = useGetLatestService(user!.campus?._id);
