@@ -21,22 +21,22 @@ const MyAttendance = () => {
       title: "Date",
       field: "clockIn",
       renderType: {
-        datebox: (data) => data.createdAt
-      }
+        datebox: (data) => data.createdAt,
+      },
     },
     {
       title: "Clock In",
       field: "clockIn",
       renderType: {
-        clockIn: (data) => data.clockIn
-      }
+        clockIn: (data) => data.clockIn,
+      },
     },
     {
       title: "Clock Out",
       field: "clockOut",
       renderType: {
-        clockOut: (data) => data.clockOut
-      }
+        clockOut: (data) => data.clockOut,
+      },
     },
     {
       title: "Service Hrs",
@@ -44,10 +44,10 @@ const MyAttendance = () => {
       renderType: {
         hoursDiff: (data) => ({
           clockIn: data.clockIn,
-          clockOut: data.clockOut
-        })
-      }
-    }
+          clockOut: data.clockOut,
+        }),
+      },
+    },
     // {
     //   title: "Score",
     //   field: "score",
@@ -59,14 +59,14 @@ const MyAttendance = () => {
 
   const { data, isLoading, isFetching, isSuccess, refetch } = useGetAttendance({
     userId: user?.userId,
-    limit: 10,
-    page
+    limit: 100,
+    page,
   });
 
   const { data: moreData } = useFetchMoreData<MyAttendance>({
     dataSet: data?.data,
     isSuccess,
-    uniqKey: "_id"
+    uniqKey: "_id",
   });
 
   const fetchMoreData = () => {
@@ -93,7 +93,7 @@ const MyAttendance = () => {
           <InfiniteScroll
             dataLength={moreData?.length} //This is important field to render the next data
             next={fetchMoreData}
-            hasMore={true}
+            hasMore={false}
             // loader={<Spinner color={COLORS.brandColor[600]} />}
             loader={<span>...</span>}
             // endMessage={
@@ -112,7 +112,11 @@ const MyAttendance = () => {
             //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
             // }
           >
-            <DataTable columns={columns} isLoading={isLoading} data={moreData} />
+            <DataTable
+              columns={columns}
+              isLoading={isLoading}
+              data={moreData}
+            />
           </InfiniteScroll>
         }
         fallback={<EmptyData />}
