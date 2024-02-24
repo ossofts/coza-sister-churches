@@ -8,7 +8,7 @@ import { useGetLatestService } from "@/services/service";
 import { ClockInPayload, User } from "@/store/types";
 import useUserStore from "@/store/userStore";
 import { Coordinates } from "@/types/global.type";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import ClockButton from "./ClockButton";
 
@@ -33,30 +33,33 @@ const ManualClockIn = () => {
   const {
     data: campuses,
     isLoading: campusLoading,
-    isFetching: campusIsFetching
+    isFetching: campusIsFetching,
   } = useGetCampuses();
 
   const {
     data: departments,
     isLoading: departmentsLoading,
-    isFetching: departmentsIsFetching
-  } = useGetDepartmentsByCampusId(useWatch({ control, name: "campusId" }) as string, {
-    enabled: useWatch({ control, name: "campusId" }) !== undefined
-  });
-
-  const {
-    data: users,
-    isLoading: usersLoading,
-    isFetching: usersIsFetching
-  } = useGetUsers(
-    { departmentId: useWatch({ control, name: "departmentId" }) },
+    isFetching: departmentsIsFetching,
+  } = useGetDepartmentsByCampusId(
+    useWatch({ control, name: "campusId" }) as string,
     {
-      enabled: useWatch({ control, name: "departmentId" }) !== undefined
+      enabled: useWatch({ control, name: "campusId" }) !== undefined,
     }
   );
 
   const {
-    data: latestService
+    data: users,
+    isLoading: usersLoading,
+    isFetching: usersIsFetching,
+  } = useGetUsers(
+    { departmentId: useWatch({ control, name: "departmentId" }) },
+    {
+      enabled: useWatch({ control, name: "departmentId" }) !== undefined,
+    }
+  );
+
+  const {
+    data: latestService,
     // refetch: latestServiceRefetch,
     // isFetching
   } = useGetLatestService(campus._id);
@@ -64,65 +67,54 @@ const ManualClockIn = () => {
   const { data: campusData } = useGetCampusById(campus?._id);
 
   const selectCoordinateRef = React.useMemo(() => {
-    if (latestService?.data?.isGlobalService) return latestService?.data?.coordinates;
+    if (latestService?.data?.isGlobalService)
+      return latestService?.data?.coordinates;
 
     return campusData?.data?.coordinates;
   }, [latestService, campusData]);
 
   const campusCoordinates = {
     latitude: selectCoordinateRef?.lat,
-    longitude: selectCoordinateRef?.long
+    longitude: selectCoordinateRef?.long,
   };
 
   const { isInRange, deviceCoordinates } = useGeolocation({
     rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates
+    campusCoordinates: campusCoordinates as Coordinates,
   });
-
-  // useWatch(({name: "campusId"}) => set)
-
-  // const onCampusChange = (value: string) => {
-  //   refresh();
-  //   setCampusId(value);
-  //   setDepartmentId(undefined);
-  //   setThirdPartyUserId(undefined);
-  //   // handleChange('campusId');
-  // };
-
-  // const onDepartmentChange = (value: string) => {
-  //   refresh();
-  //   setDepartmentId(value);
-  //   setThirdPartyUserId(undefined);
-  //   // handleChange('departmentId');
-  // };
-
-  // const onUserChange = (value: string) => {
-  //   // refresh();
-  //   setThirdPartyUserId(users?.data?.find((user) => user._id === value));
-  // };
-
-  const selectedUserId = useWatch({ control, name: "userId" });
-  useEffect(() => {
-    setThirdPartyUserId(users?.data?.find((user) => user._id === selectedUserId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserId]);
 
   const onSubmit = () => {};
 
+  const onChangeCampus = () => {
+    form.resetField("departmentId");
+    form.resetField("userId");
+    setThirdPartyUserId(undefined);
+  };
+  const onChangeDepartment = () => {
+    form.resetField("userId");
+    setThirdPartyUserId(undefined);
+  };
+  const onChangeUser = (e: string) => {
+    setThirdPartyUserId(users?.data?.find((user) => user._id === e));
+  };
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-2 pt-10 px-3" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-2 pt-10 px-3"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <SelectInput
           name="campusId"
           placeholder="Select a campus"
           label="Campus"
-          // onChange={onCampusChange}
           required
           control={control}
+          onChange={onChangeCampus}
           options={
             campuses?.data?.map((campus) => ({
               label: campus.campusName,
-              value: campus._id
+              value: campus._id,
             })) as Option[]
           }
           isLoading={campusLoading || campusIsFetching}
@@ -133,13 +125,13 @@ const ManualClockIn = () => {
           name="departmentId"
           placeholder="Select a department"
           label="Department"
-          // onChange={onDepartmentChange}
           required
           control={control}
+          onChange={onChangeDepartment}
           options={
             departments?.data?.map((department) => ({
               label: department.departmentName,
-              value: department._id
+              value: department._id,
             })) as Option[]
           }
           isLoading={departmentsLoading || departmentsIsFetching}
@@ -151,13 +143,13 @@ const ManualClockIn = () => {
           name="userId"
           placeholder="Select a user"
           label="User"
-          // onChange={onUserChange}
+          onChange={onChangeUser}
           required
           control={control}
           options={
             users?.data?.map((user) => ({
               label: `${user.firstName} ${user.lastName}`,
-              value: user._id
+              value: user._id,
             })) as Option[]
           }
           isLoading={usersLoading || usersIsFetching}
