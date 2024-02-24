@@ -15,61 +15,81 @@ import useGeolocation from "@/hooks/useGeolocation";
 import { Coordinates } from "@/types/global.type";
 import {
   useGetLeadersAttendanceReport,
-  useGetWorkersAttendanceReport
+  useGetWorkersAttendanceReport,
 } from "@/services/attendance";
 import useUserStore from "@/store/userStore";
 import { useGetUserById } from "@/services/account";
+import { useGetDepartmentAttendanceReport } from "@/services/department";
+import TeamAttendanceSummary from "./TeamAttendanceSummary";
 
 const Home = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
-  const { isCampusPastor } = useRoles();
+  const { isSuperAdmin, isHOD } = useRoles();
 
   const { data: refreshedUser } = useGetUserById(user!.userId, {
     retry: false,
-    refetchOnMount: false
+    refetchOnMount: false,
   });
 
   const { data: latestService } = useGetLatestService(user!.campus?._id);
 
   const selectCoordinateRef = useMemo(() => {
-    if (latestService?.data?.isGlobalService) return latestService?.data?.coordinates;
+    if (latestService?.data?.isGlobalService)
+      return latestService?.data?.coordinates;
 
     return user?.campus?.location;
   }, [latestService?.data, user?.campus?.location]);
 
   const campusCoordinates = {
     latitude: selectCoordinateRef?.lat,
-    longitude: selectCoordinateRef?.long
+    longitude: selectCoordinateRef?.long,
   };
 
   const { height } = useWindowDimensions();
   const vh = Number(height);
-  const one = isCampusPastor ? 420 : 380;
-  const two = isCampusPastor ? 400 : 360;
-  const three = isCampusPastor ? 340 : 300;
+  const one = isSuperAdmin ? 420 : 380;
+  const two = isSuperAdmin ? 400 : 360;
+  const three = isSuperAdmin ? 340 : 300;
 
   const heightOffset = vh > 835 ? vh - one : vh > 800 ? vh - two : vh - three;
 
-  const { isInRange, deviceCoordinates, verifyRangeBeforeAction } = useGeolocation({
-    rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates
-  });
+  const { isInRange, deviceCoordinates, verifyRangeBeforeAction } =
+    useGeolocation({
+      rangeToClockIn: latestService?.data?.rangeToClockIn as number,
+      campusCoordinates: campusCoordinates as Coordinates,
+    });
 
-  const { data: leadersAttendance, isLoading: leadersIsLoading } = useGetLeadersAttendanceReport(
+  const { data: leadersAttendance, isLoading: leadersIsLoading } =
+    useGetLeadersAttendanceReport(
+      {
+        serviceId: latestService?.data?._id as string,
+        campusId: user!.campus?._id,
+      },
+      { enabled: !!latestService?.data?._id }
+    );
+
+  const { data: workersAttendance, isLoading: workersIsLoading } =
+    useGetWorkersAttendanceReport(
+      {
+        serviceId: latestService?.data?._id as string,
+        campusId: user!.campus?._id,
+      },
+      { enabled: !!latestService?.data?._id && isSuperAdmin }
+    );
+
+  const {
+    data: attendanceReport,
+    isLoading: attendanceReportLoading,
+    // refetch: attendanceReportRefetch,
+  } = useGetDepartmentAttendanceReport(
     {
       serviceId: latestService?.data?._id as string,
-      campusId: user!.campus?._id
+      departmentId: String(user?.department?._id),
     },
-    { enabled: !!latestService?.data?._id }
-  );
-
-  const { data: workersAttendance, isLoading: workersIsLoading } = useGetWorkersAttendanceReport(
     {
-      serviceId: latestService?.data?._id as string,
-      campusId: user!.campus?._id
-    },
-    { enabled: !!latestService?.data?._id }
+      enabled: isHOD,
+    }
   );
 
   useEffect(() => {
@@ -83,7 +103,7 @@ const Home = () => {
     <div className="flex flex-col items-center pt-6">
       <Timer />
       <ReactIf
-        condition={isCampusPastor}
+        condition={isSuperAdmin}
         component={
           <CampusAttendanceSummary
             isLoading={leadersIsLoading || workersIsLoading}
@@ -104,6 +124,18 @@ const Home = () => {
           verifyRangeBeforeAction={verifyRangeBeforeAction}
         />
         <CampusLocation />
+
+        <ReactIf
+          condition={isHOD}
+          component={
+            <TeamAttendanceSummary
+              isLoading={attendanceReportLoading}
+              attendance={attendanceReport?.data?.attendance}
+              departmentUsers={attendanceReport?.data?.departmentUsers}
+            />
+          }
+        />
+
         <ClockStatistics />
       </div>
     </div>
