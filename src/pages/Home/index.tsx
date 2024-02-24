@@ -9,7 +9,7 @@ import ReactIf from "@/components/ReactIf";
 import useRoles from "@/hooks/useRoles";
 
 // import { useGetCampusById } from "@/services/campus";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useGetLatestService } from "@/services/service";
 import useGeolocation from "@/hooks/useGeolocation";
 import { Coordinates } from "@/types/global.type";
@@ -18,7 +18,6 @@ import {
   useGetWorkersAttendanceReport,
 } from "@/services/attendance";
 import useUserStore from "@/store/userStore";
-import { useGetUserById } from "@/services/account";
 import { useGetDepartmentAttendanceReport } from "@/services/department";
 import TeamAttendanceSummary from "./TeamAttendanceSummary";
 
@@ -26,11 +25,6 @@ const Home = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const { isSuperAdmin, isHOD } = useRoles();
-
-  const { data: refreshedUser } = useGetUserById(user!.userId, {
-    retry: false,
-    refetchOnMount: false,
-  });
 
   const { data: latestService } = useGetLatestService(user!.campus?._id);
 
@@ -91,13 +85,6 @@ const Home = () => {
       enabled: isHOD,
     }
   );
-
-  useEffect(() => {
-    if (refreshedUser) {
-      setUser(refreshedUser?.data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshedUser]);
 
   return (
     <div className="flex flex-col items-center pt-6">

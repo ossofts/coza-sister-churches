@@ -1,12 +1,27 @@
 import AvatarComponent from "@/components/AvatarComponent";
+import { useGetUserById } from "@/services/account";
 import useUserStore, { useLogout } from "@/store/userStore";
 import { getFirstLetterCaps } from "@/utils/textFormatters";
+import { useEffect } from "react";
 import { MdLogout } from "react-icons/md";
 
 const Profile = () => {
   const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
+  const { data: refreshedUser } = useGetUserById(user!.userId, {
+    refetchOnMount: true,
+  });
 
   const logout = useLogout();
+
+  useEffect(() => {
+    if (refreshedUser) {
+      setUser(refreshedUser?.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshedUser]);
+
   return (
     <div className="flex flex-col pt-4 pb-8 items-center px-3">
       <AvatarComponent
@@ -16,7 +31,9 @@ const Profile = () => {
       />
       <div className="flex flex-col items-center gap-2 mt-4">
         <p className="text-center text-md font-bold">{`${user?.firstName} ${user?.lastName}`}</p>
-        <p className="text-center text-sm font-semibold">{user?.campus?.campusName}</p>
+        <p className="text-center text-sm font-semibold">
+          {user?.campus?.campusName}
+        </p>
         <p className="text-center text-xs text-neutral-500 dark:text-neutral-200 ">
           {user?.department?.departmentName}
         </p>
