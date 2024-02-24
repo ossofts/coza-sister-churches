@@ -4,6 +4,7 @@ import useUserStore, { useLogout } from "@/store/userStore";
 import { getFirstLetterCaps } from "@/utils/textFormatters";
 import { useEffect } from "react";
 import { MdLogout } from "react-icons/md";
+import { version } from "package.json";
 
 const Profile = () => {
   const user = useUserStore((state) => state.user);
@@ -46,6 +47,10 @@ const Profile = () => {
       >
         <MdLogout size={18} /> <span>Logout</span>
       </button>
+
+      <p className="mt-5 text-center text-gray-300 text-xs">
+        Version {version}
+      </p>
     </div>
   );
 };
