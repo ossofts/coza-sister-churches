@@ -101,7 +101,7 @@ const ManualClockIn = () => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-2 pt-10 px-3"
+        className="flex flex-col gap-2 pt-10 px-3 pb-10"
         onSubmit={handleSubmit(onSubmit)}
       >
         <SelectInput
@@ -157,7 +157,7 @@ const ManualClockIn = () => {
           disabled={!useWatch({ control, name: "departmentId" })}
         />
 
-        <div className="flex flex-col items-center mt-10 h-72 w-full">
+        <div className="flex flex-col items-center mt-10 h-fit w-full">
           <ClockButton
             isInRangeProp={isInRange}
             campusId={useWatch({ control, name: "campusId" }) as string}
