@@ -12,7 +12,10 @@ type Props = {
 
 const TabsComponent = ({ tabs, extraClass }: Props) => {
   return (
-    <Tabs defaultValue="0" className={twMerge("w-full mt-2", extraClass)}>
+    <Tabs
+      defaultValue="0"
+      className={twMerge("w-full mt-2 overflow-hidden", extraClass)}
+    >
       <TabsList className={twMerge("flex justify-center")}>
         {tabs?.map((tabItem, idx) => (
           <TabsTrigger key={idx} value={idx?.toString()}>

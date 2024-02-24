@@ -29,7 +29,9 @@ export default function CustomTableRender(props: {
   return rowItem[column.field];
 }
 
-function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): ReactNode {
+function ColumnRender(
+  props: Parameters<typeof CustomTableRender>[number]
+): ReactNode {
   const { column, rowItem } = props;
 
   if (column.renderType?.date) {
@@ -44,7 +46,9 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
 
     return (
       <div
-        className={twMerge("pb-1 w-[52px] h-[52px] border border-gray-700 dark:border-gray-500")}
+        className={twMerge(
+          "pb-1 w-[52px] h-[52px] border border-gray-700 dark:border-gray-500"
+        )}
       >
         <div
           className={
@@ -58,7 +62,8 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
             {moment(date).format("dddd").substring(0, 3).toUpperCase()}
           </span>
           <p className="text-[10px]">
-            {moment(date).format("MMMM").substring(0, 3)} / {moment(date).format("YY")}
+            {moment(date).format("MMMM").substring(0, 3)} /{" "}
+            {moment(date).format("YY")}
           </p>
         </div>
       </div>
@@ -73,7 +78,9 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
         <FiArrowDownRight color={COLORS.primaryLight} size={18} />
         <p
           className={twMerge(
-            time ? "text-green-500 dark:text-green-300" : "text-red-300 dark:text-red-500"
+            time
+              ? "text-green-500 dark:text-green-300"
+              : "text-red-300 dark:text-red-500"
           )}
         >
           {time ? moment(time).format("LT") : "--:--"}
@@ -100,7 +107,9 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
 
     return (
       <p className="text-center text-gray-500 dark:text-gray-100 text-xs font-semibold">
-        {clockOut ? timeDifference(clockOut || "", clockIn || "").hrsMins : "--:--"}
+        {clockOut
+          ? timeDifference(clockOut || "", clockIn || "").hrsMins
+          : "--:--"}
       </p>
     );
   }
@@ -110,15 +119,16 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
 
     return (
       <div className="flex items-center flex-1 text-left w-full min-w-[45px] truncate max-w-[90px] sm:max-w-none">
-        <AvatarComponent
-          extraClass="w-4 h-4 text-xs"
-          src={name?.pictureUrl ?? ""}
-          fallback={name.firstName[0] + name.lastName[0]}
-        />
-        <div className="flex fle-col justify-center text-gray-800 dark:text-gray-100 text-xs [&>span]:ml-2">
-          <span className="truncate">{capitalizeFirstLetter(name.firstName)}</span>
-          <span className="truncate">{capitalizeFirstLetter(name.lastName)}</span>
-        </div>
+        {name.avatar && (
+          <AvatarComponent
+            extraClass="w-4 h-4 text-xs"
+            src={name?.pictureUrl ?? ""}
+            fallback={name.firstName[0] + name.lastName[0]}
+          />
+        )}
+        <span className="flex fle-col justify-center text-gray-800 dark:text-gray-100 text-xs">
+          {`${capitalizeFirstLetter(name.firstName)} ${capitalizeFirstLetter(name.lastName)}`}
+        </span>
       </div>
     );
   }
@@ -182,10 +192,15 @@ function ColumnRender(props: Parameters<typeof CustomTableRender>[number]): Reac
 
     return (
       <div className="flex items-center flex-1 text-left w-full min-w-[45px] text-xs">
-        <AvatarComponent src={user?.pictureUrl ?? ""} extraClass="mr-4 w-4 h-4" />
+        <AvatarComponent
+          src={user?.pictureUrl ?? ""}
+          extraClass="mr-4 w-4 h-4"
+        />
         <div className="flex fle-col justify-center text-gray-800 dark:text-gray-100 [&>span]:ml-2">
           <span className="truncate">{`${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`}</span>
-          <span className="truncate">{capitalizeFirstLetter(user.departmentName)}</span>
+          <span className="truncate">
+            {capitalizeFirstLetter(user.departmentName)}
+          </span>
         </div>
       </div>
     );

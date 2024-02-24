@@ -1,11 +1,11 @@
 import TabsComponent from "@/components/TabsComponent";
 import MyAttendance from "./MyAttendance";
 import TeamAttendance from "./TeamAttendance";
-import ReactIf from "@/components/ReactIf";
 import useRoles from "@/hooks/useRoles";
+import CampusAttendance from "./CampusAttendance";
 
 const Attendance = () => {
-  const { isCampusPastor, isSuperAdmin, isHOD } = useRoles();
+  const { isSuperAdmin, isHOD } = useRoles();
 
   const tabs = [
     {
@@ -18,14 +18,19 @@ const Attendance = () => {
       title: "Team Attendance",
       component: <TeamAttendance />,
     },
+    {
+      id: 3,
+      title: "Campus Attendance",
+      component: <CampusAttendance />,
+    },
   ];
-  return (
-    <ReactIf
-      condition={isCampusPastor || isSuperAdmin || isHOD}
-      component={<TabsComponent tabs={tabs} />}
-      fallback={<TabsComponent tabs={tabs?.filter((item) => item.id === 1)} />}
-    />
-  );
+
+  const returnTabs = () => {
+    if (isSuperAdmin) return tabs?.filter((tab) => tab.id === 3);
+    if (isHOD) return tabs?.filter((tab) => tab.id === 1 || tab.id === 2);
+    return tabs?.filter((tab) => tab.id === 1);
+  };
+  return <TabsComponent tabs={returnTabs()} />;
 };
 
 export default Attendance;
