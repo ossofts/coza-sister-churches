@@ -32,7 +32,6 @@ const UpdateAccount = ({ email = "", user }: Props) => {
       email: email,
       firstName: user?.firstName,
       lastName: user?.lastName,
-      isCGWCApproved: true,
     },
   });
 
@@ -56,7 +55,7 @@ const UpdateAccount = ({ email = "", user }: Props) => {
       campusId: user?.department?.campusId,
       departmentId: user?.department?._id,
       roleId: user?.roleId,
-      isCGWCApproved: data.isCGWCApproved,
+      isCGWCApproved: true,
     };
     mutation.mutate(body);
   };
