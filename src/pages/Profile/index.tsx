@@ -16,11 +16,11 @@ const Profile = () => {
   const logout = useLogout();
 
   useEffect(() => {
-    if (refreshedUser) {
+    if (refreshedUser?.data) {
       setUser(refreshedUser?.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshedUser]);
+  }, [refreshedUser?.data]);
 
   return (
     <div className="flex flex-col pt-4 pb-8 items-center px-3">
