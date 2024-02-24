@@ -13,9 +13,13 @@ export type RegisterInputs = {
   gender: string;
   password: string;
   confirmPassword: string;
+  isCGWCApproved: boolean;
 };
 
-export type UpdatePasswordType = Pick<RegisterInputs, "password" | "confirmPassword">;
+export type UpdatePasswordType = Pick<
+  RegisterInputs,
+  "password" | "confirmPassword"
+>;
 
 export type LoginResponse = {
   profile: User;

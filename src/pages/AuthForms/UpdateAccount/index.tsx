@@ -19,7 +19,7 @@ import useNavigation from "@/hooks/useNavigation";
 
 const genderOptions = [
   { label: "Male", value: "M" },
-  { label: "Female", value: "F" }
+  { label: "Female", value: "F" },
 ];
 
 type Props = { email: string; user: User };
@@ -31,13 +31,15 @@ const UpdateAccount = ({ email = "", user }: Props) => {
     defaultValues: {
       email: email,
       firstName: user?.firstName,
-      lastName: user?.lastName
-    }
+      lastName: user?.lastName,
+      isCGWCApproved: true,
+    },
   });
 
   const mutation = useMutation({
     mutationKey: ["registerUser"],
-    mutationFn: (body: Omit<RegisterInputs, "confirmPassword">) => registerUser(body)
+    mutationFn: (body: Omit<RegisterInputs, "confirmPassword">) =>
+      registerUser(body),
   });
 
   const { register, handleSubmit, control, formState } = form;
@@ -53,7 +55,8 @@ const UpdateAccount = ({ email = "", user }: Props) => {
       password: data.password,
       campusId: user?.department?.campusId,
       departmentId: user?.department?._id,
-      roleId: user?.roleId
+      roleId: user?.roleId,
+      isCGWCApproved: data.isCGWCApproved,
     };
     mutation.mutate(body);
   };
@@ -67,7 +70,8 @@ const UpdateAccount = ({ email = "", user }: Props) => {
     if (mutation.error) {
       showAlert(
         "error",
-        customError(mutation.error)?.response?.data?.message ?? "An error occurred"
+        customError(mutation.error)?.response?.data?.message ??
+          "An error occurred"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +79,10 @@ const UpdateAccount = ({ email = "", user }: Props) => {
   return (
     <div>
       <Form {...form}>
-        <form className="flex flex-col gap-2 pt-10" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-2 pt-10"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <TextInputWithIcon
             label="Email"
             name="email"
@@ -86,7 +93,7 @@ const UpdateAccount = ({ email = "", user }: Props) => {
             inputProps={{
               autoComplete: "off",
               type: "email",
-              disabled: email !== "" ? true : false
+              disabled: email !== "" ? true : false,
             }}
             leftIcon={<IoMailOutline />}
           />
