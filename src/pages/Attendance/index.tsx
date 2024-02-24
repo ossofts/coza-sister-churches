@@ -5,23 +5,23 @@ import ReactIf from "@/components/ReactIf";
 import useRoles from "@/hooks/useRoles";
 
 const Attendance = () => {
-  const { isCampusPastor } = useRoles();
+  const { isCampusPastor, isSuperAdmin, isHOD } = useRoles();
 
   const tabs = [
     {
       id: 1,
       title: "My Attendance",
-      component: <MyAttendance />
+      component: <MyAttendance />,
     },
     {
       id: 2,
       title: "Team Attendance",
-      component: <TeamAttendance />
-    }
+      component: <TeamAttendance />,
+    },
   ];
   return (
     <ReactIf
-      condition={isCampusPastor}
+      condition={isCampusPastor || isSuperAdmin || isHOD}
       component={<TabsComponent tabs={tabs} />}
       fallback={<TabsComponent tabs={tabs?.filter((item) => item.id === 1)} />}
     />
