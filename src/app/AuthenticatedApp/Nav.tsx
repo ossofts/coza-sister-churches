@@ -26,7 +26,7 @@ const Nav = () => {
     isSuperAdmin,
     isInternshipHOD,
     isCGWCApproved,
-    isInternship
+    isInternship,
   } = useRole();
   const allowMoreOptions =
     isQC ||
@@ -46,7 +46,7 @@ const Nav = () => {
         </button>
       ),
       onClick: () => goto(ROUTES.CREATE_USER.path),
-      roles: [isAdmin, isGlobalPastor, isSuperAdmin, isInternshipHOD]
+      roles: [isAdmin, isGlobalPastor, isSuperAdmin, isInternshipHOD],
     },
     {
       label: (
@@ -55,7 +55,7 @@ const Nav = () => {
         </button>
       ),
       onClick: () => goto(ROUTES.CREATE_DEPARTMENT.path),
-      roles: [isAdmin, isGlobalPastor, isSuperAdmin, isInternshipHOD]
+      roles: [isAdmin, isGlobalPastor, isSuperAdmin],
     },
     // {
     //   label: (
@@ -73,8 +73,8 @@ const Nav = () => {
         </button>
       ),
       onClick: () => goto(ROUTES.MANUAL_CLOCK_IN.path),
-      roles: [isQC, isQcHOD, isSuperAdmin, isInternship, isInternshipHOD]
-    }
+      roles: [isQC, isQcHOD, isSuperAdmin, isInternship, isInternshipHOD],
+    },
     // {
     //   label: (
     //     <button className="flex gap-2 items-center py-2 text-md">
@@ -87,7 +87,8 @@ const Nav = () => {
   ];
 
   const approvedNav = () => {
-    if (!isCGWCApproved) return navList.filter((nav) => nav.title !== ROUTES.CGWC.title);
+    if (!isCGWCApproved)
+      return navList.filter((nav) => nav.title !== ROUTES.CGWC.title);
 
     return navList;
   };
@@ -106,7 +107,9 @@ const Nav = () => {
         <Link
           className={twMerge(
             "flex flex-col items-center gap-[5px]",
-            pathname === item.path ? "text-brandColor-600 dark:text-brandColor-500" : ""
+            pathname === item.path
+              ? "text-brandColor-600 dark:text-brandColor-500"
+              : ""
           )}
           key={idx}
           to={item.path}
@@ -121,14 +124,18 @@ const Nav = () => {
         component={
           <DropDownMenuComponent
             trigger={
-              <button className={twMerge("flex flex-col items-center gap-[5px]")}>
+              <button
+                className={twMerge("flex flex-col items-center gap-[5px]")}
+              >
                 <span className="text-[22px]">
                   <IoMenu />
                 </span>
                 <span className="text-[10px] font-semibold">More</span>
               </button>
             }
-            menuItems={moreOptions?.filter((item) => item?.roles?.includes(true))}
+            menuItems={moreOptions?.filter((item) =>
+              item?.roles?.includes(true)
+            )}
           />
         }
       />

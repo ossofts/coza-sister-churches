@@ -1,5 +1,11 @@
 import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { Control, FieldError, FieldValues, Path } from "react-hook-form";
 import { ClassNameValue, twMerge } from "tailwind-merge";
 import InputErrorAlert from "../Errors/InputErrorAlert";
@@ -23,6 +29,7 @@ type Props<T extends FieldValues> = {
   error?: FieldError;
   disabled?: boolean;
   isLoading?: boolean;
+  onChange?: (e: string) => void;
 };
 
 function SelectInput<T extends FieldValues>(props: Props<T>) {
@@ -38,14 +45,18 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
     error,
     inputExtraClass,
     disabled = false,
-    isLoading = false
+    isLoading = false,
+    onChange,
   } = props;
+
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={twMerge(`flex flex-col mb-2`, containerExtraClass)}>
+        <FormItem
+          className={twMerge(`flex flex-col mb-2`, containerExtraClass)}
+        >
           {label && (
             <FormLabel
               style={{ marginBottom: 0 }}
@@ -54,7 +65,14 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
               {label} {required && <span className="text-red-500">*</span>}
             </FormLabel>
           )}
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={(e) => {
+              field.onChange(e);
+              if (!onChange) return;
+              onChange(e);
+            }}
+            defaultValue={field.value}
+          >
             <FormControl>
               <SelectTrigger
                 disabled={disabled}
@@ -71,7 +89,14 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
                 <SelectValue className="" placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent
+              ref={(ref) => {
+                if (!ref) return;
+                ref.ontouchstart = (e) => {
+                  e.preventDefault();
+                };
+              }}
+            >
               <ReactIf
                 condition={!isLoading}
                 component={options?.map((item, idx) => (
