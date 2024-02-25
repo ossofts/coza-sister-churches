@@ -27,7 +27,7 @@ const TeamAttendanceSummary = (props: TeamAttendanceSummary) => {
       ) : (
         <div onClick={handlePress}>
           <div className="flex items-baseline">
-            <div className="items-center">
+            <div className="flex items-center">
               <IoPeopleOutline color={COLORS.primaryLight} size={18} />
               <p className="ml-2 text-sm text-gray-600 dark:text-gray-400">
                 Members clocked in:
