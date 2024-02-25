@@ -12,10 +12,10 @@ export const useGetAttendance = (
     queryKey: ["getAttendance", params],
     queryFn: () =>
       axiosClient.get(`${serviceUrl}/getAttendance`, {
-        params: { ...params }
+        params: { ...params },
       }) as ServerResponse<Attendance[]>,
     retry: false,
-    ..._options
+    ..._options,
   });
 };
 
@@ -23,7 +23,10 @@ export const useClockIn = () => {
   return useMutation({
     mutationKey: ["clockIn"],
     mutationFn: (body: ClockInPayload) =>
-      axiosClient.post(`${serviceUrl}/clockin`, body) as ServerResponse<Attendance>
+      axiosClient.post(
+        `${serviceUrl}/clockin`,
+        body
+      ) as ServerResponse<Attendance>,
   });
 };
 
@@ -31,7 +34,9 @@ export const useClockOut = () => {
   return useMutation({
     mutationKey: ["clockIn"],
     mutationFn: (attendanceId: string) =>
-      axiosClient.put(`${serviceUrl}/clock-out/${attendanceId}`) as ServerResponse<Attendance>
+      axiosClient.put(
+        `${serviceUrl}/clock-out/${attendanceId}`
+      ) as ServerResponse<Attendance>,
   });
 };
 
@@ -52,7 +57,7 @@ export const useGetLeadersAttendanceReport = (
         leaderUsers: number;
       }>,
     retry: false,
-    ..._options
+    ..._options,
   });
 };
 
@@ -72,7 +77,32 @@ export const useGetWorkersAttendanceReport = (
         attendance: number;
         workerUsers: number;
       }>,
-    retry: false,
-    ..._options
+    ..._options,
+  });
+};
+
+export const useGetDepartmentAttendanceReport = (
+  {
+    serviceId,
+    departmentId,
+  }: {
+    serviceId: string;
+    departmentId: string;
+  },
+  _options: QueryOptions<{
+    attendance: number;
+    departmentUsers: number;
+  }>
+) => {
+  return useQuery({
+    queryKey: ["getDepartmentAttendanceReport", serviceId, departmentId],
+    queryFn: () =>
+      axiosClient.get(
+        `${serviceUrl}/departmentReport/${serviceId}/${departmentId}`
+      ) as ServerResponse<{
+        attendance: number;
+        departmentUsers: number;
+      }>,
+    ..._options,
   });
 };
