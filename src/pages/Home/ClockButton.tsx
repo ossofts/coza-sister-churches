@@ -187,7 +187,7 @@ const ClockButton = ({
 
   return (
     <>
-      <div className="relative" onClick={handlePress}>
+      <div className="relative" onClick={disabled ? () => null : handlePress}>
         {canClockIn && (
           <Lottie
             animationData={animationData}

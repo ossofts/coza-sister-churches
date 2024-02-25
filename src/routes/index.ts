@@ -149,7 +149,6 @@ const ROUTES: Record<string, RouteObj> = {
       roles["Super Admin"],
       roles["Global Admin"],
       roles["Global Pastor"],
-      roles["Internship HOD"],
     ],
   },
   GO_TO_HOME: {
