@@ -9,7 +9,11 @@ import showAlert from "@/hooks/useAlert";
 import { Coordinates, customError } from "@/types/global.type";
 import { useEffect, useState } from "react";
 // import useAppContext from "@/contexts/AppContext";
-import { useClockIn, useClockOut, useGetAttendance } from "@/services/attendance";
+import {
+  useClockIn,
+  useClockOut,
+  useGetAttendance,
+} from "@/services/attendance";
 import useUserStore from "@/store/userStore";
 import moment from "moment";
 import ConfirmationModal from "@/components/ConfirmationModal";
@@ -33,10 +37,10 @@ const ClockButton = ({
   departmentId,
   deviceCoordinates,
   campusCoordinates,
-  isInRangeProp: isInRange
+  isInRangeProp: isInRange,
 }: Props) => {
-  // const [clockedOut, setClockedOut] = useState(false);
-  const [openClockOutConfirmation, setOpenClockOutConfirmation] = useState(false);
+  const [openClockOutConfirmation, setOpenClockOutConfirmation] =
+    useState(false);
   const user = useUserStore((state) => state.user);
 
   const { data: latestService } = useGetLatestService(user!.campus._id);
@@ -46,19 +50,20 @@ const ClockButton = ({
 
   const { verifyRangeBeforeAction } = useGeolocation({
     rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates
+    campusCoordinates: campusCoordinates as Coordinates,
   });
 
-  const { data: latestAttendanceData, refetch: refetchLatestAttendance } = useGetAttendance(
-    {
-      userId,
-      serviceId: latestService?.data?._id
-    },
-    {
-      enabled: userId !== undefined,
-      refetchOnMount: true
-    }
-  );
+  const { data: latestAttendanceData, refetch: refetchLatestAttendance } =
+    useGetAttendance(
+      {
+        userId,
+        serviceId: latestService?.data?._id,
+      },
+      {
+        enabled: userId !== undefined,
+        refetchOnMount: true,
+      }
+    );
 
   const handleClockOut = () => {
     if (canClockOut) {
@@ -85,11 +90,11 @@ const ClockButton = ({
         serviceId: latestService?.data?._id as string,
         coordinates: {
           lat: `${deviceCoordinates.latitude}`,
-          long: `${deviceCoordinates.longitude}`
+          long: `${deviceCoordinates.longitude}`,
         },
         campusId: campusId,
         departmentId: departmentId,
-        roleId
+        roleId,
       });
       return;
     }
@@ -108,7 +113,8 @@ const ClockButton = ({
     if (clockInMutation.error) {
       showAlert(
         "warning",
-        customError(clockInMutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
+        customError(clockInMutation.error)?.response?.data?.message ??
+          "Oops! Something went wrong"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,7 +132,8 @@ const ClockButton = ({
     if (clockOutMutation.error) {
       showAlert(
         "warning",
-        customError(clockOutMutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
+        customError(clockOutMutation.error)?.response?.data?.message ??
+          "Oops! Something went wrong"
       );
       refetchLatestAttendance;
     }
@@ -139,8 +146,14 @@ const ClockButton = ({
     }
   }, [latestAttendanceData?.data]);
 
+  useEffect(() => {
+    refetchLatestAttendance();
+  }, [campusId, departmentId, userId]);
+
   const clockedIn =
-    latestAttendanceData?.data?.length && latestAttendanceData?.data[0].clockIn ? true : false;
+    latestAttendanceData?.data?.length && latestAttendanceData?.data[0].clockIn
+      ? true
+      : false;
 
   const canClockIn = isInRange && latestService && userId && !clockedIn;
 
@@ -148,13 +161,14 @@ const ClockButton = ({
     latestAttendanceData?.data?.length &&
     latestAttendanceData?.data[0].clockIn &&
     !latestAttendanceData?.data[0].clockOut &&
-    isInRange;
+    isInRange &&
+    userId;
 
   const disabled = !userId || !latestService;
 
   return (
     <>
-      <div className="relative" onClick={handlePress}>
+      <div className="relative" onClick={disabled ? () => null : handlePress}>
         {canClockIn && (
           <Lottie
             animationData={animationData}
@@ -163,7 +177,7 @@ const ClockButton = ({
               left: -40,
               top: -40,
               position: "absolute",
-              width: 320
+              width: 320,
             }}
             autoPlay
             loop
@@ -186,13 +200,21 @@ const ClockButton = ({
             <span>
               <span className="flex flex-col items-center">
                 <ReactIf
-                  condition={clockInMutation.isPending || clockOutMutation.isPending}
+                  condition={
+                    clockInMutation.isPending || clockOutMutation.isPending
+                  }
                   component={<Spinner color="white" size={60} />}
                   fallback={
                     <span className="flex flex-col items-center gap-4">
                       <PiHandTap color="white" size={110} />
                       <span className="font-light text-md text-white">
-                        {disabled ? "" : canClockIn ? "CLOCK IN" : canClockOut ? "CLOCK OUT" : ""}
+                        {disabled
+                          ? ""
+                          : canClockIn
+                            ? "CLOCK IN"
+                            : canClockOut
+                              ? "CLOCK OUT"
+                              : ""}
                       </span>
                     </span>
                   }

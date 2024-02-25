@@ -35,6 +35,7 @@ export const registerUser = (
         departmentId: string;
         roleId: string;
         campusId: string;
+        isCGWCApproved: boolean;
       })
     | Pick<RegisterInputs, "email" | "password">
 ): ServerResponse<User> => {
@@ -56,16 +57,20 @@ export const useGetUsersByDepartmentId = (departmentId: Department["_id"]) => {
     queryKey: ["getUsersByDepartmentId", departmentId],
     queryFn: () =>
       axiosClient.get(`${userServiceUrl}/getUsers`, {
-        params: { departmentId }
-      }) as ServerResponse<User[]>
+        params: { departmentId },
+      }) as ServerResponse<User[]>,
   });
 };
 
-export const useGetUserById = (id: string, _options: QueryOptions<User> = {}) => {
+export const useGetUserById = (
+  id: string,
+  _options: QueryOptions<User> = {}
+) => {
   return useQuery({
     queryKey: ["getUsers", id],
-    queryFn: () => axiosClient.get(`${serviceUrl}/user/${id}`) as ServerResponse<User>,
-    ..._options
+    queryFn: () =>
+      axiosClient.get(`${serviceUrl}/user/${id}`) as ServerResponse<User>,
+    ..._options,
   });
 };
 export const useGetUsers = (
@@ -76,9 +81,9 @@ export const useGetUsers = (
     queryKey: ["getUsers", params],
     queryFn: () =>
       axiosClient.get(`${userServiceUrl}/getUsers`, {
-        params: { ...params }
+        params: { ...params },
       }) as ServerResponse<User[]>,
-    ..._options
+    ..._options,
   });
 };
 
@@ -86,6 +91,9 @@ export const useUploadUser = () => {
   return useMutation({
     mutationKey: ["uploadUser"],
     mutationFn: (body: CreateUserInputs) =>
-      axiosClient.post(`${serviceUrl}/createUploadedUSer`, body) as ServerResponse<User>
+      axiosClient.post(
+        `${serviceUrl}/createUploadedUSer`,
+        body
+      ) as ServerResponse<User>,
   });
 };

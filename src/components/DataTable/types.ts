@@ -21,6 +21,7 @@ export type TableColumn<T> = {
       clockOut: string;
     };
     name?: (data: T) => {
+      avatar?: boolean;
       pictureUrl?: string;
       firstName: string;
       lastName: string;

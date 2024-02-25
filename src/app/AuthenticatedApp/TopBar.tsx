@@ -21,18 +21,24 @@ const TopBar = () => {
     (item) => item.path == `/${pathname?.split("/")[1]}`
   )[0];
 
-  const { data: latestService, isLoading, error } = useGetLatestService(user!.campus?._id);
+  const {
+    data: latestService,
+    isLoading,
+    error,
+  } = useGetLatestService(user!.campus?._id);
 
   return (
     <div
       className={twMerge(
-        "fixed top-0 z-10 w-svw bg-white border-b border-b-gray-200 dark:bg-black dark:border-none flex justify-center items-center py-4"
+        "fixed top-0 z-20 w-svw bg-white border-b border-b-gray-200 dark:bg-black dark:border-none flex justify-center items-center py-4"
       )}
     >
       <ReactIf
         condition={pathname === ROUTES.HOME.path}
         component={
-          <div className={twMerge("px-3 flex items-center w-full justify-between")}>
+          <div
+            className={twMerge("px-3 flex items-center w-full justify-between")}
+          >
             <Link to={ROUTES.PROFILE.path}>
               <AvatarComponent
                 src={String(user?.pictureUrl)}
@@ -61,7 +67,10 @@ const TopBar = () => {
         }
         fallback={
           <>
-            <FaArrowLeftLong onClick={goBack} className="absolute left-3 cursor-pointer text-lg" />
+            <FaArrowLeftLong
+              onClick={goBack}
+              className="absolute left-3 cursor-pointer text-lg"
+            />
             <h2 className="font-medium text-gray-400">{currentRoute?.title}</h2>
           </>
         }

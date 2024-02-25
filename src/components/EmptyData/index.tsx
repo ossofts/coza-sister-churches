@@ -24,12 +24,12 @@ const EmptyData = ({ message, width = 320 }: Props) => {
   const isDarkMode = useColorScheme();
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pb-4">
       <Lottie
         animationData={isDarkMode ? darkAnimation : lightAnimation}
         // resizeMode="cover"
         style={{
-          width
+          width,
         }}
         autoPlay
         loop
