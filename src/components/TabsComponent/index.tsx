@@ -18,7 +18,7 @@ const TabsComponent = ({ tabs, extraClass }: Props) => {
     >
       <TabsList className={twMerge("flex justify-center")}>
         {tabs?.map((tabItem, idx) => (
-          <TabsTrigger key={idx} value={idx?.toString()}>
+          <TabsTrigger className="flex-1" key={idx} value={idx?.toString()}>
             {tabItem.title}
           </TabsTrigger>
         ))}
