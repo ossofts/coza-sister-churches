@@ -1,3 +1,4 @@
+import { UserStatus } from "@/store/types";
 import { RequireOnlyOne } from "@/types/global.type";
 import { ReactNode } from "react";
 
@@ -35,7 +36,13 @@ export type TableColumn<T> = {
       pictureUrl?: string;
       firstName: string;
       lastName: string;
-      departmentName: string;
+      departmentName?: string;
+      email?: string;
+    };
+    badge?: (data: T) => {
+      status: UserStatus | "approved" | "unapproved" | "active" | "inactive";
+      extraClass?: string;
+      children: ReactNode;
     };
   }>;
 };

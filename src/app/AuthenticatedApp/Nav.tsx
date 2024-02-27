@@ -9,6 +9,7 @@ import { IoMdStopwatch } from "react-icons/io";
 // import { BiSolidFileExport } from "react-icons/bi";
 import { FiUserPlus } from "react-icons/fi";
 import { LuUsers } from "react-icons/lu";
+import { TbDatabaseCog } from "react-icons/tb";
 import useNavigation from "@/hooks/useNavigation";
 import ROUTES from "@/routes";
 import useRole from "@/hooks/useRoles";
@@ -21,6 +22,7 @@ const Nav = () => {
     isQC,
     isCampusPastor,
     isAdmin,
+    isHOD,
     isGlobalPastor,
     isQcHOD,
     isSuperAdmin,
@@ -33,6 +35,7 @@ const Nav = () => {
     isCampusPastor ||
     isAdmin ||
     isGlobalPastor ||
+    isHOD ||
     isQcHOD ||
     isSuperAdmin ||
     isInternshipHOD ||
@@ -74,6 +77,15 @@ const Nav = () => {
       ),
       onClick: () => goto(ROUTES.MANUAL_CLOCK_IN.path),
       roles: [isQC, isQcHOD, isSuperAdmin, isInternship, isInternshipHOD],
+    },
+    {
+      label: (
+        <button className="flex gap-2 items-center py-2 text-md">
+          <TbDatabaseCog size={16} /> <span>Workforce Summary</span>
+        </button>
+      ),
+      onClick: () => goto(ROUTES.WORKFORCE_SUMMARY.path),
+      roles: [isHOD, isSuperAdmin],
     },
     // {
     //   label: (
