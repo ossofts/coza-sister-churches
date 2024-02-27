@@ -8,22 +8,32 @@ import { useGetUsers } from "@/services/account";
 import { User } from "@/store/types";
 import { useParams } from "react-router-dom";
 
+type DUser = User & { departmentName: string };
+
 const DepartmentList = () => {
   const { department_id } = useParams();
   const {
     user: { department },
   } = useRole();
-  const columns: TableColumn<User>[] = [
+  const columns: TableColumn<DUser>[] = [
     {
       title: "User",
       field: "firstName",
-      renderType: {
-        user: (data) => ({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-        }),
-      },
+      renderType: department_id
+        ? {
+            user: (data) => ({
+              firstName: data.firstName,
+              lastName: data.lastName,
+              departmentName: data?.departmentName,
+            }),
+          }
+        : {
+            user: (data) => ({
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+            }),
+          },
     },
     {
       title: "Status",
@@ -49,7 +59,7 @@ const DepartmentList = () => {
         component={
           <DataTable
             columns={columns}
-            data={data?.data as User[]}
+            data={data?.data as DUser[]}
             isLoading={isLoading || isFetching}
             showHeader={false}
           />
