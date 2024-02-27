@@ -106,3 +106,74 @@ export const useGetDepartmentAttendanceReport = (
     ..._options,
   });
 };
+
+export const useGetDepartmentCGWCAttendanceReport = (
+  {
+    serviceId,
+    departmentId,
+    isCGWC,
+    CGWCId,
+  }: {
+    serviceId: string;
+    departmentId: string;
+    isCGWC: boolean;
+    CGWCId: string;
+  },
+  _options: QueryOptions<{
+    tickets?: number;
+    attendance: number;
+    departmentUsers: number;
+  }>
+) => {
+  return useQuery({
+    queryKey: [
+      "getDepartmentCGWCAttendanceReport",
+      { serviceId, departmentId, isCGWC, CGWCId },
+    ],
+    queryFn: () =>
+      axiosClient.get(
+        `${serviceUrl}/departmentReport/${serviceId}/${departmentId}/${isCGWC}/${CGWCId}`
+      ) as ServerResponse<{
+        tickets?: number;
+        attendance: number;
+        departmentUsers: number;
+      }>,
+    ..._options,
+  });
+};
+
+export const useGetWorkersCGWCAttendanceReport = (
+  {
+    serviceId,
+    campusId,
+    isCGWC,
+    CGWCId,
+  }: {
+    serviceId: string;
+    campusId: string;
+    isCGWC: boolean;
+    CGWCId: string;
+  },
+  _options: QueryOptions<{
+    attendance: number;
+    workerUsers: number;
+  }>
+) => {
+  return useQuery({
+    queryKey: [
+      "getDepartmentCGWCAttendanceReport",
+      serviceId,
+      campusId,
+      isCGWC,
+      CGWCId,
+    ],
+    queryFn: () =>
+      axiosClient.get(
+        `${serviceUrl}/workersAttendanceReport/${serviceId}/${campusId}/${isCGWC}/${CGWCId}`
+      ) as ServerResponse<{
+        attendance: number;
+        workerUsers: number;
+      }>,
+    ..._options,
+  });
+};
