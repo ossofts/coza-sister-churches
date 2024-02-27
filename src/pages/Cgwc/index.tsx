@@ -11,8 +11,10 @@ const Cgwc = () => {
       condition={!isLoading}
       component={
         <ReactIf
-          condition={data?.data !== undefined}
-          component={data?.data?.map((cgwc, idx) => <CgwcListItem key={idx} cgwc={cgwc} />)}
+          condition={data?.data !== undefined && data?.data?.length > 0}
+          component={data?.data?.map((cgwc, idx) => (
+            <CgwcListItem key={idx} cgwc={cgwc} />
+          ))}
           fallback={<EmptyData />}
         />
       }
