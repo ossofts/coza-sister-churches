@@ -8,19 +8,23 @@ type Props = {
   children: React.ReactNode;
 };
 const BadgeComponent = ({ status, extraClass, children }: Props) => {
-  const green = status?.toLowerCase() === "approved" || status?.toLowerCase() === "active";
-  const red = status?.toLowerCase() === "unapproved" || status?.toLowerCase() === "inactive";
+  const green =
+    status?.toLowerCase() === "approved" || status?.toLowerCase() === "active";
+  const red =
+    status?.toLowerCase() === "unapproved" ||
+    status?.toLowerCase() === "inactive";
   return (
-    <div
+    <span
       className={twMerge(
         "p-1 px-2 text-xs rounded-md font-semibold",
-        green && "bg-green-600 text-gray-50 dark:bg-green-200 dark:text-green-600",
+        green &&
+          "bg-green-600 text-gray-50 dark:bg-green-200 dark:text-green-600",
         red && "bg-red-600 text-gray-50 dark:bg-red-200 dark:text-red-600",
         extraClass
       )}
     >
       {children}
-    </div>
+    </span>
   );
 };
 

@@ -9,6 +9,7 @@ import { FiArrowDownRight, FiArrowUpRight } from "react-icons/fi";
 import { COLORS } from "@/theme/colors";
 import AvatarComponent from "../AvatarComponent";
 import { capitalizeFirstLetter } from "@/utils/textFormatters";
+import BadgeComponent from "../BadgeComponent";
 
 export default function CustomTableRender(props: {
   column: TableColumn<any>;
@@ -194,15 +195,30 @@ function ColumnRender(
       <div className="flex items-center flex-1 text-left w-full min-w-[45px] text-xs">
         <AvatarComponent
           src={user?.pictureUrl ?? ""}
-          extraClass="mr-4 w-4 h-4"
+          extraClass="mr-4 w-8 h-8"
+          fallback={user.firstName[0] + user.lastName[0]}
         />
-        <div className="flex fle-col justify-center text-gray-800 dark:text-gray-100 [&>span]:ml-2">
-          <span className="truncate">{`${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`}</span>
-          <span className="truncate">
-            {capitalizeFirstLetter(user.departmentName)}
+        <div className="flex flex-col justify-center text-gray-800 dark:text-gray-100 [&>span]:ml-2">
+          <span className="truncate text-sm font-semibold">{`${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`}</span>
+          <span className="truncate text-neutral-400">
+            {capitalizeFirstLetter(
+              user?.departmentName
+                ? user?.departmentName
+                : user?.email
+                  ? user?.email
+                  : ""
+            )}
           </span>
         </div>
       </div>
+    );
+  }
+
+  if (column.renderType?.badge) {
+    const badge = column.renderType?.badge(rowItem);
+
+    return (
+      <BadgeComponent status={badge.status}>{badge.children}</BadgeComponent>
     );
   }
 

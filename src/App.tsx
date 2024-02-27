@@ -9,6 +9,7 @@ import ErrorBoundaryComponent from "./components/ErrorBoundaryComponent";
 import useUserStore from "./store/userStore";
 // import withSplashScreen from "./components/withSplashScreen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,10 @@ function App() {
     if (navigator.userAgent.indexOf("iPhone") > -1) {
       document
         .querySelector("[name=viewport]")!
-        .setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1");
+        .setAttribute(
+          "content",
+          "width=device-width, initial-scale=1, maximum-scale=1"
+        );
     }
   }, []);
   return (
@@ -30,6 +34,7 @@ function App() {
             {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
           </Suspense>
         </ErrorBoundary>
+        <ReactQueryDevtools />
       </QueryClientProvider>
       <ToastContainer />
     </>
