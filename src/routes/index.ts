@@ -20,6 +20,10 @@ const CreateUser = lazy(() => import("@/pages/WorkforceManagement/CreateUser"));
 const CreateDepartment = lazy(
   () => import("@/pages/WorkforceManagement/CreateDepartment")
 );
+const WorkforceSummary = lazy(() => import("@/pages/WorkforceSummary"));
+const WorkforceSummaryDepartments = lazy(
+  () => import("@/pages/WorkforceSummary/DepartmentList")
+);
 
 export type RouteObj = {
   path: string;
@@ -150,6 +154,20 @@ const ROUTES: Record<string, RouteObj> = {
       roles["Global Admin"],
       roles["Global Pastor"],
     ],
+  },
+  WORKFORCE_SUMMARY: {
+    path: "/workforce-summary",
+    isPrivate: true,
+    component: WorkforceSummary,
+    title: "Workforce Summary",
+    roles: [roles["Super Admin"], roles["HOD"], roles["Global Pastor"]],
+  },
+  WORKFORCE_SUMMARY_DEPARTMENT: {
+    path: "/workforce-summary/:department_id",
+    isPrivate: true,
+    component: WorkforceSummaryDepartments,
+    title: "Workforce Summary",
+    roles: [roles["Super Admin"], roles["Global Pastor"]],
   },
   GO_TO_HOME: {
     title: "Go home",
