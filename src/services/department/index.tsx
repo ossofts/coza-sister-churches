@@ -30,29 +30,3 @@ export const useCreateDepartment = () => {
       ) as ServerResponse<Department>,
   });
 };
-
-export const useGetDepartmentAttendanceReport = (
-  {
-    serviceId,
-    departmentId,
-  }: {
-    serviceId: string;
-    departmentId: string;
-  },
-  _options: QueryOptions<{
-    attendance: number;
-    departmentUsers: number;
-  }>
-) => {
-  return useQuery({
-    queryKey: ["getDepartmentAttendanceReport"],
-    queryFn: () =>
-      axiosClient.get(
-        `${serviceUrl}/departmentReport/${serviceId}/${departmentId}`
-      ) as ServerResponse<{
-        attendance: number;
-        departmentUsers: number;
-      }>,
-    ..._options,
-  });
-};

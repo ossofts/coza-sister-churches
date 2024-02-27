@@ -29,55 +29,32 @@ const TeamAttendance = () => {
         name: (data) => ({
           firstName: data.firstName,
           lastName: data.lastName,
-          pictureUrl: data?.pictureUrl
-        })
-      }
+          pictureUrl: data?.pictureUrl,
+        }),
+      },
     },
     {
       title: "Clock In",
       field: "clockIn",
       renderType: {
-        clockIn: (data) => data.clockIn
-      }
+        clockIn: (data) => data.clockIn,
+      },
     },
     {
       title: "Clock Out",
       field: "clockOut",
       renderType: {
-        clockOut: (data) => data.clockOut
-      }
+        clockOut: (data) => data.clockOut,
+      },
     },
-    {
-      title: "Score",
-      field: "score",
-      renderType: {
-        score: (data) => data.score
-      }
-    }
+    // {
+    //   title: "Score",
+    //   field: "score",
+    //   renderType: {
+    //     score: (data) => data.score,
+    //   },
+    // },
   ];
-
-  // const services = [
-  //   {
-  //     label: "CGWC Day 1",
-  //     value: "day 1"
-  //   },
-  //   {
-  //     label: "CGWC Day 2",
-  //     value: "day 2"
-  //   },
-  //   {
-  //     label: "CGWC Day 3",
-  //     value: "day 3"
-  //   },
-  //   {
-  //     label: "CGWC Day 4",
-  //     value: "day 4"
-  //   },
-  //   {
-  //     label: "CGWC Day 5",
-  //     value: "day 5"
-  //   }
-  // ];
 
   const user = useUserStore((state) => state.user);
   const { data: services } = useGetServices();
@@ -108,10 +85,12 @@ const TeamAttendance = () => {
 
   const { data: membersClockedIn } = useGetAttendance({
     serviceId: serviceId,
-    departmentId: user?.department?._id
+    departmentId: user?.department?._id,
   });
 
-  const { data: members, isLoading } = useGetUsersByDepartmentId(user!.department?._id);
+  const { data: members, isLoading } = useGetUsersByDepartmentId(
+    user!.department?._id
+  );
 
   const allMembers = useMemo(() => {
     if (!members?.data?.length) return [];
@@ -119,7 +98,7 @@ const TeamAttendance = () => {
     return members?.data?.map((member) => {
       return {
         ...member,
-        userId: member._id
+        userId: member._id,
       };
     });
   }, [members?.data]);
@@ -130,7 +109,7 @@ const TeamAttendance = () => {
     return membersClockedIn?.data?.map((member) => {
       return {
         ...member,
-        userId: member?.user?._id
+        userId: member?.user?._id,
       };
     });
   }, [membersClockedIn?.data]);
@@ -157,11 +136,12 @@ const TeamAttendance = () => {
           label="Services"
           placeholder="Select a service"
           onChange={setService}
+          triggerExtraClass="w-full py-3 text-center dark:bg-neutral-800 mx-3"
           options={
             sortedServices?.map((service) => ({
               ...service,
               value: service._id,
-              label: `${service.name} - ${moment(service.clockInStartTime).format("Do MMM YYYY")}`
+              label: `${service.name} - ${moment(service.clockInStartTime).format("Do MMM YYYY")}`,
             })) as Options[]
           }
         />
@@ -170,7 +150,11 @@ const TeamAttendance = () => {
       <ReactIf
         condition={!!mergedAttendanceWithMemberList?.length}
         component={
-          <DataTable columns={columns} isLoading={false} data={mergedAttendanceWithMemberList} />
+          <DataTable
+            columns={columns}
+            isLoading={false}
+            data={mergedAttendanceWithMemberList}
+          />
         }
         fallback={<EmptyData />}
       />

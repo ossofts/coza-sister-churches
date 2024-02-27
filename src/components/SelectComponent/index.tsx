@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+import { ClassNameValue, twMerge } from "tailwind-merge";
 import {
   Select,
   SelectContent,
@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "../ui/select";
 
 type Props = {
@@ -16,10 +16,18 @@ type Props = {
     label: string;
     value: string;
   }[];
-  triggerExtraClass?: string;
+  triggerExtraClass?: ClassNameValue;
+  selectItemClass?: ClassNameValue;
   onChange?: (value: string) => void;
 };
-const SelectComponent = ({ label, placeholder, options, triggerExtraClass, onChange }: Props) => {
+const SelectComponent = ({
+  label,
+  placeholder,
+  options,
+  triggerExtraClass,
+  selectItemClass,
+  onChange,
+}: Props) => {
   return (
     <Select onValueChange={onChange}>
       <SelectTrigger className={twMerge("w-[180px]", triggerExtraClass)}>
@@ -29,7 +37,11 @@ const SelectComponent = ({ label, placeholder, options, triggerExtraClass, onCha
         <SelectGroup>
           {label && <SelectLabel>{label}</SelectLabel>}
           {options?.map((item, idx) => (
-            <SelectItem key={idx} value={item.value}>
+            <SelectItem
+              className={twMerge(selectItemClass)}
+              key={idx}
+              value={item.value}
+            >
               {item.label}
             </SelectItem>
           ))}

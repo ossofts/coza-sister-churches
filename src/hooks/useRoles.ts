@@ -13,7 +13,7 @@ export enum ROLES {
   globalAdmin = "Global Admin",
   campusPastor = "Campus Pastor",
   globalPastor = "Global Pastor",
-  campusCoordinator = "Campus Coordinator"
+  campusCoordinator = "Campus Coordinator",
 }
 
 export const roles = {
@@ -29,7 +29,7 @@ export const roles = {
   "Global Admin": "globalAdmin",
   "Campus Pastor": "campusPastor",
   "Global Pastor": "globalPastor",
-  "Campus Coordinator": "campusCoordinator"
+  "Campus Coordinator": "campusCoordinator",
 };
 
 export const departments = {
@@ -43,7 +43,7 @@ export const departments = {
   "Programme Coordination": "programs",
   "Public Relations Unit (PRU)": "PRU",
   "Traffic & Security": "security",
-  "COZA Internship": "internship"
+  "COZA Internship": "internship",
 };
 
 export enum ROLE_HEIRARCHY {
@@ -57,7 +57,7 @@ export enum ROLE_HEIRARCHY {
   "admin" = 6,
   "globalAdmin" = 7,
   "globalPastor" = 8,
-  "superAdmin" = 9
+  "superAdmin" = 9,
 }
 
 export enum DEPARTMENTS {
@@ -71,7 +71,7 @@ export enum DEPARTMENTS {
   programs = "Programme Coordination",
   PRU = "Public Relations Unit (PRU)",
   security = "Traffic & Security",
-  internship = "COZA Internship"
+  internship = "COZA Internship",
 }
 
 const useRole = () => {
@@ -81,7 +81,10 @@ const useRole = () => {
   const leaderRoleIds = React.useMemo(
     () =>
       roleObjects?.data
-        ?.filter((roleObject) => roleObject.name === ROLES.HOD || roleObject.name === ROLES.AHOD)
+        ?.filter(
+          (roleObject) =>
+            roleObject.name === ROLES.HOD || roleObject.name === ROLES.AHOD
+        )
         .map((roleObject) => roleObject._id),
     [roleObjects]
   );
@@ -116,8 +119,15 @@ const useRole = () => {
   const rolesPermittedToCreate = () => {
     return roleObjects?.data?.filter(
       (roleObject) =>
-        roleHeirarchy(roleName as keyof typeof roles, departmentName as keyof typeof departments) >
-        ROLE_HEIRARCHY[roles[roleObject.name as keyof typeof roles] as keyof typeof ROLE_HEIRARCHY]
+        roleHeirarchy(
+          roleName as keyof typeof roles,
+          departmentName as keyof typeof departments
+        ) >
+        ROLE_HEIRARCHY[
+          roles[
+            roleObject.name as keyof typeof roles
+          ] as keyof typeof ROLE_HEIRARCHY
+        ]
     );
   };
 
@@ -135,7 +145,7 @@ const useRole = () => {
       roleName,
       ...currentUser,
       _id: currentUser!.userId || currentUser!._id,
-      userId: currentUser!.userId || currentUser!._id
+      userId: currentUser!.userId || currentUser!._id,
     },
 
     //Status
@@ -152,8 +162,10 @@ const useRole = () => {
     isGroupHead: roleName === ROLES.groupHead,
     isSuperAdmin: roleName === ROLES.superAdmin,
     isGlobalPastor: roleName === ROLES.globalPastor,
-    isInternshipHOD: roleName === ROLES.HOD && departmentName === DEPARTMENTS.internship,
-    isCampusPastor: roleName === ROLES.campusPastor || roleName === ROLES.campusCoordinator,
+    isInternshipHOD:
+      roleName === ROLES.HOD && departmentName === DEPARTMENTS.internship,
+    isCampusPastor:
+      roleName === ROLES.campusPastor || roleName === ROLES.campusCoordinator,
     isQcHOD:
       roleName === ROLES.HOD &&
       (departmentName === DEPARTMENTS.QC || departmentName === DEPARTMENTS.ME),
@@ -166,11 +178,12 @@ const useRole = () => {
     isPrograms: departmentName === DEPARTMENTS.programs,
     isSecurity: departmentName === DEPARTMENTS.security,
     isChildcare: departmentName === DEPARTMENTS.childcare,
-    isQC: departmentName === DEPARTMENTS.QC || departmentName === DEPARTMENTS.ME,
+    isQC:
+      departmentName === DEPARTMENTS.QC || departmentName === DEPARTMENTS.ME,
     isInternship: departmentName === DEPARTMENTS.internship,
 
     // Role Creation
-    rolesPermittedToCreate
+    rolesPermittedToCreate,
   };
 };
 

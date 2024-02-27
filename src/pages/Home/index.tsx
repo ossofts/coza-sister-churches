@@ -14,11 +14,11 @@ import { useGetLatestService } from "@/services/service";
 import useGeolocation from "@/hooks/useGeolocation";
 import { Coordinates } from "@/types/global.type";
 import {
-  useGetLeadersAttendanceReport,
+  useGetDepartmentAttendanceReport,
+  // useGetLeadersAttendanceReport,
   useGetWorkersAttendanceReport,
 } from "@/services/attendance";
 import useUserStore from "@/store/userStore";
-import { useGetDepartmentAttendanceReport } from "@/services/department";
 import TeamAttendanceSummary from "./TeamAttendanceSummary";
 
 const Home = () => {
@@ -53,14 +53,14 @@ const Home = () => {
       campusCoordinates: campusCoordinates as Coordinates,
     });
 
-  const { data: leadersAttendance, isLoading: leadersIsLoading } =
-    useGetLeadersAttendanceReport(
-      {
-        serviceId: latestService?.data?._id as string,
-        campusId: user!.campus?._id,
-      },
-      { enabled: !!latestService?.data?._id }
-    );
+  // const { data: leadersAttendance, isLoading: leadersIsLoading } =
+  //   useGetLeadersAttendanceReport(
+  //     {
+  //       serviceId: latestService?.data?._id as string,
+  //       campusId: user!.campus?._id,
+  //     },
+  //     { enabled: !!latestService?.data?._id }
+  //   );
 
   const { data: workersAttendance, isLoading: workersIsLoading } =
     useGetWorkersAttendanceReport(
@@ -68,7 +68,7 @@ const Home = () => {
         serviceId: latestService?.data?._id as string,
         campusId: user!.campus?._id,
       },
-      { enabled: !!latestService?.data?._id && isSuperAdmin }
+      { enabled: isSuperAdmin && latestService?.data !== undefined }
     );
 
   const {
@@ -92,10 +92,10 @@ const Home = () => {
         condition={isSuperAdmin}
         component={
           <CampusAttendanceSummary
-            isLoading={leadersIsLoading || workersIsLoading}
-            leadersAttendance={leadersAttendance?.data?.attendance}
+            isLoading={workersIsLoading}
+            // leadersAttendance={leadersAttendance?.data?.attendance}
             workersAttendance={workersAttendance?.data?.attendance}
-            leaderUsers={leadersAttendance?.data?.leaderUsers}
+            // leaderUsers={leadersAttendance?.data?.leaderUsers}
             workerUsers={workersAttendance?.data?.workerUsers}
           />
         }

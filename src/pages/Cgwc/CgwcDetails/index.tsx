@@ -2,35 +2,42 @@ import CarouselComponent from "@/components/CarouselComponent";
 import { FullPageSpinner } from "@/components/Loaders";
 import { useCurrentPath } from "@/hooks/useCurrentPath";
 import { useGetCGWCById, useGetCGWCInstantMessages } from "@/services/cgwc";
-import {
-  // useGetLatestService,
-  useGetServices
-} from "@/services/service";
+import { useGetLatestService, useGetServices } from "@/services/service";
 import { CGWCInstantMessage } from "@/store/types";
 import useUserStore from "@/store/userStore";
 import Item from "./Item";
 import MyAttendance from "./MyAttendance";
+import CGWCReportSummary from "./CGWCReportSummary";
+import useRole from "@/hooks/useRoles";
+import ReactIf from "@/components/ReactIf";
 
 const CgwcDetails = () => {
   const { params } = useCurrentPath();
   const CGWCId = params?.id;
 
   const user = useUserStore((state) => state.user);
+  const { isHOD, isSuperAdmin } = useRole();
 
-  // const { data: latestService } = useGetLatestService(user!.campus?._id as string);
+  const { data: latestService } = useGetLatestService(
+    user!.campus?._id as string
+  );
 
   const { data: sessions } = useGetServices({
     CGWCId,
     page: 1,
-    limit: 30
+    limit: 30,
   });
 
-  const { data: cgwc, isLoading, isFetching } = useGetCGWCById(CGWCId as string);
+  const {
+    data: cgwc,
+    isLoading,
+    isFetching,
+  } = useGetCGWCById(CGWCId as string);
 
   const {
     data: messages,
     // refetch: refetchMessages,
-    isLoading: messagesIsLoading
+    isLoading: messagesIsLoading,
   } = useGetCGWCInstantMessages({ cgwcId: CGWCId });
   // console.log({ messages: messages?.data });
 
@@ -41,10 +48,29 @@ const CgwcDetails = () => {
       <h2 className="text-center text-lg font-bold">{cgwc?.data?.name}</h2>
 
       <div className="my-5 flex justify-center">
-        <CarouselComponent data={messages?.data as CGWCInstantMessage[]} carouselItem={Item} />
+        <CarouselComponent
+          data={messages?.data as CGWCInstantMessage[]}
+          carouselItem={Item}
+        />
       </div>
       <div>
-        <MyAttendance sessions={sessions?.data || []} CGWCId={CGWCId} userId={user?.userId} />
+        <MyAttendance
+          sessions={sessions?.data || []}
+          CGWCId={CGWCId}
+          userId={user?.userId}
+        />
+
+        <ReactIf
+          condition={isHOD || isSuperAdmin}
+          component={
+            <CGWCReportSummary
+              CGWCId={CGWCId as string}
+              sessions={sessions?.data || []}
+              latestService={latestService?.data}
+              title={"Team Report"}
+            />
+          }
+        />
       </div>
     </div>
   );
