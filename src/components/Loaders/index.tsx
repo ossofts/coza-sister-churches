@@ -15,7 +15,7 @@ const FullPageSpinner = ({ color }: Props) => {
 
 const Spinner = ({ color, size }: Props) => {
   return (
-    <div className="inline-flex justify-center">
+    <div className="inline-flex justify-center w-full">
       <ClipLoader size={size ?? 25} color={color ?? "white"} />
     </div>
   );
