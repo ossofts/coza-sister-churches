@@ -44,7 +44,7 @@ const CgwcDetails = () => {
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
   return (
-    <div className="bg-black">
+    <div>
       <h2 className="text-center text-lg font-bold">{cgwc?.data?.name}</h2>
 
       <div className="my-5 flex justify-center">

@@ -78,7 +78,7 @@ const CGWCReportSummary = ({ title, sessions, CGWCId }: Props) => {
         <p className="text-center text-md font-bold pt-3 pb-4">{title}</p>
         <SelectComponent
           selectItemClass="text-xs"
-          triggerExtraClass="bg-neutral-700"
+          triggerExtraClass="dark:bg-neutral-700"
           onChange={setService}
           placeholder="Select Service"
           options={sessions?.map((session) => ({
