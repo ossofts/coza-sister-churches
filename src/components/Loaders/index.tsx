@@ -7,7 +7,7 @@ type Props = {
 };
 const FullPageSpinner = ({ color }: Props) => {
   return (
-    <div className="flex justify-center items-center h-svh w-svw">
+    <div className="flex justify-center items-center absolute top-0 h-svh w-svw">
       <ClipLoader size={40} color={color ?? COLORS.primary} />
     </div>
   );

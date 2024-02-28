@@ -43,7 +43,7 @@ const TopBar = () => {
               <AvatarComponent
                 src={String(user?.pictureUrl)}
                 fallback={`${getFirstLetterCaps(user!.firstName)}${getFirstLetterCaps(user!.lastName)}`}
-                extraClass="justify-self-start"
+                extraClass="justify-self-start w-8 h-8 text-sm font-semibold"
               />
             </Link>
 

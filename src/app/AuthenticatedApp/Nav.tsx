@@ -107,7 +107,7 @@ const Nav = () => {
   return (
     <nav
       className={twMerge(
-        "fixed bottom-0 z-10 bg-white dark:bg-black pb-3 pt-2 border-t border-t-gray-200 dark:border-t-gray-500 grid items-center w-svw",
+        "fixed bottom-0 z-10 bg-white dark:bg-black pb-3 pt-2 border-t border-t-neutral-200 dark:border-t-neutral-800 grid items-center w-svw",
         allowMoreOptions && isCGWCApproved
           ? "grid-cols-4"
           : !allowMoreOptions && !isCGWCApproved
