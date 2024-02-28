@@ -78,7 +78,9 @@ const CampusAttendance = () => {
   );
 
   useEffect(() => {
-    sortedServices && setServiceId(sortedServices[0]._id);
+    if (sortedServices) {
+      setServiceId(sortedServices[0]?._id);
+    }
   }, [sortedServices]);
 
   const {

@@ -44,12 +44,17 @@ export default function DataTable<T = object>(props: Props<T>) {
 
               {columns.map((column, i) => {
                 if (column.width) {
-                  return <col key={i} style={{ width: column.width, padding: 20 }}></col>;
+                  return (
+                    <col
+                      key={i}
+                      style={{ width: column.width, padding: 20 }}
+                    ></col>
+                  );
                 }
                 return <col key={i}></col>;
               })}
             </colgroup>
-            <thead className="sticky -top-4 border-b border-neutral-400 dark:border-neutral-400 z-[2]">
+            <thead className="sticky -top-2 border-b border-neutral-400 dark:border-neutral-400 bg-white pt-3 dark:bg-black z-[2]">
               {/* <thead className="bg-white border-b border-gray-200"> */}
               <tr className="px-4">
                 {/* Serial No.  */}
@@ -58,7 +63,7 @@ export default function DataTable<T = object>(props: Props<T>) {
                 {columns.map((column, i) => {
                   const {
                     align = "left",
-                    columnCSSClass = ""
+                    columnCSSClass = "",
                     // field
                   } = column;
 
@@ -97,7 +102,12 @@ export function TableRows(
   props: Pick<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Props<any>,
-    "columns" | "data" | "showSN" | "extraRowClass" | "onRowClick" | "rowRenderExtraClass"
+    | "columns"
+    | "data"
+    | "showSN"
+    | "extraRowClass"
+    | "onRowClick"
+    | "rowRenderExtraClass"
   >
 ) {
   const { data: items, columns, showSN } = props;
@@ -105,7 +115,10 @@ export function TableRows(
   if (!items.length) {
     return (
       <tr>
-        <td colSpan={columns.length} className="font-medium text-base text-gray-700 px-2 py-4">
+        <td
+          colSpan={columns.length}
+          className="font-medium text-base text-gray-700 px-2 py-4"
+        >
           Sorry, No matching records found
         </td>
       </tr>

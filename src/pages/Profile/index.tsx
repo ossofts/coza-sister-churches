@@ -28,7 +28,7 @@ const Profile = () => {
       <AvatarComponent
         src={user?.pictureUrl ?? ""}
         fallback={`${getFirstLetterCaps(user!.firstName)}${getFirstLetterCaps(user!.lastName)}`}
-        extraClass="w-20 h-20"
+        extraClass="w-20 h-20 font-semibold text-4xl"
       />
       <div className="flex flex-col items-center gap-2 mt-4">
         <p className="text-center text-md font-bold">{`${user?.firstName} ${user?.lastName}`}</p>
