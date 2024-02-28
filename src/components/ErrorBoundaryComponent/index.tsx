@@ -2,7 +2,7 @@ const ErrorBoundaryComponent = () => {
   return (
     <div className="h-svh flex flex-col gap-5 justify-center items-center">
       <p className="text-xl p-2 ring-2 rounded-md ring-brandColor-600 text-brandColor-600 dark:ring-brandColor-500 dark:text-brandColor-500">
-        Opps! Something went wrong.
+        Oops! Something went wrong.
       </p>
 
       <button
