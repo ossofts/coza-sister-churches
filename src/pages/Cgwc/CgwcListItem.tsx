@@ -18,7 +18,9 @@ const CgwcListItem = ({ cgwc }: { cgwc: CGWC }) => {
 
   return (
     <div
-      className={twMerge("w-full border-b border-b-neutral-700 cursor-pointer")}
+      className={twMerge(
+        "w-full border-b border-b-neutral-200 dark:border-b-neutral-800 cursor-pointer"
+      )}
       onClick={() => goto(`${ROUTES.CGWC.path}/${cgwc?._id}`)}
       aria-roledescription="button"
     >
@@ -27,9 +29,9 @@ const CgwcListItem = ({ cgwc }: { cgwc: CGWC }) => {
           <div className="flex flex-col justify-between">
             <p className="font-bold text-xs">{cgwc?.name}</p>
             <p className="text-xs text-gray-400">
-              {`${moment(cgwc?.startDate).format("DD MMM, YYYY")} - ${moment(cgwc?.endDate).format(
-                "DD MMM, YYYY"
-              )}`}
+              {`${moment(cgwc?.startDate).format("DD MMM, YYYY")} - ${moment(
+                cgwc?.endDate
+              ).format("DD MMM, YYYY")}`}
             </p>
           </div>
         </div>
