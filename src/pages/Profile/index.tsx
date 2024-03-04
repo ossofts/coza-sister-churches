@@ -5,10 +5,13 @@ import { getFirstLetterCaps } from "@/utils/textFormatters";
 import { useEffect } from "react";
 import { MdLogout } from "react-icons/md";
 import { version } from "package.json";
+import BadgeComponent from "@/components/BadgeComponent";
+import useRole from "@/hooks/useRoles";
 
 const Profile = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const { isHOD, isInternshipHOD } = useRole();
 
   const { data: refreshedUser } = useGetUserById(user!.userId, {
     refetchOnMount: true,
@@ -38,6 +41,9 @@ const Profile = () => {
         <p className="text-center text-xs text-neutral-500 dark:text-neutral-200 ">
           {user?.department?.departmentName}
         </p>
+        <BadgeComponent status="info">
+          {!isInternshipHOD && isHOD ? "Pastor" : user?.role.name}
+        </BadgeComponent>
       </div>
 
       <div></div>
