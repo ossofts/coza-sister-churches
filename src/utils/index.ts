@@ -43,10 +43,15 @@ export function isThisYear(date: string) {
 }
 
 export const sortByDate = (arrObject: any[] | [], key: string) => {
-  return [...arrObject]?.sort((a, b) => moment(b[key]).unix() - moment(a[key]).unix());
+  return [...arrObject]?.sort(
+    (a, b) => moment(b[key]).unix() - moment(a[key]).unix()
+  );
 };
 
-export function mergeDuplicatesByKey<T>(array: any[], key: keyof T = "_id" as keyof T) {
+export function mergeDuplicatesByKey<T>(
+  array: any[],
+  key: keyof T = "_id" as keyof T
+) {
   const grouped = groupBy(array, key);
 
   const merged: any[] = [];
@@ -64,6 +69,22 @@ export const assertCGWCActive = (cgwc: CGWC) => {
 };
 
 export const sortStringAscending = (arrObject?: any[], key?: string) => {
-  if (arrObject && key) return [...arrObject].sort((a, b) => (a[key] > b[key] ? 1 : -1));
+  if (arrObject && key)
+    return [...arrObject].sort((a, b) => (a[key] > b[key] ? 1 : -1));
   return [];
+};
+
+export const concatDateTimeToEpoc = (
+  date: string | Date,
+  time: string | Date
+) => {
+  const concatedTime = `${moment(date).format("YYYY-MM-DD")}T${time + ":00"}.000Z`;
+
+  return date && !time
+    ? moment(date).subtract(1, "hour").unix()
+    : time && !date
+      ? moment(time).subtract(1, "hour").unix()
+      : time && date
+        ? moment(concatedTime).subtract(1, "hour").unix()
+        : null;
 };

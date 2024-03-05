@@ -13,7 +13,7 @@ const PrimaryButton = (props: Props) => {
   return (
     <button
       className={twMerge(
-        `bg-brandColor-600 dark:bg-brandColor-600 text-white grid items-center h-12 font-medium text-lg rounded-lg ${fullWidth ? "w-full" : "px-5"}`,
+        `bg-brandColor-600 dark:bg-brandColor-600 text-white grid items-center h-12 font-medium text-md rounded-lg ${fullWidth ? "w-full" : "px-5"}`,
         className
       )}
       type={type ? type : "button"}
@@ -29,7 +29,7 @@ const SecondaryButton = (props: Props) => {
   return (
     <button
       className={twMerge(
-        `text-brandColor-600 dark:text-brandColor-500 bg-white border border-gray-400 grid items-center h-12 font-medium text-lg rounded-lg ${fullWidth ? "w-full" : "px-5"}`,
+        `text-brandColor-600 dark:text-brandColor-500 bg-white border border-gray-400 grid items-center h-12 font-medium text-md rounded-lg ${fullWidth ? "w-full" : "px-5"}`,
         className
       )}
       type={type ? type : "button"}
