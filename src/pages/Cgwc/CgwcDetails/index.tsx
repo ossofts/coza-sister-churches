@@ -10,7 +10,7 @@ import MyAttendance from "./MyAttendance";
 import CGWCReportSummary from "./CGWCReportSummary";
 import useRole from "@/hooks/useRoles";
 import ReactIf from "@/components/ReactIf";
-import { FaRegCalendarPlus } from "react-icons/fa";
+import { BiCalendarPlus } from "react-icons/bi";
 import { BiMessageEdit } from "react-icons/bi";
 import UniversalAddButton from "@/components/UniversalAddButton";
 import useNavigation from "@/hooks/useNavigation";
@@ -57,13 +57,11 @@ const CgwcDetails = () => {
     },
     {
       color: "bg-blue-600",
-      icon: <FaRegCalendarPlus size={28} color="white" />,
+      icon: <BiCalendarPlus size={28} color="white" />,
       handleClick: () =>
         navigation.goto(`${ROUTES.CGWC.path}/${CGWCId}/create-cgwc-session`),
     },
   ];
-
-  const handleClick = () => {};
 
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
