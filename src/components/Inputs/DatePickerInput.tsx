@@ -63,17 +63,20 @@ function DatePickerInput<T extends FieldValues>(props: Props<T>) {
                   disabled={disabled}
                   variant={"outline"}
                   className={cn(
-                    "w-full pl-3 text-left font-normal",
+                    "w-full pl-3 text-left font-normal justify-start dark:bg-neutral-700",
                     !field.value && "text-muted-foreground",
+                    error
+                      ? "border-error"
+                      : "border border-gray-500 focus:border-2 focus:border-brandColor-600 ",
                     inputExtraClass
                   )}
                 >
+                  <CalendarIcon className="mr-3 h-4 w-4 opacity-50" />
                   {field.value ? (
                     format(field.value, "PPP")
                   ) : (
                     <span>{placeholder ? placeholder : "Pick a date"}</span>
                   )}
-                  <CalendarIcon className="ml-5 h-4 w-4 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
