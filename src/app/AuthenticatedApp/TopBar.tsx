@@ -17,8 +17,10 @@ const TopBar = () => {
   const user = useUserStore((state) => state.user);
   const { goBack } = useNavigation();
   const { pathname } = useCurrentPath();
-  const currentRoute = Object.values(ROUTES).filter(
-    (item) => item.path == `/${pathname?.split("/")[1]}`
+  const currentRoute = Object.values(ROUTES).filter((item) =>
+    item.path.includes(":")
+      ? item.path == `/${pathname?.split("/")[1]}`
+      : item.path === pathname
   )[0];
 
   const {

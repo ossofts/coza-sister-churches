@@ -1,13 +1,18 @@
 import axiosClient from "@/services/client";
 import { ServerResponse } from "@/types/global.type";
 import { Service } from "../../contexts/AppContext/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { DefaultQueryParams } from "@/store/types";
+import { CreateService } from "@/pages/Cgwc/types";
 
 const serviceUrl = "/api/service";
 
-export const getLastestService = (campusId: string): ServerResponse<Service> => {
-  return axiosClient.get(`${serviceUrl}/getLatestServiceByCampusId/${campusId}`);
+export const getLastestService = (
+  campusId: string
+): ServerResponse<Service> => {
+  return axiosClient.get(
+    `${serviceUrl}/getLatestServiceByCampusId/${campusId}`
+  );
 };
 
 export const useGetLatestService = (campusId: string) => {
@@ -17,7 +22,7 @@ export const useGetLatestService = (campusId: string) => {
       axiosClient.get(
         `${serviceUrl}/getLatestServiceByCampusId/${campusId}`
       ) as ServerResponse<Service>,
-    retry: false
+    retry: false,
   });
 };
 
@@ -26,8 +31,19 @@ export const useGetServices = (params: DefaultQueryParams = {}) => {
     queryKey: ["getServices", params],
     queryFn: () =>
       axiosClient.get(`${serviceUrl}/getServices`, {
-        params: { ...params }
+        params: { ...params },
       }) as ServerResponse<Service[]>,
-    retry: false
+    retry: false,
+  });
+};
+
+export const useCreateServiceMutation = () => {
+  return useMutation({
+    mutationKey: ["createService"],
+    mutationFn: (body: CreateService) =>
+      axiosClient.post(
+        `${serviceUrl}/createService`,
+        body
+      ) as ServerResponse<Service>,
   });
 };

@@ -117,9 +117,9 @@ export function TableRows(
       <tr>
         <td
           colSpan={columns.length}
-          className="font-medium text-base text-gray-700 px-2 py-4"
+          className="font-medium text-sm text-gray-700 px-2 py-4"
         >
-          Sorry, No matching records found
+          No matching records found.
         </td>
       </tr>
     );

@@ -86,7 +86,7 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
                   inputExtraClass
                 )}
               >
-                <SelectValue className="" placeholder={placeholder} />
+                <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent
