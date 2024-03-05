@@ -43,7 +43,7 @@ const CGWCReportSummary = ({ title, sessions, CGWCId }: Props) => {
         departmentId: department?._id as string,
         serviceId: serviceId as string,
       },
-      { enabled: isHOD, refetchOnMount: true }
+      { enabled: isHOD && serviceId !== undefined, refetchOnMount: true }
     );
 
   const { data: workersAttendance, isLoading: workersAttendanceLoading } =
@@ -54,7 +54,7 @@ const CGWCReportSummary = ({ title, sessions, CGWCId }: Props) => {
         campusId: campus?._id as string,
         serviceId: serviceId as string,
       },
-      { enabled: isSuperAdmin, refetchOnMount: true }
+      { enabled: isSuperAdmin && serviceId !== undefined, refetchOnMount: true }
     );
 
   const navigation = useNavigation();

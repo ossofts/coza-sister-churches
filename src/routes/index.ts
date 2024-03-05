@@ -12,6 +12,13 @@ const Attendance = lazy(() => import("@/pages/Attendance"));
 const Cgwc = lazy(() => import("@/pages/Cgwc"));
 const CgwcDetails = lazy(() => import("@/pages/Cgwc/CgwcDetails"));
 const CgwcResources = lazy(() => import("@/pages/Cgwc/CgwcResources"));
+const CreateCgwc = lazy(() => import("@/pages/Cgwc/CreateCgwc"));
+const CreateCgwcSession = lazy(
+  () => import("@/pages/Cgwc/CgwcDetails/CreateCGWCSession")
+);
+const CreateInstantMessage = lazy(
+  () => import("@/pages/Cgwc/CgwcDetails/CreateInstantMessage")
+);
 const Profile = lazy(() => import("@/pages/Profile"));
 const ServiceManagement = lazy(() => import("@/pages/ServiceManagement"));
 const ManualClockIn = lazy(() => import("@/pages/ManualClockIn"));
@@ -94,6 +101,27 @@ const ROUTES: Record<string, RouteObj> = {
     isPrivate: true,
     component: CgwcResources,
     title: "CGWC",
+  },
+  CREATE_CGWC: {
+    path: "/cgwc/create-cgwc",
+    isPrivate: true,
+    component: CreateCgwc,
+    title: "Create CGWC",
+    roles: [roles["Super Admin"]],
+  },
+  CREATE_CGWC_SESSION: {
+    path: "/cgwc/:id/create-cgwc-session",
+    isPrivate: true,
+    component: CreateCgwcSession,
+    title: "Create CGWC Session",
+    roles: [roles["Super Admin"]],
+  },
+  CREATE_INSTANT_MESSAGE: {
+    path: "/cgwc/:id/create-instant-message",
+    isPrivate: true,
+    component: CreateInstantMessage,
+    title: "Create Instant Message",
+    roles: [roles["Super Admin"]],
   },
   PROFILE: {
     path: "/profile",

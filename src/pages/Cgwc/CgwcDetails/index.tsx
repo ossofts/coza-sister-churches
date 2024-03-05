@@ -10,9 +10,16 @@ import MyAttendance from "./MyAttendance";
 import CGWCReportSummary from "./CGWCReportSummary";
 import useRole from "@/hooks/useRoles";
 import ReactIf from "@/components/ReactIf";
+import { BiCalendarPlus } from "react-icons/bi";
+import { BiMessageEdit } from "react-icons/bi";
+import UniversalAddButton from "@/components/UniversalAddButton";
+import useNavigation from "@/hooks/useNavigation";
+import ROUTES from "@/routes";
+import PageHeader from "@/components/PageHeader";
 
 const CgwcDetails = () => {
   const { params } = useCurrentPath();
+  const navigation = useNavigation();
   const CGWCId = params?.id;
 
   const user = useUserStore((state) => state.user);
@@ -41,11 +48,27 @@ const CgwcDetails = () => {
   } = useGetCGWCInstantMessages({ cgwcId: CGWCId });
   // console.log({ messages: messages?.data });
 
+  const allButtons = [
+    {
+      color: "bg-blue-400",
+      icon: <BiMessageEdit size={28} color="white" />,
+      handleClick: () =>
+        navigation.goto(`${ROUTES.CGWC.path}/${CGWCId}/create-instant-message`),
+    },
+    {
+      color: "bg-blue-600",
+      icon: <BiCalendarPlus size={28} color="white" />,
+      handleClick: () =>
+        navigation.goto(`${ROUTES.CGWC.path}/${CGWCId}/create-cgwc-session`),
+    },
+  ];
+
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
   return (
     <div>
-      <h2 className="text-center text-lg font-bold">{cgwc?.data?.name}</h2>
+      <PageHeader title={String(cgwc?.data?.name)} />
+      {/* <h2 className="text-center text-lg font-bold">{cgwc?.data?.name}</h2> */}
 
       <div className="my-5 flex justify-center">
         <CarouselComponent
@@ -72,6 +95,11 @@ const CgwcDetails = () => {
           }
         />
       </div>
+
+      <ReactIf
+        condition={isSuperAdmin}
+        component={<UniversalAddButton options={allButtons} />}
+      />
     </div>
   );
 };

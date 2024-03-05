@@ -8,7 +8,7 @@ const PageHeader = ({ title }: { title: string }) => {
   return (
     <div
       className={twMerge(
-        "fixed top-0 left-0 z-10 w-svw bg-white border-b border-b-gray-200 dark:bg-black dark:border-none flex justify-center items-center py-4"
+        "fixed top-0 left-0 z-50 w-svw bg-white border-b border-b-gray-200 dark:bg-black dark:border-none flex justify-center items-center py-4"
       )}
     >
       <FaArrowLeftLong onClick={goBack} className="absolute left-3 text-lg" />

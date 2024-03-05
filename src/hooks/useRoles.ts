@@ -155,8 +155,8 @@ const useRole = () => {
     leaderRoleIds,
 
     // Roles
-    isHOD: roleName === ROLES.AHOD,
-    isAHOD: roleName === ROLES.HOD,
+    isHOD: roleName === ROLES.HOD,
+    isAHOD: roleName === ROLES.AHOD,
     isAdmin: roleName === ROLES.admin,
     isWorker: roleName === ROLES.worker,
     isGroupHead: roleName === ROLES.groupHead,

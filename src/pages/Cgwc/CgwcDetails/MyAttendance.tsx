@@ -18,43 +18,46 @@ const MyAttendance = React.memo(({ CGWCId, userId, sessions }: Props) => {
     {
       title: "Session",
       field: "name",
-      render: (data) => data?.name
+      render: (data) => data?.name,
     },
     {
       title: "Clock In",
       field: "clockIn",
       renderType: {
-        clockIn: (data) => data.clockIn
-      }
+        clockIn: (data) => data.clockIn,
+      },
     },
     {
       title: "Clock Out",
       field: "clockOut",
       renderType: {
-        clockOut: (data) => data.clockOut
-      }
+        clockOut: (data) => data.clockOut,
+      },
     },
     {
       title: "Score",
       field: "score",
       renderType: {
-        score: (data) => data.score
-      }
-    }
+        score: (data) => data.score,
+      },
+    },
   ];
   const {
     data,
-    isLoading
+    isLoading,
     // refetch: refetchAttendance,
   } = useGetAttendance({
     CGWCId,
-    userId
+    userId,
   });
 
   const minifiedAttendance = React.useMemo(
     () =>
       data?.data?.map((attendance) => {
-        return { ...attendance, serviceId: attendance?.service?._id || attendance?.serviceId };
+        return {
+          ...attendance,
+          serviceId: attendance?.service?._id || attendance?.serviceId,
+        };
       }) || [],
     [data]
   );
@@ -77,7 +80,8 @@ const MyAttendance = React.memo(({ CGWCId, userId, sessions }: Props) => {
     return mergeDuplicatesByKey<Attendance>(minifiedSessions, "serviceId");
   }, [minifiedSessions, minifiedAttendance]);
 
-  const TOTAL_ATTAINABLE_SCORE = (sessions?.length || 0) * 25;
+  const TOTAL_ATTAINABLE_SCORE =
+    (sessions?.length && sessions?.length > 0 ? sessions?.length : 0) * 25;
 
   const cumulativeAttendance = React.useMemo(() => {
     if (data?.data?.length) {
@@ -86,14 +90,25 @@ const MyAttendance = React.memo(({ CGWCId, userId, sessions }: Props) => {
     return 0;
   }, [data]);
 
-  const totalAttendance = Math.round((cumulativeAttendance / TOTAL_ATTAINABLE_SCORE) * 100);
+  const totalAttendance =
+    cumulativeAttendance === 0 || TOTAL_ATTAINABLE_SCORE === 0
+      ? 0
+      : Math.round((cumulativeAttendance / TOTAL_ATTAINABLE_SCORE) * 100) ?? 0;
 
   if (isLoading) return <FullPageSpinner />;
 
   return (
     <div>
-      <AttendanceContainer title="My Attendance" score={totalAttendance} scoreType="percent">
-        <DataTable columns={columns} isLoading={false} data={mergedSessionsWithAttendance} />
+      <AttendanceContainer
+        title="My Attendance"
+        score={totalAttendance}
+        scoreType="percent"
+      >
+        <DataTable
+          columns={columns}
+          isLoading={false}
+          data={mergedSessionsWithAttendance}
+        />
       </AttendanceContainer>
     </div>
   );
