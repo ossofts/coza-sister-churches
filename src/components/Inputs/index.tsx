@@ -21,7 +21,7 @@ interface Props<T extends FieldValues = FieldValues> {
   optional?: boolean;
   maxLength?: number;
   minLength?: number;
-  type?: "email" | "text" | "number" | "tel";
+  type?: "email" | "text" | "number" | "tel" | "url";
   value?: string;
   defaultValue?: string;
   inputExtraClass?: string;
