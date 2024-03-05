@@ -81,7 +81,7 @@ const CreateCgwc = () => {
               placeholder="Pick a date"
               label="Start Date"
               required
-              disabledPeriod={(date) => date < new Date()}
+              disabledPeriod={() => false}
               error={formState.errors.startDate}
             />
             <DatePickerInput
@@ -90,7 +90,7 @@ const CreateCgwc = () => {
               placeholder="Pick a date"
               label="End Date"
               required
-              disabledPeriod={(date) => date < new Date()}
+              disabledPeriod={() => false}
               error={formState.errors.endDate}
             />
           </div>

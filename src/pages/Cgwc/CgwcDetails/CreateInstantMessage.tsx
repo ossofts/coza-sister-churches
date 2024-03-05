@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-import { CGWCInstantMessage, Status } from "@/store/types";
+import { Status } from "@/store/types";
 import { useParams } from "react-router-dom";
 import { createInstantMessageSchema } from "../validation";
 import { useForm } from "react-hook-form";
@@ -28,23 +28,26 @@ const CreateInstantMessage = () => {
   const navigation = useNavigation();
 
   const mutation = useCreateInstantMessageMutation();
-  const form = useForm<Pick<CGWCInstantMessagePayload, "title" | "message">>({
+  const form = useForm<
+    Pick<CGWCInstantMessagePayload, "title" | "message" | "messageLink">
+  >({
     resolver: createInstantMessageSchema,
     defaultValues: {
       title: "",
       message: "",
+      messageLink: "",
     },
   });
   const { register, handleSubmit, formState } = form;
 
   const onSubmit = (
-    data: Pick<CGWCInstantMessagePayload, "title" | "message">
+    data: Pick<CGWCInstantMessagePayload, "title" | "message" | "messageLink">
   ) => {
     const body = {
       CGWCId: String(id),
       title: data.title,
       message: data.message,
-      messageLink: "",
+      messageLink: data.messageLink,
       status: "PENDING" as Status,
     };
     mutation.mutate(body);
@@ -78,6 +81,15 @@ const CreateInstantMessage = () => {
           type="text"
           register={register}
           error={formState.errors.title}
+          inputProps={{ autoComplete: "off", type: "text", required: true }}
+        />
+        <TextInputWithIcon
+          label="Message Link"
+          name="messageLink"
+          placeholder="Enter message link"
+          type="url"
+          register={register}
+          error={formState.errors.messageLink}
           inputProps={{ autoComplete: "off", type: "text", required: true }}
         />
         <TextboxInput
