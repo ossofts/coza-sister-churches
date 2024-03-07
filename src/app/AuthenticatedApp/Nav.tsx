@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { IoMenu } from "react-icons/io5";
 import { IoMdStopwatch } from "react-icons/io";
 // import { MdOutlineChurch } from "react-icons/md";
-// import { BiSolidFileExport } from "react-icons/bi";
+import { BiSolidFileExport } from "react-icons/bi";
 import { FiUserPlus } from "react-icons/fi";
 import { LuUsers } from "react-icons/lu";
 import { TbDatabaseCog } from "react-icons/tb";
@@ -87,15 +87,23 @@ const Nav = () => {
       onClick: () => goto(ROUTES.WORKFORCE_SUMMARY.path),
       roles: [isHOD, isSuperAdmin],
     },
-    // {
-    //   label: (
-    //     <button className="flex gap-2 items-center py-2 text-md">
-    //       <BiSolidFileExport size={16} /> <span>Export Data</span>
-    //     </button>
-    //   ),
-    //   onClick: () => goto(ROUTES.EXPORT_DATA.path),
-    //   roles: [isQC, isCampusPastor, isAdmin, isGlobalPastor, isQcHOD, isSuperAdmin, isInternshipHOD]
-    // }
+    {
+      label: (
+        <button className="flex gap-2 items-center py-2 text-md">
+          <BiSolidFileExport size={16} /> <span>Export Data</span>
+        </button>
+      ),
+      onClick: () => goto(ROUTES.EXPORT_DATA.path),
+      roles: [
+        isQC,
+        isCampusPastor,
+        isAdmin,
+        isGlobalPastor,
+        isQcHOD,
+        isSuperAdmin,
+        isInternshipHOD,
+      ],
+    },
   ];
 
   const approvedNav = () => {

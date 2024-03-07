@@ -38,6 +38,10 @@ const SelectComponent = ({
           {label && <SelectLabel>{label}</SelectLabel>}
           {options?.map((item, idx) => (
             <SelectItem
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
               className={twMerge(selectItemClass)}
               key={idx}
               value={item.value}
