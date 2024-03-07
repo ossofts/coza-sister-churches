@@ -2,7 +2,7 @@ export enum AttendanceStatus {
   LATE = "LATE",
   ABSENT = "ABSENT",
   PRESENT = "PRESENT",
-  ABSENT_WITH_PERMISSION = "ABSENT_WITH_PERMISSION"
+  ABSENT_WITH_PERMISSION = "ABSENT_WITH_PERMISSION",
 }
 
 export type Role = {
@@ -85,7 +85,13 @@ export type Campus = Log & {
   createdAt: string;
 };
 
-export type UserStatus = "ACTIVE" | "DORMANT" | "INACTIVE" | "HOD" | "AHOD" | "UNAPPROVED";
+export type UserStatus =
+  | "ACTIVE"
+  | "DORMANT"
+  | "INACTIVE"
+  | "HOD"
+  | "AHOD"
+  | "UNAPPROVED";
 
 export type User = {
   _id: string;
@@ -179,7 +185,12 @@ export type CGWC = {
   createdAt: string;
 };
 
-export type Status = "APPROVED" | "DECLINED" | "PENDING" | "REVIEW_REQUESTED" | "REJECTED";
+export type Status =
+  | "APPROVED"
+  | "DECLINED"
+  | "PENDING"
+  | "REVIEW_REQUESTED"
+  | "REJECTED";
 
 export type CGWCInstantMessage = {
   _id: string;
@@ -200,5 +211,13 @@ export const CGWC_SESSION_TAGS = [
   { id: "CGWC_DINNER_SESSION", value: "Dinner Session" },
   { id: "CGWC_LADIES_SESSION", value: "Ladies Session" },
   { id: "CGWC_EVANGELISM_SESSION", value: "Evangelism Session" },
-  { id: "CGWC_BREAKOUT_SESSION", value: "Breakout Session" }
+  { id: "CGWC_BREAKOUT_SESSION", value: "Breakout Session" },
 ];
+
+export type ReportDownloadPayload = {
+  campusId?: string;
+  serviceId?: string;
+  departmentId?: string;
+  startDate?: number;
+  endDate?: number;
+};

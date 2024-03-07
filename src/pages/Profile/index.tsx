@@ -32,9 +32,13 @@ const Profile = () => {
         src={user?.pictureUrl ?? ""}
         fallback={`${getFirstLetterCaps(user!.firstName)}${getFirstLetterCaps(user!.lastName)}`}
         extraClass="w-20 h-20 font-semibold text-4xl"
+        badge={user?.isCGWCApproved}
       />
       <div className="flex flex-col items-center gap-2 mt-4">
         <p className="text-center text-md font-bold">{`${user?.firstName} ${user?.lastName}`}</p>
+        <p className="text-center text-xs text-neutral-500 dark:text-neutral-200 ">
+          {user?.email}
+        </p>
         <p className="text-center text-sm font-semibold">
           {user?.campus?.campusName}
         </p>
