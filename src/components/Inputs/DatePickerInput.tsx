@@ -12,7 +12,7 @@ import InputErrorAlert from "../Errors/InputErrorAlert";
 type Props<T extends FieldValues> = {
   control: Control<T, unknown, T>;
   name: Path<T>;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   containerExtraClass?: ClassNameValue;
   labelExtraClass?: ClassNameValue;
@@ -22,7 +22,7 @@ type Props<T extends FieldValues> = {
   disabled?: boolean;
   isLoading?: boolean;
   onChange?: (e?: Date | string) => void;
-  disabledPeriod: (date: Date) => boolean;
+  disabledPeriod?: (date: Date) => boolean;
 };
 
 function DatePickerInput<T extends FieldValues>(props: Props<T>) {
@@ -89,7 +89,7 @@ function DatePickerInput<T extends FieldValues>(props: Props<T>) {
                   if (!onChange) return;
                   onChange(e);
                 }}
-                disabled={disabledPeriod}
+                disabled={disabledPeriod || false}
                 // disabled={(date) =>
                 //   date > new Date() || date < new Date("1900-01-01")
                 // }
