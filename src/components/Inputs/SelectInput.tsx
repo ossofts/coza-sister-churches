@@ -89,18 +89,18 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent
-              ref={(ref) => {
-                if (!ref) return;
-                ref.ontouchstart = (e) => {
-                  e.preventDefault();
-                };
-              }}
-            >
+            <SelectContent>
               <ReactIf
                 condition={!isLoading}
                 component={options?.map((item, idx) => (
-                  <SelectItem key={idx} value={item.value}>
+                  <SelectItem
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    key={idx}
+                    value={item.value}
+                  >
                     {item.label}
                   </SelectItem>
                 ))}
