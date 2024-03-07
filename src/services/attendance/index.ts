@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosClient from "../client";
-import { Attendance, ClockInPayload, DefaultQueryParams } from "@/store/types";
+import {
+  Attendance,
+  ClockInPayload,
+  DefaultQueryParams,
+  ReportDownloadPayload,
+} from "@/store/types";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 
 const serviceUrl = "/api/attendance";
@@ -174,6 +179,20 @@ export const useGetWorkersCGWCAttendanceReport = (
         attendance: number;
         workerUsers: number;
       }>,
+    ..._options,
+  });
+};
+
+export const useGetAttendanceReportForDownload = (
+  params: ReportDownloadPayload,
+  _options: QueryOptions<any[]>
+) => {
+  return useQuery({
+    queryKey: ["getAttendanceReportForDownload", params],
+    queryFn: () =>
+      axiosClient.get(`${serviceUrl}/downloadServiceAttendance`, {
+        params,
+      }) as ServerResponse<any[]>,
     ..._options,
   });
 };
