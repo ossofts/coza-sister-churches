@@ -80,7 +80,9 @@ const TeamAttendance = () => {
   );
 
   useEffect(() => {
-    sortedServices && setServiceId(sortedServices[0]._id);
+    if (sortedServices) {
+      setServiceId(sortedServices[0]?._id);
+    }
   }, [sortedServices]);
 
   const { data: membersClockedIn } = useGetAttendance({

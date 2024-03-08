@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CGWC } from "@/store/types";
-import { forEach, groupBy, merge } from "lodash";
+import { findIndex, forEach, groupBy, merge } from "lodash";
 import moment from "moment-timezone";
 
 export { moment as momentJs };
@@ -87,4 +87,58 @@ export const concatDateTimeToEpoc = (
       : time && date
         ? moment(concatedTime).subtract(1, "hour").unix()
         : null;
+};
+
+export const groupListByKey = (
+  array: any[] = [],
+  key: string,
+  returnType: "entries" | "values" = "entries"
+) => {
+  const map: any = {};
+
+  if (!array?.length || !array) {
+    return [];
+  }
+
+  for (let i = 0; i < array.length; i++) {
+    if (typeof array[i] === "undefined" || !array[i]) continue;
+    let keyInMap = array[i][key];
+
+    if (
+      key === "createdAt" ||
+      key === "dateCreated" ||
+      key === "updatedAt" ||
+      key === "sortDateKey"
+    ) {
+      keyInMap = moment(array[i][key]).format("MMMM Do, YYYY");
+    }
+
+    if (map[keyInMap]) {
+      map[keyInMap] = [...map[keyInMap], array[i]];
+    } else {
+      map[keyInMap] = [array[i]];
+    }
+  }
+  return Object[returnType](map);
+};
+
+export const replaceArrayItemByNestedKey = (
+  array: any[],
+  newObject: any,
+  keyValue: any[]
+) => {
+  if (!array || !array.length) return [];
+
+  const originalList = array;
+  const index = findIndex(originalList, keyValue);
+
+  // Push if index doesn't exist
+  if (index === -1) {
+    return [newObject, ...originalList];
+  }
+
+  // Replace item at index
+  originalList[index] = newObject;
+
+  return originalList;
 };
