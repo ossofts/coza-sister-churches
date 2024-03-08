@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { ExportSchema } from "./validation";
 import { Spinner } from "@/components/Loaders";
 import { CSVLink } from "react-csv";
-import { attendanceHeaders } from "./utils";
+import { attendanceHeaders, ticketsHeaders } from "./utils";
 import ReactIf from "@/components/ReactIf";
 import {
   IoIosCheckmarkCircleOutline,
@@ -99,7 +99,7 @@ const ExportData = () => {
       serviceId,
       departmentId,
     },
-    { enabled: triggerFetch }
+    { enabled: triggerFetch && dataType === "attendance" }
   );
   // const {
   //   data: permissions,
@@ -128,7 +128,7 @@ const ExportData = () => {
       serviceId,
       departmentId,
     },
-    { enabled: triggerFetch }
+    { enabled: triggerFetch && dataType === "tickets" }
   );
 
   const form = useForm<FormInputs>({
@@ -188,10 +188,10 @@ const ExportData = () => {
       name: "Attendance",
       value: ReportTypes.ATTENDANCE,
     },
-    // {
-    //   name: "Tickets",
-    //   value: ReportTypes.TICKETS,
-    // },
+    {
+      name: "Tickets",
+      value: ReportTypes.TICKETS,
+    },
     // {
     //   name: "Permissions",
     //   value: ReportTypes.PERMISSIONS,
@@ -339,7 +339,11 @@ const ExportData = () => {
                   <Spinner color="white" />
                 ) : dataType && reportData[dataType] !== undefined ? (
                   <CSVLink
-                    headers={attendanceHeaders}
+                    headers={
+                      dataType === "attendance"
+                        ? attendanceHeaders
+                        : ticketsHeaders
+                    }
                     data={(reportData[dataType] as any[]) ?? []}
                     filename={`${dataType}.csv`}
                     className=""
