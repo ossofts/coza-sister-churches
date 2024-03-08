@@ -221,3 +221,8 @@ export type ReportDownloadPayload = {
   startDate?: number;
   endDate?: number;
 };
+
+export type SelectOptions = {
+  label: string;
+  value: string;
+}[];

@@ -52,13 +52,17 @@ export const forgotPassword = (
   return axiosClient.post(`${serviceUrl}/forget-password/${otp}`, body);
 };
 
-export const useGetUsersByDepartmentId = (departmentId: Department["_id"]) => {
+export const useGetUsersByDepartmentId = (
+  departmentId: Department["_id"],
+  _options: QueryOptions<User[]> = {}
+) => {
   return useQuery({
     queryKey: ["getUsersByDepartmentId", departmentId],
     queryFn: () =>
       axiosClient.get(`${userServiceUrl}/getUsers`, {
         params: { departmentId },
       }) as ServerResponse<User[]>,
+    ..._options,
   });
 };
 

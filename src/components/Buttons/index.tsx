@@ -1,4 +1,6 @@
 import { ClassNameValue, twMerge } from "tailwind-merge";
+import { Spinner } from "../Loaders";
+import { COLORS } from "@/theme/colors";
 
 type Props = {
   children: React.ReactNode;
@@ -7,6 +9,7 @@ type Props = {
   fullWidth?: boolean;
   className?: ClassNameValue;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
 const PrimaryButton = (props: Props) => {
@@ -17,6 +20,7 @@ const PrimaryButton = (props: Props) => {
     fullWidth = true,
     className,
     disabled = false,
+    isLoading = false,
   } = props;
   return (
     <button
@@ -28,7 +32,7 @@ const PrimaryButton = (props: Props) => {
       type={type ? type : "button"}
       onClick={onClick}
     >
-      {children}
+      {isLoading ? <Spinner color="white" /> : children}
     </button>
   );
 };
@@ -41,18 +45,20 @@ const SecondaryButton = (props: Props) => {
     fullWidth = true,
     className,
     disabled = false,
+    isLoading = false,
   } = props;
   return (
     <button
       disabled={disabled}
       className={twMerge(
         `text-brandColor-600 dark:text-brandColor-500 bg-white border border-gray-400 grid items-center h-12 font-medium text-md rounded-lg ${fullWidth ? "w-full" : "px-5"}`,
+        disabled && "bg-transparent opacity-55 cursor-not-allowed",
         className
       )}
       type={type ? type : "button"}
       onClick={onClick}
     >
-      {children}
+      {isLoading ? <Spinner color={COLORS.brandColor[600]} /> : children}
     </button>
   );
 };

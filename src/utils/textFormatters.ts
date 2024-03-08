@@ -1,4 +1,5 @@
-export const capitalizeFirstLetter = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
+export const capitalizeFirstLetter = (word: string = "") =>
+  word.charAt(0).toUpperCase() + word.slice(1);
 
 export const capitalizeEachWord = (sentence: string) => {
   let arr2: string[] = [];
@@ -13,8 +14,16 @@ export const capitalizeEachWord = (sentence: string) => {
   return arr2.join(" ");
 };
 
-export const getFirstLetterCaps = (word: string) => word.charAt(0).toUpperCase();
+export const getFirstLetterCaps = (word: string) =>
+  word.charAt(0).toUpperCase();
 
 export function toSentenceCase(str: string) {
   return str.toLowerCase().charAt(0).toUpperCase() + str.toLowerCase().slice(1);
+}
+
+export function truncateString(str: string, num: number = 25) {
+  if (str?.length > num) {
+    return str.slice(0, num) + "...";
+  }
+  return str;
 }
