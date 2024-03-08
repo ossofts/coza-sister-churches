@@ -1,6 +1,8 @@
 import { AiFillHome } from "react-icons/ai";
 import { GoChecklist } from "react-icons/go";
 import { FaCrown } from "react-icons/fa6";
+import { LuTicket } from "react-icons/lu";
+
 import { ReactNode } from "react";
 import ROUTES from ".";
 
@@ -12,18 +14,23 @@ const navList: {
   {
     title: ROUTES.HOME.title,
     path: ROUTES.HOME.path,
-    icon: <AiFillHome />
+    icon: <AiFillHome />,
   },
   {
     title: ROUTES.ATTENDANCE.title,
     path: ROUTES.ATTENDANCE.path,
-    icon: <GoChecklist />
+    icon: <GoChecklist />,
+  },
+  {
+    title: ROUTES.TICKETS.title,
+    path: ROUTES.TICKETS.path,
+    icon: <LuTicket />,
   },
   {
     title: ROUTES.CGWC.title,
     path: ROUTES.CGWC.path,
-    icon: <FaCrown />
-  }
+    icon: <FaCrown />,
+  },
 ];
 
 export default navList;

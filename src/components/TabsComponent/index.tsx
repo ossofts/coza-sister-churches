@@ -16,7 +16,7 @@ const TabsComponent = ({ tabs, extraClass }: Props) => {
       defaultValue="0"
       className={twMerge("w-full mt-2 overflow-hidden", extraClass)}
     >
-      <TabsList className={twMerge("flex justify-center")}>
+      <TabsList className={twMerge("flex justify-start")}>
         {tabs?.map((tabItem, idx) => (
           <TabsTrigger className="flex-1" key={idx} value={idx?.toString()}>
             {tabItem.title}
@@ -24,7 +24,7 @@ const TabsComponent = ({ tabs, extraClass }: Props) => {
         ))}
       </TabsList>
       {tabs?.map((content, idx) => (
-        <TabsContent key={idx} value={idx?.toString()}>
+        <TabsContent key={idx} className="px-2" value={idx?.toString()}>
           {content.component}
         </TabsContent>
       ))}

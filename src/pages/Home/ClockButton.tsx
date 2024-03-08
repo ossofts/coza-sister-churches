@@ -108,10 +108,8 @@ const ClockButton = ({
   }, [clockOutMutation.data, clockOutMutation.error]);
 
   const assertClockinStartTime =
-    latestServiceData?.data === undefined
-      ? true
-      : !!latestServiceData?.data !== undefined &&
-        moment().diff(moment(latestServiceData?.data?.clockInStartTime)) > 0;
+    latestServiceData?.data &&
+    moment().diff(moment(latestServiceData?.data?.clockInStartTime)) > 0;
   const disabled =
     isLatestServiceError ||
     latestServiceLoading ||
@@ -149,7 +147,6 @@ const ClockButton = ({
   };
 
   const handlePress = async () => {
-    console.log("here");
     if (!assertClockinStartTime) {
       showAlert(
         "info",
@@ -170,17 +167,6 @@ const ClockButton = ({
 
     if (canClockOut && latestAttendanceData) {
       setOpenClockOutConfirmation(true);
-      // Alert.alert("Confirm clock out", "Are you sure you want to clock out now?", [
-      //   {
-      //     text: "No",
-      //     style: "destructive"
-      //   },
-      //   {
-      //     text: "Yes",
-      //     style: "default",
-      //     onPress: handleVerifyBeforeClockout
-      //   }
-      // ]);
       return;
     }
   };

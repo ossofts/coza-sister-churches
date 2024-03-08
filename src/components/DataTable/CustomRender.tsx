@@ -18,7 +18,7 @@ export default function CustomTableRender(props: {
   const { column, rowItem } = props;
 
   if (column.render) {
-    return <p className="text-xs text-left">{column.render(rowItem)}</p>;
+    return <div className="text-xs text-left">{column.render(rowItem)}</div>;
   }
 
   if (column.renderType) {

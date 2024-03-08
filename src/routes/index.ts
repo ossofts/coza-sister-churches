@@ -9,6 +9,8 @@ const Register = lazy(() => import("@/pages/AuthForms/Register"));
 const ForgotPassword = lazy(() => import("@/pages/AuthForms/ForgotPassword"));
 const Home = lazy(() => import("@/pages/Home"));
 const Attendance = lazy(() => import("@/pages/Attendance"));
+const Tickets = lazy(() => import("@/pages/Tickets"));
+const IssueTicket = lazy(() => import("@/pages/Tickets/IssueTicket"));
 const Cgwc = lazy(() => import("@/pages/Cgwc"));
 const CgwcDetails = lazy(() => import("@/pages/Cgwc/CgwcDetails"));
 const CgwcResources = lazy(() => import("@/pages/Cgwc/CgwcResources"));
@@ -81,6 +83,20 @@ const ROUTES: Record<string, RouteObj> = {
     component: Attendance,
     title: "Attendance",
     roles: [...Object.values(roles)],
+  },
+  TICKETS: {
+    path: "/tickets",
+    isPrivate: true,
+    component: Tickets,
+    title: "Tickets",
+    roles: [...Object.values(roles)],
+  },
+  ISSUE_TICKETS: {
+    path: "/tickets/issue-ticket",
+    isPrivate: true,
+    component: IssueTicket,
+    title: "Issue Ticket",
+    roles: [roles.QC, roles["Super Admin"]],
   },
   CGWC: {
     path: "/cgwc",
