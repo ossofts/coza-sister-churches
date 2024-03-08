@@ -24,7 +24,7 @@ const TabsComponent = ({ tabs, extraClass }: Props) => {
         ))}
       </TabsList>
       {tabs?.map((content, idx) => (
-        <TabsContent key={idx} value={idx?.toString()}>
+        <TabsContent key={idx} className="px-2" value={idx?.toString()}>
           {content.component}
         </TabsContent>
       ))}
