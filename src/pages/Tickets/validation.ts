@@ -14,7 +14,7 @@ export const createTicketSchema = yupResolver<CreateTicketPayload>(
     isIndividual: yup.bool().required(""),
     isRetracted: yup.bool().required(""),
     ticketSummary: yup.string().required("Description is required"),
-    status: yup.mixed<"ISSUED" | "CONTESTED" | "RETRACTED" | "ACKNOWLEGDED">(),
+    status: yup.mixed<"ISSUED" | "CONTESTED" | "RETRACTED" | "ACKNOWLEDGED">(),
     issuedBy: yup.string().required(""),
     _id: yup.string(),
   })
