@@ -3,20 +3,18 @@ import { Ticket } from "./types";
 import { capitalizeFirstLetter, truncateString } from "@/utils/textFormatters";
 import BadgeComponent from "@/components/BadgeComponent";
 import useRole from "@/hooks/useRoles";
-import {
-  useMemo,
-  // useState
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetTickets } from "@/services/tickets";
 import { sortByDate, timeFormat } from "@/utils";
 import { FullPageSpinner } from "@/components/Loaders";
 import ReactIf from "@/components/ReactIf";
 import DataTable from "@/components/DataTable";
 import EmptyData from "@/components/EmptyData";
-// import TicketDetails from "./TicketDetails";
+import TicketDetails from "./TicketDetails";
 
 const CampusTickets = () => {
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket>();
 
   const {
     user: { campus },
@@ -57,7 +55,7 @@ const CampusTickets = () => {
     },
   ];
 
-  const { data, isLoading, isFetching } = useGetTickets({
+  const { data, isLoading, isFetching, refetch } = useGetTickets({
     campusId: campus?._id,
     limit: 100,
     page: 1,
@@ -76,9 +74,15 @@ const CampusTickets = () => {
     [preparedForSortData]
   );
 
-  const onRowClick = () => {
-    // setOpen(true);
+  const onRowClick = (rowData: Ticket) => {
+    setSelectedTicket(rowData);
+    setOpen(true);
   };
+
+  useEffect(() => {
+    if (selectedTicket !== undefined) setOpen(true);
+    else setOpen(false);
+  }, [selectedTicket]);
 
   if (isLoading || isFetching) return <FullPageSpinner />;
   return (
@@ -98,7 +102,7 @@ const CampusTickets = () => {
         }
       />
 
-      {/* <TicketDetails {...{ open, setOpen }} /> */}
+      <TicketDetails {...{ open, setOpen, ticket: selectedTicket, refetch }} />
     </>
   );
 };

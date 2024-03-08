@@ -2,7 +2,7 @@ import { TableColumn } from "@/components/DataTable/types";
 import { Ticket } from "./types";
 import { capitalizeFirstLetter, truncateString } from "@/utils/textFormatters";
 import useRole from "@/hooks/useRoles";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetTickets } from "@/services/tickets";
 import {
   // groupListByKey,
@@ -15,8 +15,12 @@ import DataTable from "@/components/DataTable";
 import ReactIf from "@/components/ReactIf";
 import EmptyData from "@/components/EmptyData";
 import BadgeComponent from "@/components/BadgeComponent";
+import TicketDetails from "./TicketDetails";
 
 const MyTickets = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket>();
+
   const {
     user: { userId },
     // isCampusPastor,
@@ -52,7 +56,7 @@ const MyTickets = () => {
     },
   ];
 
-  const { data, isLoading, isFetching } = useGetTickets({
+  const { data, isLoading, isFetching, refetch } = useGetTickets({
     userId,
     limit: 100,
     page: 1,
@@ -71,23 +75,37 @@ const MyTickets = () => {
   //   [updatedListItem?._id, sortedData]
   // );
 
-  const onRowClick = () => {};
+  const onRowClick = (rowData: Ticket) => {
+    setSelectedTicket(rowData);
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (selectedTicket !== undefined) setOpen(true);
+    else setOpen(false);
+  }, [selectedTicket]);
 
   if (isLoading || isFetching) return <FullPageSpinner />;
 
   return (
-    <ReactIf
-      condition={!!data && data?.length > 0}
-      component={
-        <DataTable
-          data={sortedData ?? []}
-          columns={columns}
-          onRowClick={onRowClick}
-          showHeader={false}
-        />
-      }
-      fallback={<EmptyData message="Nothing here, lets keep it that way 😇" />}
-    />
+    <>
+      <ReactIf
+        condition={!!data && data?.length > 0}
+        component={
+          <DataTable
+            data={sortedData ?? []}
+            columns={columns}
+            onRowClick={onRowClick}
+            showHeader={false}
+          />
+        }
+        fallback={
+          <EmptyData message="Nothing here, lets keep it that way 😇" />
+        }
+      />
+
+      <TicketDetails {...{ open, setOpen, ticket: selectedTicket, refetch }} />
+    </>
   );
 };
 

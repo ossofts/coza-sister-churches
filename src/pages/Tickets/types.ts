@@ -48,3 +48,9 @@ export type CreateTicketPayload = {
   status?: TicketStatus;
   issuedBy: User["_id"];
 };
+
+export type TicketUpdatePayload = {
+  userId: User["_id"];
+  // _id: Ticket["_id"];
+  comment: string;
+};

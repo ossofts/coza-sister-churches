@@ -5,6 +5,7 @@ import {
   CreateTicketPayload,
   Ticket,
   TicketCategory,
+  TicketUpdatePayload,
 } from "@/pages/Tickets/types";
 import { DefaultQueryParams, ReportDownloadPayload } from "@/store/types";
 
@@ -55,5 +56,48 @@ export const useGetTickets = (
       }) as ServerResponse<Ticket[]>,
     select: (data) => data.data,
     ..._options,
+  });
+};
+
+export const useContestTicket = (ticket_id: string) => {
+  return useMutation({
+    mutationKey: ["contestTicket"],
+    mutationFn: (body: TicketUpdatePayload) =>
+      axiosClient.patch(
+        `${serviceUrl}/replyTicketByUser/${ticket_id}`,
+        body
+      ) as ServerResponse<Ticket>,
+  });
+};
+
+export const useReplyContestTicket = (ticket_id: string) => {
+  return useMutation({
+    mutationKey: ["contestTicket"],
+    mutationFn: (body: TicketUpdatePayload) =>
+      axiosClient.patch(
+        `${serviceUrl}/replyTicketByQCTeam/${ticket_id}`,
+        body
+      ) as ServerResponse<Ticket>,
+  });
+};
+
+export const useRetractTicket = (ticket_id: string) => {
+  return useMutation({
+    mutationKey: ["contestTicket"],
+    mutationFn: () =>
+      axiosClient.patch(
+        `${serviceUrl}/retractTicket/${ticket_id}`
+      ) as ServerResponse<Ticket>,
+  });
+};
+
+export const useUpdateTicket = (ticket_id: string) => {
+  return useMutation({
+    mutationKey: ["contestTicket"],
+    mutationFn: (body: Partial<Ticket>) =>
+      axiosClient.patch(
+        `${serviceUrl}/updateTicket/${ticket_id}`,
+        body
+      ) as ServerResponse<Ticket>,
   });
 };
