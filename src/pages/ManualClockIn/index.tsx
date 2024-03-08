@@ -11,6 +11,8 @@ import { Coordinates } from "@/types/global.type";
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import ClockButton from "./ClockButton";
+import SelectInputWithSearch from "@/components/Inputs/SelectInputWithSearch";
+import { sortArrayByKeyAscending } from "@/utils";
 
 type Option = {
   label: string;
@@ -139,7 +141,7 @@ const ManualClockIn = () => {
           disabled={!useWatch({ control, name: "campusId" })}
         />
 
-        <SelectInput
+        <SelectInputWithSearch
           name="userId"
           placeholder="Select a user"
           label="User"
@@ -147,7 +149,7 @@ const ManualClockIn = () => {
           required
           control={control}
           options={
-            users?.data?.map((user) => ({
+            sortArrayByKeyAscending(users?.data, "firstName")?.map((user) => ({
               label: `${user.firstName} ${user.lastName}`,
               value: user._id,
             })) as Option[]
