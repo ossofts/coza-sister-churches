@@ -26,7 +26,8 @@ const Attendance = () => {
   ];
 
   const returnTabs = () => {
-    if (isSuperAdmin) return tabs?.filter((tab) => tab.id === 3);
+    if (isSuperAdmin) return tabs;
+    // if (isSuperAdmin) return tabs?.filter((tab) => tab.id === 3);
     if (isHOD) return tabs?.filter((tab) => tab.id === 1 || tab.id === 2);
     return tabs?.filter((tab) => tab.id === 1);
   };

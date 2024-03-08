@@ -97,7 +97,7 @@ const TeamTickets = () => {
             data={sortedData ?? []}
             columns={columns}
             onRowClick={onRowClick}
-            // showHeader={false}
+            showHeader={false}
           />
         }
         fallback={

@@ -20,12 +20,14 @@ import { TextboxInput } from "@/components/Inputs";
 import { PrimaryButton, SecondaryButton } from "@/components/Buttons";
 import {
   useContestTicket,
+  useGetTicketById,
   useReplyContestTicket,
   useRetractTicket,
   useUpdateTicket,
 } from "@/services/tickets";
 import showAlert from "@/hooks/useAlert";
 import { customError } from "@/types/global.type";
+import { FullPageSpinner } from "@/components/Loaders";
 
 type Props = {
   open: boolean;
@@ -35,7 +37,7 @@ type Props = {
 };
 
 const TicketDetails = (props: Props) => {
-  const { ticket } = props;
+  const { ticket: rowData } = props;
   const {
     isQC,
     // isCampusPastor,
@@ -43,22 +45,24 @@ const TicketDetails = (props: Props) => {
     user: { userId, department },
   } = useRole();
 
-  const [contestComment, setContestComment] = useState("");
-  const [contestReplyComment, setContestReplyComment] = useState(
-    ticket?.contestReplyComment ?? ""
-  );
-
-  //   const {
-  //     data: ticket,
-  //     isFetching,
-  //     isLoading,
-  //     refetch,
-  //   } = useGetTicketByIdQuery(ticketParams?._id);
+  const {
+    data: ticket,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useGetTicketById(String(rowData?._id), {
+    enabled: !!rowData?._id,
+  });
   const { data: issuer, isLoading: issuerIsLoading } = useGetUserById(
     ticket?.issuedBy as string,
     {
       enabled: !!ticket?.issuedBy,
     }
+  );
+
+  const [contestComment, setContestComment] = useState("");
+  const [contestReplyComment, setContestReplyComment] = useState(
+    ticket?.contestReplyComment ?? ""
   );
 
   const contestTicketMutation = useContestTicket(String(ticket?._id));
@@ -95,13 +99,14 @@ const TicketDetails = (props: Props) => {
   const handleAcknowledge = () => {
     acknowledgeTicketMutation.mutate({
       ...ticket,
-      status: "ACKNOWLEGDED",
+      status: "ACKNOWLEDGED",
     } as Ticket);
   };
 
   useEffect(() => {
     if (contestTicketMutation.data) {
       showAlert("success", "Contest submitted");
+      refetch();
       props.refetch();
       props.setOpen(false);
     }
@@ -118,6 +123,7 @@ const TicketDetails = (props: Props) => {
   useEffect(() => {
     if (replyContestMutation.data) {
       showAlert("success", "Reply submitted");
+      refetch();
       props.refetch();
       props.setOpen(false);
     }
@@ -134,6 +140,7 @@ const TicketDetails = (props: Props) => {
   useEffect(() => {
     if (retractTicketMutation.data) {
       showAlert("success", "Retracted successfully");
+      refetch();
       props.refetch();
       props.setOpen(false);
     }
@@ -150,6 +157,7 @@ const TicketDetails = (props: Props) => {
   useEffect(() => {
     if (acknowledgeTicketMutation.data) {
       showAlert("success", "Ticket acknowledged");
+      refetch();
       props.refetch();
       props.setOpen(false);
     }
@@ -190,6 +198,9 @@ const TicketDetails = (props: Props) => {
     ticket?.isDepartment,
     department?._id,
   ]);
+
+  if (isFetching || isLoading) return <FullPageSpinner />;
+
   return (
     <Drawer open={props.open} onOpenChange={props.setOpen}>
       <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md max-h-svh overflow-hidden">
@@ -217,7 +228,10 @@ const TicketDetails = (props: Props) => {
               value={moment(ticket?.updatedAt).format("DD/MM/YYYY - LT")}
             />
           ) : null}
-          <DetailItem title="Department" value={ticket?.departmentName} />
+          <DetailItem
+            title="Department"
+            value={ticket?.department?.departmentName}
+          />
           <DetailItem
             title="Ticket type"
             value={ticket?.isDepartment ? "Departmental" : "Individual"}
@@ -306,7 +320,7 @@ const TicketDetails = (props: Props) => {
           />
 
           <ReactIf
-            condition={!offenderAction}
+            condition={offenderAction}
             component={
               <div className="grid gap-5 grid-cols-2 w-full mt-5">
                 <SecondaryButton
@@ -315,7 +329,7 @@ const TicketDetails = (props: Props) => {
                   disabled={
                     (!contestComment || !!ticket?.contestComment) &&
                     (ticket?.status === "ISSUED" ||
-                      ticket?.status === "ACKNOWLEGDED" ||
+                      ticket?.status === "ACKNOWLEDGED" ||
                       ticket?.status === "CONTESTED")
                   }
                   onClick={handleSubmit}
@@ -328,7 +342,8 @@ const TicketDetails = (props: Props) => {
                   disabled={
                     ticket?.status !== "ISSUED" &&
                     (userId !== ticket?.user?._id ||
-                      ticket?.department._id !== department?._id)
+                      String(ticket?.department?._id ?? "") !==
+                        String(department?._id ?? ""))
                   }
                   onClick={handleAcknowledge}
                 >

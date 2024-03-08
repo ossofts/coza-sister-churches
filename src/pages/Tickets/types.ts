@@ -4,7 +4,7 @@ export type TicketStatus =
   | "ISSUED"
   | "CONTESTED"
   | "RETRACTED"
-  | "ACKNOWLEGDED";
+  | "ACKNOWLEDGED";
 export type TicketCategory = {
   _id: string;
   categoryName: string;
@@ -28,6 +28,7 @@ export type Ticket = Log & {
   department: Department;
   category: TicketCategory;
   departmentName: string;
+  departmentId: string;
   contestReplyComment: string;
   campus: Pick<Campus, "_id" | "campusName">;
   // screen: { name: string; value: string } | undefined;

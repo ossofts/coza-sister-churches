@@ -40,7 +40,10 @@ export const useCreateTicket = () => {
   return useMutation({
     mutationKey: ["createTicket"],
     mutationFn: (body: CreateTicketPayload) =>
-      axiosClient.post(`${serviceUrl}`, body) as ServerResponse<Ticket>,
+      axiosClient.post(
+        `${serviceUrl}/createTicket`,
+        body
+      ) as ServerResponse<Ticket>,
   });
 };
 
@@ -99,5 +102,20 @@ export const useUpdateTicket = (ticket_id: string) => {
         `${serviceUrl}/updateTicket/${ticket_id}`,
         body
       ) as ServerResponse<Ticket>,
+  });
+};
+
+export const useGetTicketById = (
+  ticket_id: string,
+  _options: Omit<QueryOptions<Ticket>, "select"> = {}
+) => {
+  return useQuery({
+    queryKey: ["getTicketById", ticket_id],
+    queryFn: () =>
+      axiosClient.get(
+        `${serviceUrl}/getTicket/${ticket_id}`
+      ) as ServerResponse<Ticket>,
+    select: (data) => data?.data,
+    ..._options,
   });
 };
