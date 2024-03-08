@@ -20,14 +20,14 @@ import { CreateUserInputs } from "./types";
 const CreateUser = () => {
   const {
     user: { campus, userId },
-    rolesPermittedToCreate
+    rolesPermittedToCreate,
   } = useRole();
 
   const {
     data: campusDepartments,
     // refetch: refetchDepartments,
     isFetching: isFetchingDepartments,
-    isLoading: campusDepartmentsLoading
+    isLoading: campusDepartmentsLoading,
   } = useGetDepartmentsByCampusId(campus?._id as string);
 
   const INITIAL_VALUES = {
@@ -38,19 +38,22 @@ const CreateUser = () => {
     roleId: "",
     campusId: campus?._id,
     registeredBy: userId,
-    isRegistered: false
+    isRegistered: false,
   } as CreateUserInputs;
 
   const form = useForm<CreateUserInputs>({
     resolver: createUserSchema,
-    defaultValues: INITIAL_VALUES
+    defaultValues: INITIAL_VALUES,
   });
   const { register, handleSubmit, control, formState } = form;
 
   const mutation = useUploadUser();
 
   const onSubmit = (data: CreateUserInputs) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      ...data,
+      email: data.email?.toLowerCase(),
+    });
   };
 
   useEffect(() => {
@@ -61,7 +64,8 @@ const CreateUser = () => {
     if (mutation.error) {
       showAlert(
         "error",
-        customError(mutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
+        customError(mutation.error)?.response?.data?.message ??
+          "Oops! Something went wrong"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,11 +81,15 @@ const CreateUser = () => {
     [campusDepartments]
   );
 
-  if (isFetchingDepartments || campusDepartmentsLoading) return <FullPageSpinner />;
+  if (isFetchingDepartments || campusDepartmentsLoading)
+    return <FullPageSpinner />;
   return (
     <div>
       <Form {...form}>
-        <form className="flex flex-col gap-2 pt-10 px-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-2 pt-10 px-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <SelectInput
             name="departmentId"
             placeholder="Select a department"
@@ -90,7 +98,7 @@ const CreateUser = () => {
             control={control}
             options={sortedCampusDepartments?.map((department) => ({
               label: department?.departmentName,
-              value: department?._id
+              value: department?._id,
             }))}
             error={formState.errors.departmentId}
           />
@@ -103,7 +111,7 @@ const CreateUser = () => {
             options={
               rolesPermittedToCreate()?.map((role) => ({
                 label: role?.name,
-                value: role?._id
+                value: role?._id,
               })) as OptionsType[]
             }
             error={formState.errors.departmentId}
@@ -137,7 +145,7 @@ const CreateUser = () => {
             error={formState.errors.email}
             inputProps={{
               autoComplete: "off",
-              type: "email"
+              type: "email",
             }}
             leftIcon={<IoMailOutline />}
           />
