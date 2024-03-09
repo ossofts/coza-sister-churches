@@ -21,31 +21,38 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationKey: ["loginUser"],
-    mutationFn: (body: AuthInputs) => loginUser(body)
+    mutationFn: (body: AuthInputs) => loginUser(body),
   });
   const {
     register,
     handleSubmit,
     // watch,
-    formState
+    formState,
   } = useForm<AuthInputs>({
-    resolver: loginSchema
+    resolver: loginSchema,
   });
   const onSubmit: SubmitHandler<AuthInputs> = (data: AuthInputs) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      ...data,
+      email: data.email?.toLowerCase(),
+    });
   };
 
   useEffect(() => {
     if (mutation.data) {
       showAlert("success", "Logged in successfully");
       document.cookie = `test = one;`;
-      setToken(mutation.data?.data?.token?.token, mutation.data?.data?.token?.refreshToken);
+      setToken(
+        mutation.data?.data?.token?.token,
+        mutation.data?.data?.token?.refreshToken
+      );
       setUser(mutation.data?.data?.profile);
     }
     if (mutation.error) {
       showAlert(
         "error",
-        customError(mutation.error)?.response?.data?.message ?? "An error occurred"
+        customError(mutation.error)?.response?.data?.message ??
+          "An error occurred"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -26,21 +26,22 @@ const Register = () => {
     register,
     handleSubmit,
     // watch,
-    formState
+    formState,
   } = useForm<Inputs>({
-    resolver: emailOnlySchema
+    resolver: emailOnlySchema,
   });
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["sentOtp"],
-    queryFn: () => sentOtp(email),
+    queryFn: () => sentOtp(email?.toLowerCase()),
     enabled: false,
-    retry: false
+    retry: false,
   });
 
   const mutation = useMutation({
     mutationKey: ["validateOtp"],
-    mutationFn: () => validateOtp({ email, otp: parseInt(otp) })
+    mutationFn: () =>
+      validateOtp({ email: email?.toLowerCase(), otp: parseInt(otp) }),
   });
 
   const onSubmit: SubmitHandler<Inputs> = () => {
@@ -85,7 +86,10 @@ const Register = () => {
         component={<UpdateAccount user={mutation.data?.data} email={email} />}
         fallback={
           <>
-            <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <TextInputWithIcon
                 label="Email"
                 name="email"
@@ -97,7 +101,9 @@ const Register = () => {
                 inputProps={{ autoComplete: "off", type: "email" }}
                 leftIcon={<IoMailOutline />}
               />
-              <PrimaryButton type="submit">{isLoading ? <Spinner /> : "Continue"}</PrimaryButton>
+              <PrimaryButton type="submit">
+                {isLoading ? <Spinner /> : "Continue"}
+              </PrimaryButton>
             </form>
             <p className="text-gray-400 text-sm text-center mt-5">
               Already registered?{" "}
