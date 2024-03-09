@@ -100,6 +100,13 @@ const useGeolocation = (props: Props) => {
   }
 
   function errors(err: { code: any; message: any }) {
+    showAlert(
+      "warning",
+      "Unable to ascertain your location. Please check is location is enabled",
+      {
+        seconds: 10,
+      }
+    );
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
@@ -115,10 +122,12 @@ const useGeolocation = (props: Props) => {
             showAlert(
               "warning",
               "Your location is currently disabled. Enable location in your settings to clock in and out.",
-              { seconds: 8 }
+              { seconds: 10 }
             );
           }
         });
+    } else if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, errors, options);
     } else {
       showAlert(
         "warning",
