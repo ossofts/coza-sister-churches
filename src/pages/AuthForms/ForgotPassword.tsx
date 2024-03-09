@@ -27,21 +27,22 @@ const ForgotPassword = () => {
     register,
     handleSubmit,
     // watch,
-    formState
+    formState,
   } = useForm<Inputs>({
-    resolver: emailOnlySchema
+    resolver: emailOnlySchema,
   });
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["sentOtp"],
-    queryFn: () => sendPasswordOtp(email),
+    queryFn: () => sendPasswordOtp(email?.toLowerCase()),
     enabled: false,
-    retry: false
+    retry: false,
   });
 
   const mutation = useMutation({
     mutationKey: ["validateOtp"],
-    mutationFn: () => validatePasswordOtp({ email, otp: parseInt(otp) })
+    mutationFn: () =>
+      validatePasswordOtp({ email: email?.toLowerCase(), otp: parseInt(otp) }),
   });
   const onSubmit: SubmitHandler<Inputs> = () => {
     refetch();
@@ -82,11 +83,18 @@ const ForgotPassword = () => {
       <ReactIf
         condition={validated}
         component={
-          <UpdatePassword email={email} otp={otp} onBackClick={() => setValidated(false)} />
+          <UpdatePassword
+            email={email}
+            otp={otp}
+            onBackClick={() => setValidated(false)}
+          />
         }
         fallback={
           <>
-            <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <TextInputWithIcon
                 label="Email"
                 name="email"

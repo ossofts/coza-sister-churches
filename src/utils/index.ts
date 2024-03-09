@@ -142,3 +142,9 @@ export const replaceArrayItemByNestedKey = (
 
   return originalList;
 };
+
+export function sortArrayByKeyAscending<T>(arrObject?: T[], key?: keyof T) {
+  if (arrObject && key)
+    return [...arrObject].sort((a, b) => (a[key] > b[key] ? 1 : -1));
+  return [];
+}

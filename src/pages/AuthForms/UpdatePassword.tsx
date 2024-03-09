@@ -18,19 +18,20 @@ type Props = { email: string; onBackClick: () => void; otp: string };
 const UpdatePassword = ({ email = "", onBackClick, otp }: Props) => {
   const { goto } = useNavigation();
   const form = useForm<UpdatePasswordType>({
-    resolver: updatePasswordSchema
+    resolver: updatePasswordSchema,
   });
   const { register, handleSubmit, formState } = form;
 
   const mutation = useMutation({
     mutationKey: ["registerUser"],
-    mutationFn: (body: Pick<RegisterInputs, "email" | "password">) => forgotPassword(otp, body)
+    mutationFn: (body: Pick<RegisterInputs, "email" | "password">) =>
+      forgotPassword(otp, body),
   });
 
   const onSubmit = (data: UpdatePasswordType) => {
     const body = {
-      email,
-      password: data.password
+      email: email?.toLowerCase(),
+      password: data.password,
     };
     mutation.mutate(body);
   };
@@ -44,13 +45,17 @@ const UpdatePassword = ({ email = "", onBackClick, otp }: Props) => {
     if (mutation.error) {
       showAlert(
         "error",
-        customError(mutation.error)?.response?.data?.message ?? "An error occurred"
+        customError(mutation.error)?.response?.data?.message ??
+          "An error occurred"
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutation.data, mutation.error]);
   return (
-    <form className="flex flex-col gap-2 pt-10" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-2 pt-10"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <BackButton onBackClick={onBackClick} />
       <PasswordInput
         label="Password"
@@ -70,7 +75,9 @@ const UpdatePassword = ({ email = "", onBackClick, otp }: Props) => {
         error={formState.errors.confirmPassword}
         inputProps={{ autoComplete: "off" }}
       />
-      <PrimaryButton type="submit">{mutation.isPending ? <Spinner /> : "Update"}</PrimaryButton>
+      <PrimaryButton type="submit">
+        {mutation.isPending ? <Spinner /> : "Update"}
+      </PrimaryButton>
     </form>
   );
 };
