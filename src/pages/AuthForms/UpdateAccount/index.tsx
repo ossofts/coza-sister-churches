@@ -46,7 +46,7 @@ const UpdateAccount = ({ email = "", user }: Props) => {
   const onSubmit = (data: RegisterInputs) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const body = {
-      email: data.email,
+      email: data.email?.toLowerCase(),
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
