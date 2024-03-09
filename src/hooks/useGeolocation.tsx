@@ -8,8 +8,10 @@ const distanceBetweenTwoCoordinates = (
   deviceCoordinates: Coordinates,
   campusCoordinates: Coordinates
 ) => {
-  let { latitude: deviceLatitude, longitude: deviceLongitude } = deviceCoordinates;
-  let { latitude: campusLatitude, longitude: campusLongitude } = campusCoordinates;
+  let { latitude: deviceLatitude, longitude: deviceLongitude } =
+    deviceCoordinates;
+  let { latitude: campusLatitude, longitude: campusLongitude } =
+    campusCoordinates;
 
   deviceLongitude = (deviceLongitude * Math.PI) / 180;
   campusLongitude = (campusLongitude * Math.PI) / 180;
@@ -43,7 +45,7 @@ const useGeolocation = (props: Props) => {
     latitude: number;
   }>({
     longitude: 0,
-    latitude: 0
+    latitude: 0,
   });
 
   const { rangeToClockIn, campusCoordinates } = props;
@@ -56,7 +58,10 @@ const useGeolocation = (props: Props) => {
   ) => {
     if (deviceCoordinatesArg && campusCoordinatesArg) {
       try {
-        distance = distanceBetweenTwoCoordinates(deviceCoordinatesArg, campusCoordinatesArg);
+        distance = distanceBetweenTwoCoordinates(
+          deviceCoordinatesArg,
+          campusCoordinatesArg
+        );
         if (distance <= +rangeToClockIn) {
           return true;
         }
@@ -82,7 +87,7 @@ const useGeolocation = (props: Props) => {
   const options = {
     enableHighAccuracy: true,
     timeout: 20000,
-    maximumAge: 10000
+    maximumAge: 10000,
   };
 
   function success(pos: { coords: GeolocationCoordinates }) {
@@ -90,30 +95,47 @@ const useGeolocation = (props: Props) => {
     setUserLocation((vals) => ({
       ...vals,
       longitude: crd.longitude,
-      latitude: crd.latitude
+      latitude: crd.latitude,
     }));
   }
 
   function errors(err: { code: any; message: any }) {
+    showAlert(
+      "warning",
+      "Unable to ascertain your location. Please check if location is enabled",
+      {
+        seconds: 10,
+      }
+    );
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.permissions.query({ name: "geolocation" }).then(function (result) {
-        if (result.state !== "denied") {
-          //If granted then you can directly call your function here
-          navigator.geolocation.getCurrentPosition(success, errors, options);
-        } else {
-          showAlert(
-            "warning",
-            "Your location is currently disabled. Enable location in your settings to clock in and out.",
-            { seconds: 8 }
-          );
-        }
-      });
+    if (navigator.geolocation && navigator.permissions) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (result) {
+          if (result.state !== "denied") {
+            //If granted then you can directly call your function here
+            navigator.geolocation.getCurrentPosition(success, errors, options);
+          } else {
+            showAlert(
+              "warning",
+              "Your location is currently disabled. Enable location in your settings to clock in and out.",
+              { seconds: 10 }
+            );
+          }
+        });
+    } else if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, errors, options);
     } else {
-      showAlert("warning", "Geolocation is not supported by this browser.");
+      showAlert(
+        "warning",
+        "Geolocation is not supported by this browser or we are unable to verify if geolocation is supported. Please check your settings to enable geolocation manually.",
+        {
+          seconds: 20,
+        }
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -123,7 +145,7 @@ const useGeolocation = (props: Props) => {
     verifyRangeBeforeAction,
     deviceCoordinates: userLocation,
     distance,
-    refresh: () => window.location.reload()
+    refresh: () => window.location.reload(),
   };
 };
 

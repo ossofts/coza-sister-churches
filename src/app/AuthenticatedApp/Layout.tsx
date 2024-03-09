@@ -20,7 +20,7 @@ const Layout = ({ children }: Props) => {
       refreshContent={<Spinner color={COLORS.primary} />}
       pullDownThreshold={200}
       onRefresh={handleRefresh}
-      triggerHeight={300}
+      triggerHeight={100}
       backgroundColor={isDarkMode ? "black" : "white"}
       startInvisible={false}
     >

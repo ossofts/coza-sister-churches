@@ -103,7 +103,7 @@ const ManualClockIn = () => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-2 pt-10 px-3 pb-10"
+        className="flex flex-col gap-2 pt-5 px-3 pb-10"
         onSubmit={handleSubmit(onSubmit)}
       >
         <SelectInput
