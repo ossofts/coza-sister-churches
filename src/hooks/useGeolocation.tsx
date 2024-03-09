@@ -102,7 +102,7 @@ const useGeolocation = (props: Props) => {
   function errors(err: { code: any; message: any }) {
     showAlert(
       "warning",
-      "Unable to ascertain your location. Please check is location is enabled",
+      "Unable to ascertain your location. Please check if location is enabled",
       {
         seconds: 10,
       }
