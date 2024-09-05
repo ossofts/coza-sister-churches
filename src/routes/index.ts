@@ -24,6 +24,9 @@ const CreateInstantMessage = lazy(
 const Profile = lazy(() => import("@/pages/Profile"));
 const ServiceManagement = lazy(() => import("@/pages/ServiceManagement"));
 const ManualClockIn = lazy(() => import("@/pages/ManualClockIn"));
+const AttendanceConfirmation = lazy(
+  () => import("@/pages/AttendanceConfirmation")
+);
 const ExportData = lazy(() => import("@/pages/ExportData"));
 const CreateUser = lazy(() => import("@/pages/WorkforceManagement/CreateUser"));
 const CreateDepartment = lazy(
@@ -162,6 +165,18 @@ const ROUTES: Record<string, RouteObj> = {
     isPrivate: true,
     component: ManualClockIn,
     title: "Manual Clock In",
+    roles: [
+      roles["Super Admin"],
+      roles.QC,
+      roles.Internship,
+      roles["Internship HOD"],
+    ],
+  },
+  ATTENDANCE_CONFIRMATION: {
+    path: "/attendance-confirmation",
+    isPrivate: true,
+    component: AttendanceConfirmation,
+    title: "Attendance Confirmation",
     roles: [
       roles["Super Admin"],
       roles.QC,
