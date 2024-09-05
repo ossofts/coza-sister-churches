@@ -1,5 +1,5 @@
 import axiosClient from "@/services/client";
-import { ServerResponse } from "@/types/global.type";
+import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { Service } from "../../contexts/AppContext/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { DefaultQueryParams } from "@/store/types";
@@ -26,7 +26,10 @@ export const useGetLatestService = (campusId: string) => {
   });
 };
 
-export const useGetServices = (params: DefaultQueryParams = {}) => {
+export const useGetServices = (
+  params: DefaultQueryParams = {},
+  _options: QueryOptions<Service[]> = {}
+) => {
   return useQuery({
     queryKey: ["getServices", params],
     queryFn: () =>
@@ -34,6 +37,7 @@ export const useGetServices = (params: DefaultQueryParams = {}) => {
         params: { ...params },
       }) as ServerResponse<Service[]>,
     retry: false,
+    ..._options,
   });
 };
 
