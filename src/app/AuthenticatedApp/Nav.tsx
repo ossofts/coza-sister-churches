@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { IoMenu } from "react-icons/io5";
 import { IoMdStopwatch } from "react-icons/io";
+import { FaTasks } from "react-icons/fa";
 // import { MdOutlineChurch } from "react-icons/md";
 import { BiSolidFileExport } from "react-icons/bi";
 import { FiUserPlus } from "react-icons/fi";
@@ -14,6 +15,7 @@ import useNavigation from "@/hooks/useNavigation";
 import ROUTES from "@/routes";
 import useRole from "@/hooks/useRoles";
 import ReactIf from "@/components/ReactIf";
+import { useMemo } from "react";
 
 const Nav = () => {
   const { pathname } = useCurrentPath();
@@ -81,6 +83,15 @@ const Nav = () => {
     {
       label: (
         <button className="flex gap-2 items-center py-2 text-md">
+          <FaTasks size={16} /> <span>Attendance Confirmation</span>
+        </button>
+      ),
+      onClick: () => goto(ROUTES.ATTENDANCE_CONFIRMATION.path),
+      roles: [isQC, isQcHOD, isSuperAdmin, isInternship, isInternshipHOD],
+    },
+    {
+      label: (
+        <button className="flex gap-2 items-center py-2 text-md">
           <TbDatabaseCog size={16} /> <span>Workforce Summary</span>
         </button>
       ),
@@ -106,12 +117,13 @@ const Nav = () => {
     },
   ];
 
-  const approvedNav = () => {
+  const approvedNav = useMemo(() => {
     if (!isCGWCApproved)
       return navList.filter((nav) => nav.title !== ROUTES.CGWC.title);
 
     return navList;
-  };
+  }, [isCGWCApproved]);
+
   return (
     <nav
       className={twMerge(
@@ -123,7 +135,7 @@ const Nav = () => {
             : "grid-cols-4"
       )}
     >
-      {approvedNav().map((item, idx) => (
+      {approvedNav?.map((item, idx) => (
         <Link
           className={twMerge(
             "flex flex-col items-center gap-[5px]",

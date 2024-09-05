@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 type AttendanceContainerProps = {
-  title: string;
+  title: ReactNode;
   showTitle?: boolean;
   score?: number | string;
   scoreType: "percent" | "count";
@@ -15,7 +15,7 @@ export const AttendanceContainer = ({
   title,
   score,
   scoreType,
-  showTitle = true
+  showTitle = true,
 }: AttendanceContainerProps) => {
   return (
     <div className="flex w-full flex-col">
@@ -28,7 +28,11 @@ export const AttendanceContainer = ({
               <p
                 className={twMerge(
                   "font-bold pb-4 pt-3 text-lg text-center",
-                  +score < 31 ? "text-red-600" : +score > 69 ? "text-green-600" : "text-yellow-400"
+                  +score < 31
+                    ? "text-red-600"
+                    : +score > 69
+                      ? "text-green-600"
+                      : "text-yellow-400"
                 )}
               >
                 {score || 0}
