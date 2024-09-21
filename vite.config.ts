@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path from "path";
+import path, { resolve } from "path";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
@@ -54,6 +54,15 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths(), VitePWA(manifestForPlugIn)],
   build: {
     outDir: "./dist",
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        "firebase-messaging-sw": resolve(
+          __dirname,
+          "./public/firebase-messaging-sw.js"
+        ),
+      },
+    },
   },
   resolve: {
     alias: {
@@ -69,6 +78,12 @@ export default defineConfig({
         ".js": "jsx",
         ".ts": "tsx",
       },
+    },
+  },
+
+  server: {
+    headers: {
+      "Service-Worker-Allowed": "/",
     },
   },
 
