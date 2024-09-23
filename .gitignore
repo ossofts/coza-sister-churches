@@ -132,4 +132,4 @@ dist
 .DS_Store
 
 # FCM (this file is only used for dev mode purposes)
-public/firebase-messaging-sw.js
+# public/firebase-messaging-sw.js

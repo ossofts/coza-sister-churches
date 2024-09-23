@@ -14,24 +14,14 @@ import { usePostFcmToken } from "@/services/notification";
 
 const firebaseConfig = {
   // Your Firebase configuration object
-  apiKey: "AIzaSyDAYhQ7mCYqLvdvn1JQE0y-q7s6S6JHuTs",
-  authDomain: "cozaworkforceapp.firebaseapp.com",
-  projectId: "cozaworkforceapp",
-  storageBucket: "cozaworkforceapp.appspot.com",
-  messagingSenderId: "378695098622",
-  appId: "1:378695098622:web:1231f01bb09f028d1605af",
-  measurementId: "G-42VJ28YWBF",
+  apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENT_ID,
 };
-// const firebaseConfig = {
-//   // Your Firebase configuration object
-//   apiKey: "AIzaSyC9530XhIe2chOiMxDom7eEGpN3B7dTCm4",
-//   authDomain: "coza-sister-churches.firebaseapp.com",
-//   projectId: "coza-sister-churches",
-//   storageBucket: "coza-sister-churches.appspot.com",
-//   messagingSenderId: "788178658821",
-//   appId: "1:788178658821:web:d68f2f232a5fda8e6dde6c",
-//   measurementId: "G-TMFBFBGM1K",
-// };
 
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
@@ -53,21 +43,15 @@ export function useFirebaseMessaging() {
   const mutation = usePostFcmToken();
 
   const getFCMToken = async () => {
-    console.log("getFCMToken");
+    // console.log("getFCMToken");
     try {
       // Wait for service worker installation to be ready
       //   const serviceWorkerRegistration = await navigator.serviceWorker.ready;
       //   console.log({ serviceWorkerRegistration });
       //   console.log("Service Worker is ready");
 
-      // const currentToken = await getToken(messaging, {
-      //   vapidKey:
-      //     "BHygvO8rNr-PM0kvCgwFw3XBwQ2b4RYLrGiLiAprT7r9G2I4yWuDzRK4iTI7qv55lTAX12Ew7MnotmVv0qsVa3A",
-      //   // serviceWorkerRegistration,
-      // });
       const currentToken = await getToken(messaging, {
-        vapidKey:
-          "BA6cxKIbOYaybCO0byso81Ahq66nuyTx6uzHF3CU7kZ7IlHjdopdMm52KAQ0kkgHH3um1ryJ-5_56uMq22B-3H4",
+        vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPID_KEY,
       });
 
       if (currentToken) {
@@ -99,23 +83,6 @@ export function useFirebaseMessaging() {
     } catch (error) {
       console.error("Error sending token to backend:", error);
     }
-
-    // fetch(`${import.meta.env.VITE_BASE_URL}/account/addDeviceToken`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: email,
-    //     deviceId: deviceId,
-    //     fcmToken: token,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((_data) => console.log("Token sent to backend"))
-    //   .catch((error) =>
-    //     console.error("Error sending token to backend:", error)
-    //   );
   };
 
   const onMessageListener = () => {
@@ -189,19 +156,3 @@ export function useFirebaseMessaging() {
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDAYhQ7mCYqLvdvn1JQE0y-q7s6S6JHuTs",
-//   authDomain: "cozaworkforceapp.firebaseapp.com",
-//   projectId: "cozaworkforceapp",
-//   storageBucket: "cozaworkforceapp.appspot.com",
-//   messagingSenderId: "378695098622",
-//   appId: "1:378695098622:web:1231f01bb09f028d1605af",
-//   measurementId: "G-42VJ28YWBF"
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
