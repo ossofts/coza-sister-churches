@@ -13,8 +13,8 @@ const manifestForPlugIn = {
     "COZA-Logo-black.png",
   ],
   manifest: {
-    name: "CGWC",
-    short_name: "CGWC",
+    name: "CGLS",
+    short_name: "CGLS",
     dir: "ltr",
     lang: "en-US",
     orientation: "portrait",
@@ -23,25 +23,25 @@ const manifestForPlugIn = {
     background_color: "#000000",
     theme_color: "#6B079C",
     display: "standalone",
-    description: "COZA Global Workers Congress App",
+    description: "COZA Global Leadership Summit App",
     icons: [
       {
-        src: "/coza-logo-192x192.png",
+        src: "/CGLS-192x192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/coza-logo-256x256.png",
+        src: "/CGLS-256x256.png",
         sizes: "256x256",
         type: "image/png",
       },
       {
-        src: "/coza-logo-384x384.png",
+        src: "/CGLS-384x384.png",
         sizes: "384x384",
         type: "image/png",
       },
       {
-        src: "/coza-logo-512x512.png",
+        src: "/CGLS-512x512.png",
         sizes: "512x512",
         type: "image/png",
       },

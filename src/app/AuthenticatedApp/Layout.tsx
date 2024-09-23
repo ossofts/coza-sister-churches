@@ -15,8 +15,7 @@ type Props = {
 const Layout = ({ children }: Props) => {
   const isDarkMode = useColorScheme();
   const handleRefresh = async () => window.location.reload();
-  const { fcmToken } = useFirebaseMessaging();
-  console.log({ fcmToken });
+  useFirebaseMessaging();
 
   // console.log({ fcmToken, notification });
   return (
