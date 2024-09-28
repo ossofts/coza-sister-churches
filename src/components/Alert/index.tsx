@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import {
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  DrawerTitle
+  DrawerTitle,
 } from "../ui/drawer";
 import { useMediaQuery } from "react-responsive";
 import {
   IoWarningOutline,
   IoCheckmarkCircleOutline,
-  IoInformationCircleOutline
+  IoInformationCircleOutline,
 } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 import ReactIf from "../ReactIf";
@@ -21,14 +27,15 @@ import { COLORS } from "@/theme/colors";
 type Props = {
   type: "success" | "info" | "error" | "warning";
   message: string;
+  title?: string;
   isOpen: boolean;
-  seconds?: number;
+  seconds?: number | null;
 };
 
-export const Alert = ({ type, message, isOpen, seconds }: Props) => {
+export const Alert = ({ type, message, isOpen, seconds, title }: Props) => {
   const [open, setOpen] = useState(isOpen);
   const isDesktop = useMediaQuery({
-    query: "(min-width: 768px)"
+    query: "(min-width: 768px)",
   });
 
   const statusIcon = () => {
@@ -46,6 +53,7 @@ export const Alert = ({ type, message, isOpen, seconds }: Props) => {
   };
 
   useEffect(() => {
+    if (seconds === null) return;
     if (seconds) {
       setTimeout(() => {
         setOpen(false);
@@ -64,7 +72,9 @@ export const Alert = ({ type, message, isOpen, seconds }: Props) => {
           <DialogContent className="sm:max-w-[425px] dark:bg-opacity-50 backdrop-blur-md">
             <DialogHeader className="flex flex-col items-center gap-5">
               <DialogTitle className={"pt-5"}>{statusIcon()}</DialogTitle>
-              <DialogDescription className={"pb-10 text-lg font-medium text-center"}>
+              <DialogDescription
+                className={"pb-10 text-lg font-medium text-center"}
+              >
                 {message}
               </DialogDescription>
             </DialogHeader>
@@ -75,8 +85,18 @@ export const Alert = ({ type, message, isOpen, seconds }: Props) => {
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md">
             <DrawerHeader className="flex flex-col items-center gap-5">
-              <DrawerTitle className={"pt-5"}>{statusIcon()}</DrawerTitle>
-              <DrawerDescription className={"pb-10 text-lg font-medium text-center"}>
+              <DrawerTitle className={"pt-5"}>
+                {statusIcon()}
+
+                {title && (
+                  <span className="block py-5 text-2xl font-bold text-center">
+                    {title}
+                  </span>
+                )}
+              </DrawerTitle>
+              <DrawerDescription
+                className={"pb-10 text-lg font-medium text-center"}
+              >
                 {message}
               </DrawerDescription>
             </DrawerHeader>
