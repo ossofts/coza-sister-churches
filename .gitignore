@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 .DS_Store
+
+# FCM (this file is only used for dev mode purposes)
+# public/firebase-messaging-sw.js
