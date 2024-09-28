@@ -23,7 +23,7 @@ export const toastify = (
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined
+    progress: undefined,
     // style: { color: "#ffffff", backgroundColor: bgColor }
   });
 };
@@ -48,12 +48,16 @@ export const useToast = () => {
   const info = (msg: string) => toastify(msg, "info", theme());
   const warn = (msg: string) => toastify(msg, "warn", theme());
   const error = (msg?: string) =>
-    toastify(msg || "Unexpected error occured! try again later", "error", theme());
+    toastify(
+      msg || "Unexpected error occured! try again later",
+      "error",
+      theme()
+    );
 
   return {
     success,
     info,
     warn,
-    error
+    error,
   };
 };
