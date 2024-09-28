@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path from "path";
+import path, { resolve } from "path";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
@@ -13,8 +13,8 @@ const manifestForPlugIn = {
     "COZA-Logo-black.png",
   ],
   manifest: {
-    name: "CGWC",
-    short_name: "CGWC",
+    name: "CGLS",
+    short_name: "CGLS",
     dir: "ltr",
     lang: "en-US",
     orientation: "portrait",
@@ -23,25 +23,25 @@ const manifestForPlugIn = {
     background_color: "#000000",
     theme_color: "#6B079C",
     display: "standalone",
-    description: "COZA Global Workers Congress App",
+    description: "COZA Global Leadership Summit App",
     icons: [
       {
-        src: "/coza-logo-192x192.png",
+        src: "/CGLS-192x192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/coza-logo-256x256.png",
+        src: "/CGLS-256x256.png",
         sizes: "256x256",
         type: "image/png",
       },
       {
-        src: "/coza-logo-384x384.png",
+        src: "/CGLS-384x384.png",
         sizes: "384x384",
         type: "image/png",
       },
       {
-        src: "/coza-logo-512x512.png",
+        src: "/CGLS-512x512.png",
         sizes: "512x512",
         type: "image/png",
       },
@@ -54,6 +54,15 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths(), VitePWA(manifestForPlugIn)],
   build: {
     outDir: "./dist",
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        "firebase-messaging-sw": resolve(
+          __dirname,
+          "./public/firebase-messaging-sw.js"
+        ),
+      },
+    },
   },
   resolve: {
     alias: {
@@ -69,6 +78,12 @@ export default defineConfig({
         ".js": "jsx",
         ".ts": "tsx",
       },
+    },
+  },
+
+  server: {
+    headers: {
+      "Service-Worker-Allowed": "/",
     },
   },
 

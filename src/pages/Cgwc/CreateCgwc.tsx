@@ -67,7 +67,7 @@ const CreateCgwc = () => {
           <TextInputWithIcon
             label="Name"
             name="name"
-            placeholder="CGWC Name"
+            placeholder="CGLS Name"
             type="text"
             register={register}
             error={formState.errors.name}
@@ -96,7 +96,7 @@ const CreateCgwc = () => {
           </div>
 
           <PrimaryButton className="mt-2" type="submit">
-            {mutation.isPending ? <Spinner /> : "Create CGWC"}
+            {mutation.isPending ? <Spinner /> : "Create CGLS"}
           </PrimaryButton>
         </form>
       </Form>
