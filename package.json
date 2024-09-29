@@ -1,7 +1,7 @@
 {
   "name": "cgwc-app",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "scripts": {
     "prebuild": "node check-version.cjs",
@@ -31,7 +31,7 @@
     "date-fns": "^3.3.1",
     "embla-carousel-autoplay": "^8.0.0-rc23",
     "embla-carousel-react": "^8.0.0-rc23",
-    "firebase": "^10.13.1",
+    "firebase": "^10.13.2",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
@@ -87,5 +87,6 @@
     "vite": "^5.0.8",
     "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.2"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
