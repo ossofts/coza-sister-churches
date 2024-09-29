@@ -13,13 +13,15 @@ import ReactIf from "../ReactIf";
 import { Spinner } from "../Loaders";
 import { COLORS } from "@/theme/colors";
 
+export type OptionsType = {
+  label: string | number;
+  value: string;
+}
+
 type Props<T extends FieldValues> = {
-  control: Control<T, unknown, T>;
+  control: Control<T, unknown>;
   name: Path<T>;
-  options: {
-    label: string | number;
-    value: string;
-  }[];
+  options: OptionsType[];
   placeholder: string;
   label?: string;
   containerExtraClass?: ClassNameValue;
