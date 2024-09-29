@@ -16,7 +16,7 @@ import { ChangeEvent, useRef, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
 type Props<T extends FieldValues> = {
-  control: Control<T, unknown, T>;
+  control: Control<T, unknown>;
   name: Path<T>;
   options: {
     label: string | number;

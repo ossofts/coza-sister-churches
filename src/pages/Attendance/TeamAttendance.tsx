@@ -1,5 +1,5 @@
 import { TableColumn } from "@/components/DataTable/types";
-import { TeamAttendance } from "./types";
+import { TeamAttendance as TeamAttendanceType } from "./types";
 // import { teamAttendanceData } from "./utils";
 import DataTable from "@/components/DataTable";
 import SelectComponent from "@/components/SelectComponent";
@@ -21,7 +21,7 @@ type Options = {
 };
 
 const TeamAttendance = () => {
-  const columns: TableColumn<TeamAttendance>[] = [
+  const columns: TableColumn<TeamAttendanceType>[] = [
     {
       title: "Name",
       field: "firstName",

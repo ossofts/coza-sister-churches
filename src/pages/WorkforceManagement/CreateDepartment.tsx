@@ -8,8 +8,7 @@ import showAlert from "@/hooks/useAlert";
 import { customError } from "@/types/global.type";
 import { FullPageSpinner, Spinner } from "@/components/Loaders";
 import { Form } from "@/components/ui/form";
-import SelectInput from "@/components/Inputs/SelectInput";
-import { OptionsType } from "node_modules/embla-carousel-autoplay/esm/components/Options";
+import SelectInput, { OptionsType } from "@/components/Inputs/SelectInput";
 import ReactIf from "@/components/ReactIf";
 import { LuUsers } from "react-icons/lu";
 import { MdOutlineDescription } from "react-icons/md";
@@ -80,7 +79,7 @@ const CreateDepartment = () => {
                   campuses?.data?.map((campus) => ({
                     label: campus?.campusName,
                     value: campus?._id
-                  })) as OptionsType
+                  })) as OptionsType[]
                 }
                 error={formState.errors.campusId}
               />

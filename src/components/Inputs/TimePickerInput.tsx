@@ -9,7 +9,7 @@ import InputErrorAlert from "../Errors/InputErrorAlert";
 // import { TimePicker } from "react-ios-time-picker";
 
 type Props<T extends FieldValues> = {
-  control: Control<T, unknown, T>;
+  control: Control<T, unknown>;
   name: Path<T>;
   placeholder?: string;
   label?: string;
