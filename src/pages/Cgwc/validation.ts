@@ -9,6 +9,12 @@ export const createCgwcSchema = yupResolver<CreateCgwcInputs>(
     name: yup.string().required("Name is required"),
     startDate: yup.date().required("Start date is required"),
     endDate: yup.date().required("Start date is required"),
+    registrationStartDate: yup
+      .date()
+      .required("Registration start date is required"),
+    registrationEndDate: yup
+      .date()
+      .required("Registration end date is required"),
   })
 );
 
