@@ -17,6 +17,8 @@ export type CreateCgwcInputs = {
   name: string;
   endDate: Date | number;
   startDate: Date | number;
+  registrationStartDate: Date | number;
+  registrationEndDate: Date | number;
 };
 
 const CreateCgwc = () => {
@@ -38,6 +40,8 @@ const CreateCgwc = () => {
       name: data.name,
       startDate: moment(data.startDate).unix(),
       endDate: moment(data.endDate).unix(),
+      registrationStartDate: moment(data.registrationStartDate).unix(),
+      registrationEndDate: moment(data.registrationEndDate).unix(),
     };
 
     mutation.mutate(body);
@@ -92,6 +96,26 @@ const CreateCgwc = () => {
               required
               disabledPeriod={() => false}
               error={formState.errors.endDate}
+            />
+          </div>
+          <div className="flex items-center justify-between overflow-auto gap-3">
+            <DatePickerInput
+              control={control}
+              name="registrationStartDate"
+              placeholder="Pick a date"
+              label="Registration Start Date"
+              required
+              disabledPeriod={() => false}
+              error={formState.errors.registrationStartDate}
+            />
+            <DatePickerInput
+              control={control}
+              name="registrationEndDate"
+              placeholder="Pick a date"
+              label="Registration End Date"
+              required
+              disabledPeriod={() => false}
+              error={formState.errors.registrationEndDate}
             />
           </div>
 
