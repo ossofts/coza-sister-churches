@@ -74,7 +74,7 @@ const CgwcDetails = () => {
     } else {
       return false;
     }
-  }, []);
+  }, [totalAttendance]);
 
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
