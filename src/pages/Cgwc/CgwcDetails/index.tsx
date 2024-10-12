@@ -90,7 +90,7 @@ const CgwcDetails = () => {
         />
       </div>
       {showCertificateCondition && (
-        <div className="flex justify-end w-full px-3">
+        <div className="flex justify-end w-full px-3 my-2">
           <DownloadCertificate />
         </div>
       )}
