@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import {
   Page,
   Text,
@@ -49,7 +49,7 @@ export const CertificateCard: React.FC<CertificateProps> = ({ userName }) => (
         {/* The certificate SVG image */}
         <CertImage />
         {/* User's name text overlay */}
-        {/* <Text style={styles.userName}>{userName}</Text> */}
+        <Text style={styles.userName}>{userName}</Text>
       </View>
     </Page>
   </Document>
@@ -69,12 +69,12 @@ interface CertificateDownloadProps {
   userName: string;
 }
 
-type DownloadLinkProps = {
-  blob: Blob | null;
-  url: string | null;
-  loading: boolean;
-  error: Error | null;
-};
+// type DownloadLinkProps = {
+//   blob: Blob | null;
+//   url: string | null;
+//   loading: boolean;
+//   error: Error | null;
+// };
 
 // Main component to render the download link
 export const CertificateDownload = ({ userName }: CertificateDownloadProps) => (

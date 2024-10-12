@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogHeader,
+//   DialogTitle,
+// } from "../ui/dialog";
 import {
   Drawer,
   DrawerContent,
@@ -14,14 +14,14 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "../ui/drawer";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import {
   IoWarningOutline,
   IoCheckmarkCircleOutline,
   IoInformationCircleOutline,
 } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
-import ReactIf from "../ReactIf";
+// import ReactIf from "../ReactIf";
 import { COLORS } from "@/theme/colors";
 
 type Props = {
@@ -34,9 +34,9 @@ type Props = {
 
 export const Alert = ({ type, message, isOpen, seconds, title }: Props) => {
   const [open, setOpen] = useState(isOpen);
-  const isDesktop = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
+  // const isDesktop = useMediaQuery({
+  //   query: "(min-width: 768px)",
+  // });
 
   const statusIcon = () => {
     switch (type) {
@@ -65,45 +65,66 @@ export const Alert = ({ type, message, isOpen, seconds, title }: Props) => {
     }
   }, [seconds]);
   return (
-    <ReactIf
-      condition={isDesktop}
-      component={
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[425px] dark:bg-opacity-50 backdrop-blur-md">
-            <DialogHeader className="flex flex-col items-center gap-5">
-              <DialogTitle className={"pt-5"}>{statusIcon()}</DialogTitle>
-              <DialogDescription
-                className={"pb-10 text-lg font-medium text-center"}
-              >
-                {message}
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      }
-      fallback={
-        <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md">
-            <DrawerHeader className="flex flex-col items-center gap-5">
-              <DrawerTitle className={"pt-5"}>
-                {statusIcon()}
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md">
+        <DrawerHeader className="flex flex-col items-center gap-5">
+          <DrawerTitle className={"pt-5"}>
+            {statusIcon()}
 
-                {title && (
-                  <span className="block py-5 text-2xl font-bold text-center">
-                    {title}
-                  </span>
-                )}
-              </DrawerTitle>
-              <DrawerDescription
-                className={"pb-10 text-lg font-medium text-center"}
-              >
-                {message}
-              </DrawerDescription>
-            </DrawerHeader>
-            <DrawerFooter></DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      }
-    />
+            {title && (
+              <span className="block py-5 text-2xl font-bold text-center">
+                {title}
+              </span>
+            )}
+          </DrawerTitle>
+          <DrawerDescription
+            className={"pb-10 text-lg font-medium text-center"}
+          >
+            {message}
+          </DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter></DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+    // <ReactIf
+    //   condition={isDesktop}
+    //   component={
+    //     <Dialog open={open} onOpenChange={setOpen}>
+    //       <DialogContent className="sm:max-w-[425px] dark:bg-opacity-50 backdrop-blur-md">
+    //         <DialogHeader className="flex flex-col items-center gap-5">
+    //           <DialogTitle className={"pt-5"}>{statusIcon()}</DialogTitle>
+    //           <DialogDescription
+    //             className={"pb-10 text-lg font-medium text-center"}
+    //           >
+    //             {message}
+    //           </DialogDescription>
+    //         </DialogHeader>
+    //       </DialogContent>
+    //     </Dialog>
+    //   }
+    //   fallback={
+    //     <Drawer open={open} onOpenChange={setOpen}>
+    //       <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md">
+    //         <DrawerHeader className="flex flex-col items-center gap-5">
+    //           <DrawerTitle className={"pt-5"}>
+    //             {statusIcon()}
+
+    //             {title && (
+    //               <span className="block py-5 text-2xl font-bold text-center">
+    //                 {title}
+    //               </span>
+    //             )}
+    //           </DrawerTitle>
+    //           <DrawerDescription
+    //             className={"pb-10 text-lg font-medium text-center"}
+    //           >
+    //             {message}
+    //           </DrawerDescription>
+    //         </DrawerHeader>
+    //         <DrawerFooter></DrawerFooter>
+    //       </DrawerContent>
+    //     </Drawer>
+    //   }
+    // />
   );
 };
