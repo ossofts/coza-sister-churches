@@ -1,14 +1,31 @@
+// import { toSentenceCase } from "@/utils/textFormatters";
 import CertImage from "./certificate-image";
+import { twMerge } from "tailwind-merge";
 
 // Certificate component that generates the PDF document
 
-export const CertificatePdf = ({ userName }: { userName: string }) => (
-  <div className="w-fit h-fit relative">
-    <CertImage />
-    <p className="text-[70px] absolute bottom-[290px] left-[50%] text-[#aa6400] font-Pinyon-Script translate-x-[-50%] translate-y-[-50%]">
-      {userName}
-    </p>
-  </div>
-);
+const CertificatePdf = ({
+  userName,
+  length,
+}: {
+  userName: string;
+  length: number;
+}) => {
+  return (
+    <div className="w-fit h-fit relative">
+      <CertImage />
+      <p
+        className={twMerge(
+          "absolute left-[50%] text-[#aa6400] font-Pinyon-Script translate-x-[-50%] translate-y-[-50%] whitespace-nowrap",
+          length && length > 35
+            ? "text-[50px] bottom-[320px]"
+            : "text-[70px] bottom-[290px]"
+        )}
+      >
+        {userName}
+      </p>
+    </div>
+  );
+};
 
-// Type for the CertificateDownload component props
+export default CertificatePdf;
