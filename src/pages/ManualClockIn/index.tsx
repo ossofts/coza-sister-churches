@@ -164,7 +164,7 @@ const ManualClockIn = () => {
             isInRangeProp={isInRange}
             campusId={useWatch({ control, name: "campusId" }) as string}
             deviceCoordinates={deviceCoordinates}
-            departmentId={useWatch({ control, name: "campusId" }) as string}
+            departmentId={useWatch({ control, name: "departmentId" }) as string}
             userId={thirdPartyUser?._id as string}
             roleId={thirdPartyUser?.roleId as string}
             campusCoordinates={campusCoordinates as Coordinates}
