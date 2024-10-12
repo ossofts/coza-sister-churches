@@ -6,7 +6,7 @@ module.exports = {
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}"
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -14,15 +14,18 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px"
-      }
+        "2xl": "1400px",
+      },
     },
     extend: {
+      fontFamily: {
+        "Pinyon-Script": ["Pinyon Script"],
+      },
       screens: {
         sm: "480px",
         md: "768px",
         lg: "976px",
-        xl: "1440px"
+        xl: "1440px",
       },
       colors: {
         appColors: {
@@ -41,7 +44,7 @@ module.exports = {
           warning: "#EA580C",
           error: "#DC2626",
           rose: "#F87171",
-          lightRose: "#FECDD3"
+          lightRose: "#FECDD3",
         },
 
         brandColor: {
@@ -54,25 +57,25 @@ module.exports = {
           600: "#6B079C",
           700: "#520578",
           800: "#520578",
-          900: "#520578"
-        }
+          900: "#520578",
+        },
       },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" }
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" }
-        }
+          to: { height: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out"
-      }
-    }
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
   },
   // eslint-disable-next-line no-undef
-  plugins: [require("tailwindcss-animate")]
+  plugins: [require("tailwindcss-animate")],
 };

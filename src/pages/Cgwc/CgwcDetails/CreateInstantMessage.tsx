@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-import { Status } from "@/store/types";
+// import { Status } from "@/store/types";
 import { useParams } from "react-router-dom";
 import { createInstantMessageSchema } from "../validation";
 import { useForm } from "react-hook-form";
@@ -18,8 +18,9 @@ export type CGWCInstantMessagePayload = {
   CGWCId: string;
   cgwcId?: string;
   message: string;
-  status: Status;
+  // status: Status;
   messageLink: string;
+  imageUrl: string;
 };
 
 const CreateInstantMessage = () => {
@@ -29,7 +30,10 @@ const CreateInstantMessage = () => {
 
   const mutation = useCreateInstantMessageMutation();
   const form = useForm<
-    Pick<CGWCInstantMessagePayload, "title" | "message" | "messageLink">
+    Pick<
+      CGWCInstantMessagePayload,
+      "title" | "message" | "messageLink" | "imageUrl"
+    >
   >({
     resolver: createInstantMessageSchema,
     defaultValues: {
@@ -41,14 +45,18 @@ const CreateInstantMessage = () => {
   const { register, handleSubmit, formState } = form;
 
   const onSubmit = (
-    data: Pick<CGWCInstantMessagePayload, "title" | "message" | "messageLink">
+    data: Pick<
+      CGWCInstantMessagePayload,
+      "title" | "message" | "messageLink" | "imageUrl"
+    >
   ) => {
     const body = {
       CGWCId: String(id),
       title: data.title,
       message: data.message,
       messageLink: data.messageLink,
-      status: "PENDING" as Status,
+      imageUrl: data.imageUrl,
+      // status: "PENDING" as Status,
     };
     mutation.mutate(body);
   };
@@ -83,6 +91,14 @@ const CreateInstantMessage = () => {
           error={formState.errors.title}
           inputProps={{ autoComplete: "off", type: "text", required: true }}
         />
+        <TextboxInput
+          label="Message"
+          name="message"
+          placeholder="Enter message"
+          register={register}
+          error={formState.errors.message}
+          inputProps={{ autoComplete: "off", required: true }}
+        />
         <TextInputWithIcon
           label="Message Link"
           name="messageLink"
@@ -92,13 +108,14 @@ const CreateInstantMessage = () => {
           error={formState.errors.messageLink}
           inputProps={{ autoComplete: "off", type: "text", required: true }}
         />
-        <TextboxInput
-          label="Message"
-          name="message"
-          placeholder="Enter message"
+        <TextInputWithIcon
+          label="Image Url"
+          name="imageUrl"
+          placeholder="Enter image url"
+          type="url"
           register={register}
-          error={formState.errors.message}
-          inputProps={{ autoComplete: "off", required: true }}
+          error={formState.errors.imageUrl}
+          inputProps={{ autoComplete: "off", type: "text", required: true }}
         />
 
         <PrimaryButton className="mt-2" type="submit">
