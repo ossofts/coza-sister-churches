@@ -19,7 +19,7 @@ export const createCgwcSchema = yupResolver<CreateCgwcInputs>(
 );
 
 export const createInstantMessageSchema = yupResolver<
-  Pick<CGWCInstantMessage, "title" | "message" | "messageLink">
+  Pick<CGWCInstantMessage, "title" | "message" | "messageLink" | "imageUrl">
 >(
   yup.object().shape({
     message: yup.string().required("Message is required"),
@@ -27,6 +27,10 @@ export const createInstantMessageSchema = yupResolver<
     messageLink: yup
       .string()
       .url("Message link must be a url")
+      .required("Message link is required"),
+    imageUrl: yup
+      .string()
+      .url("Image url is invalid")
       .required("Message link is required"),
   })
 );

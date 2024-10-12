@@ -16,8 +16,11 @@ import UniversalAddButton from "@/components/UniversalAddButton";
 import useNavigation from "@/hooks/useNavigation";
 import ROUTES from "@/routes";
 import PageHeader from "@/components/PageHeader";
+import DownloadCertificate from "../Certificate/DownloadCertificate";
+import { useMemo, useState } from "react";
 
 const CgwcDetails = () => {
+  const [totalAttendance, setTotalAttendance] = useState(0);
   const { params } = useCurrentPath();
   const navigation = useNavigation();
   const CGWCId = params?.id;
@@ -63,6 +66,16 @@ const CgwcDetails = () => {
     },
   ];
 
+  const showCertificateCondition = useMemo(() => {
+    const today = new Date().getTime();
+    const finalDay = new Date("2024-10-13T09:00:00").getTime();
+    if (totalAttendance > 80 && today >= finalDay) {
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
   return (
@@ -76,11 +89,17 @@ const CgwcDetails = () => {
           carouselItem={Item}
         />
       </div>
+      {showCertificateCondition && (
+        <div className="flex justify-end w-full px-3">
+          <DownloadCertificate />
+        </div>
+      )}
       <div>
         <MyAttendance
           sessions={sessions?.data || []}
           CGWCId={CGWCId}
           userId={user?.userId}
+          setTotalAttendance={setTotalAttendance}
         />
 
         <ReactIf
