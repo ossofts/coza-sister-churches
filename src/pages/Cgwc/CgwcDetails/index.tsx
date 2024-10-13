@@ -69,7 +69,7 @@ const CgwcDetails = () => {
   const showCertificateCondition = useMemo(() => {
     const today = new Date().getTime();
     const finalDay = new Date("2024-10-13T09:00:00").getTime();
-    if (totalAttendance > 80 && today >= finalDay) {
+    if (totalAttendance >= 80 && today >= finalDay) {
       return true;
     } else {
       return false;
