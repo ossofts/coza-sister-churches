@@ -41,10 +41,10 @@ const Modal = ({
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
+      {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
       <DialogContent className={twMerge("md:max-w-[600px]", containerClass)}>
         <DialogHeader {...headerProps}>
-          {title && <DialogTitle className={twMerge(titleClass)}>{title}</DialogTitle>}
+          {title && <DialogTitle className={twMerge(titleClass)}><span>{title}</span></DialogTitle>}
           {description && (
             <DialogDescription className={twMerge(descriptionClass)}>
               {description}
