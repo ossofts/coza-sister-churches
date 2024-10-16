@@ -1,5 +1,5 @@
 // import { toSentenceCase } from "@/utils/textFormatters";
-import CertImage from "./certificate-image";
+// import CertImage from "./certificate-image";
 import { twMerge } from "tailwind-merge";
 
 // Certificate component that generates the PDF document
@@ -13,7 +13,13 @@ const CertificatePdf = ({
 }) => {
   return (
     <div className="w-fit h-fit relative">
-      <CertImage />
+      {/* <CertImage /> */}
+      <img
+        style={{ minWidth: "1122px", minHeight: "793px" }}
+        src="/certificate.PNG"
+        alt=""
+        className="w-[1122px] h-[793px]"
+      />
       <p
         className={twMerge(
           "absolute left-[50%] text-[#aa6400] font-Pinyon-Script translate-x-[-50%] translate-y-[-50%] whitespace-nowrap",
