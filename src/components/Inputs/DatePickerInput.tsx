@@ -10,7 +10,7 @@ import { ClassNameValue, twMerge } from "tailwind-merge";
 import InputErrorAlert from "../Errors/InputErrorAlert";
 
 type Props<T extends FieldValues> = {
-  control: Control<T, unknown, T>;
+  control: Control<T, unknown>;
   name: Path<T>;
   placeholder?: string;
   label?: string;

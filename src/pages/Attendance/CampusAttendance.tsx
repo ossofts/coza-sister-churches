@@ -1,6 +1,7 @@
 import DataTable from "@/components/DataTable";
 import { TableColumn } from "@/components/DataTable/types";
 import EmptyData from "@/components/EmptyData";
+import { OptionsType } from "@/components/Inputs/SelectInput";
 import { FullPageSpinner } from "@/components/Loaders";
 import ReactIf from "@/components/ReactIf";
 import SelectComponent from "@/components/SelectComponent";
@@ -10,7 +11,6 @@ import { useGetServices } from "@/services/service";
 import { Attendance, Service } from "@/store/types";
 import { sortByDate } from "@/utils";
 import moment from "moment";
-import { OptionsType } from "node_modules/embla-carousel-autoplay/esm/components/Options";
 import { useEffect, useMemo, useState } from "react";
 
 const CampusAttendance = () => {

@@ -14,7 +14,7 @@ import { Spinner } from "../Loaders";
 import { COLORS } from "@/theme/colors";
 
 export type OptionsType = {
-  label: string | number;
+  label: string;
   value: string;
 }
 
