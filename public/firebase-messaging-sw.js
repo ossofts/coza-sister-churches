@@ -3,6 +3,28 @@ importScripts(
   "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
 );
 
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCevgIinGkv9-xTE70bOqcS7NIeCX-vnfc",
+//   authDomain: "coza-cgwc.firebaseapp.com",
+//   projectId: "coza-cgwc",
+//   storageBucket: "coza-cgwc.appspot.com",
+//   messagingSenderId: "615747867764",
+//   appId: "1:615747867764:web:d8efb6797ffcd25c9b6d21",
+//   measurementId: "G-8QSJQWF80G"
+// };
+
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
 firebase.initializeApp({
   apiKey: process.env.VITE_APP_FIREBASE_API_KEY,
   authDomain: process.env.VITE_APP_FIREBASE_AUTH_DOMAIN,

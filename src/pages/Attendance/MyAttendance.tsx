@@ -1,5 +1,5 @@
 import { TableColumn } from "@/components/DataTable/types";
-import { MyAttendance } from "./types";
+import { MyAttendance as MyAttendanceType } from "./types";
 import DataTable from "@/components/DataTable";
 // import { attendanceData } from "./utils";
 import { useGetAttendance } from "@/services/attendance";
@@ -16,7 +16,7 @@ import { FullPageSpinner } from "@/components/Loaders";
 const MyAttendance = () => {
   const user = useUserStore((state) => state.user);
   const [page, setPage] = useState(1);
-  const columns: TableColumn<MyAttendance>[] = [
+  const columns: TableColumn<MyAttendanceType>[] = [
     {
       title: "Date",
       field: "clockIn",
@@ -63,7 +63,7 @@ const MyAttendance = () => {
     page,
   });
 
-  const { data: moreData } = useFetchMoreData<MyAttendance>({
+  const { data: moreData } = useFetchMoreData<MyAttendanceType>({
     dataSet: data?.data,
     isSuccess,
     uniqKey: "_id",
