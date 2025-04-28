@@ -2,7 +2,7 @@ import axiosClient from "@/services/client";
 import { LoginResponse, RegisterInputs } from "../../pages/AuthForms/types";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { DefaultQueryParams, Department, User } from "@/store/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CreateUserInputs } from "@/pages/WorkforceManagement/types";
 
 const serviceUrl = "/api/account";
@@ -99,5 +99,21 @@ export const useUploadUser = () => {
         `${serviceUrl}/createUploadedUSer`,
         body
       ) as ServerResponse<User>,
+  });
+};
+
+export const useDeleteUserByEmail = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (email: string) =>
+      axiosClient.delete(`${serviceUrl}/delete/${email}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getUsers"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getUsersByDepartmentId"],
+      });
+    },
   });
 };
