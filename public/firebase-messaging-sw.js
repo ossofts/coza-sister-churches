@@ -52,7 +52,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification?.title || "New Message";
   const notificationOptions = {
     body: payload.notification?.body,
-    icon: "/CGLS-76x76.png",
+    icon: "/coza-logo-76x76.png",
     data: { url: link },
   };
 

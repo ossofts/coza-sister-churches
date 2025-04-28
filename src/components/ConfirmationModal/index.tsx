@@ -6,7 +6,7 @@ type Props = {
   setOpen: (open: boolean) => void;
   title?: string;
   titleClass?: ClassNameValue;
-  description?: string;
+  description?: string | React.ReactNode;
   descriptionClass?: ClassNameValue;
   confirmationText?: string;
   onConfirmationClick: () => void;
@@ -20,7 +20,7 @@ const ConfirmationModal = ({
   description,
   descriptionClass,
   confirmationText,
-  onConfirmationClick
+  onConfirmationClick,
 }: Props) => {
   return (
     <Modal

@@ -103,7 +103,7 @@ const CreateCGWCSession = () => {
 
   return (
     <div className="px-5">
-      <PageHeader title="Create CGLS Session" />
+      <PageHeader title="Create Conference Session" />
 
       <Form {...form}>
         <form
