@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-// import { Status } from "@/store/types";
+import { Status } from "@/store/types";
 import { useParams } from "react-router-dom";
 import { createInstantMessageSchema } from "../validation";
 import { useForm } from "react-hook-form";
@@ -40,6 +40,7 @@ const CreateInstantMessage = () => {
       title: "",
       message: "",
       messageLink: "",
+      imageUrl: "",
     },
   });
   const { register, handleSubmit, formState } = form;
@@ -56,7 +57,7 @@ const CreateInstantMessage = () => {
       message: data.message,
       messageLink: data.messageLink,
       imageUrl: data.imageUrl,
-      // status: "PENDING" as Status,
+      status: "PENDING" as Status,
     };
     mutation.mutate(body);
   };
