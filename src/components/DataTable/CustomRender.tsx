@@ -10,6 +10,13 @@ import { COLORS } from "@/theme/colors";
 import AvatarComponent from "../AvatarComponent";
 import { capitalizeFirstLetter } from "@/utils/textFormatters";
 import BadgeComponent from "../BadgeComponent";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export default function CustomTableRender(props: {
   column: TableColumn<any>;
@@ -191,15 +198,31 @@ function ColumnRender(
   if (column.renderType?.user) {
     const user = column.renderType?.user(rowItem);
 
+    const fullName = `${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`;
+
     return (
       <div className="flex items-center flex-1 text-left w-full min-w-[45px] text-xs">
         <AvatarComponent
           src={user?.pictureUrl ?? ""}
-          extraClass="mr-4 w-8 h-8"
+          extraClass="mr-2 w-8 h-8"
           fallback={user.firstName[0] + user.lastName[0]}
         />
-        <div className="flex flex-col justify-center text-gray-800 dark:text-gray-100 [&>span]:ml-2">
-          <span className="truncate text-sm font-semibold">{`${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(user.lastName)}`}</span>
+        <div className="flex flex-col justify-center items-start text-gray-800 dark:text-gray-100 [&>span]:ml-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="">
+                <span
+                  className={cn(
+                    "text-sm font-semibold",
+                    fullName?.length > 20 && "inline-block max-w-32 truncate"
+                  )}
+                >
+                  {fullName}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>{fullName}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <span className="truncate text-neutral-400">
             {capitalizeFirstLetter(
               user?.departmentName
