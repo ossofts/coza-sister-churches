@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosClient from "../client";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { Department } from "@/store/types";
@@ -28,5 +28,18 @@ export const useCreateDepartment = () => {
         `${serviceUrl}/createDepartment`,
         body
       ) as ServerResponse<Department>,
+  });
+};
+
+export const useDeleteDepartmentById = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      axiosClient.delete(`${serviceUrl}/deleteDepartment/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getDepartmentsByCampusId"],
+      });
+    },
   });
 };
