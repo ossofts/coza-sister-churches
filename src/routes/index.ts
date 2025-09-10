@@ -7,6 +7,7 @@ const Welcome = lazy(() => import("@/pages/AuthForms/Welcome"));
 const Login = lazy(() => import("@/pages/AuthForms/Login"));
 const Register = lazy(() => import("@/pages/AuthForms/Register"));
 const ForgotPassword = lazy(() => import("@/pages/AuthForms/ForgotPassword"));
+const ResetPassword = lazy(() => import("@/pages/AuthForms/ResetPassword"));
 const Home = lazy(() => import("@/pages/Home"));
 const Attendance = lazy(() => import("@/pages/Attendance"));
 const Tickets = lazy(() => import("@/pages/Tickets"));
@@ -72,6 +73,12 @@ const ROUTES: Record<string, RouteObj> = {
     isPrivate: false,
     component: ForgotPassword,
     title: "ForgotPassword",
+  },
+  RESET_PASSWORD: {
+    path: "/reset/:email",
+    isPrivate: false,
+    component: ResetPassword,
+    title: "Reset Password",
   },
   HOME: {
     path: "/home",
