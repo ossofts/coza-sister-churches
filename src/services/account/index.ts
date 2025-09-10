@@ -52,6 +52,13 @@ export const forgotPassword = (
   return axiosClient.post(`${serviceUrl}/forget-password/${otp}`, body);
 };
 
+export const resetPasswordByEmail = (body: {
+  email: string;
+  newPassword: string;
+}) => {
+  return axiosClient.post(`${serviceUrl}/resetPasswordByEmail`, body);
+};
+
 export const useGetUsersByDepartmentId = (
   departmentId: Department["_id"],
   _options: QueryOptions<User[]> = {}
