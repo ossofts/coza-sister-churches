@@ -30,7 +30,7 @@ const DownloadCertificate = () => {
       try {
         // Use html2canvas to capture the div as an image
         const canvas = await html2canvas(element);
-        const imgData = canvas.toDataURL("image/png");
+        const imgData = canvas.toDataURL("image/jpeg, 0.5");
 
         // Create a new jsPDF instance with portrait orientation
         const pdf = new jsPDF({
@@ -46,7 +46,7 @@ const DownloadCertificate = () => {
         const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
 
         // Add the image to the PDF
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
 
         // Save the PDF
         pdf.save(`CGLS Certificate - ${user?.firstName} ${user?.lastName}.pdf`);

@@ -18,6 +18,7 @@ import ROUTES from "@/routes";
 import PageHeader from "@/components/PageHeader";
 import DownloadCertificate from "../Certificate/DownloadCertificate";
 import { useMemo, useState } from "react";
+import moment from "moment";
 
 const CgwcDetails = () => {
   const [totalAttendance, setTotalAttendance] = useState(0);
@@ -66,15 +67,20 @@ const CgwcDetails = () => {
     },
   ];
 
+  const cgwcIsActive = useMemo(() => {
+    const endDateWithGrace = moment(cgwc?.data.endDate).add(14, "days");
+    return endDateWithGrace.diff(moment()) > 0;
+  }, [cgwc?.data]);
+
   const showCertificateCondition = useMemo(() => {
     const today = new Date().getTime();
     const finalDay = new Date("2024-10-13T09:00:00").getTime();
-    if (totalAttendance >= 80 && today >= finalDay) {
+    if (totalAttendance >= 80 && today >= finalDay && cgwcIsActive) {
       return true;
     } else {
       return false;
     }
-  }, [totalAttendance]);
+  }, [totalAttendance, cgwcIsActive]);
 
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
