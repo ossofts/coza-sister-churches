@@ -16,7 +16,7 @@ import { COLORS } from "@/theme/colors";
 export type OptionsType = {
   label: string;
   value: string;
-}
+};
 
 type Props<T extends FieldValues> = {
   control: Control<T, unknown>;
@@ -96,10 +96,10 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
                 condition={!isLoading}
                 component={options?.map((item, idx) => (
                   <SelectItem
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
+                    // onClick={(e) => {
+                    //   e.preventDefault();
+                    //   e.stopPropagation();
+                    // }}
                     key={idx}
                     value={item.value}
                   >

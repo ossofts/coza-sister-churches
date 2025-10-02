@@ -133,10 +133,10 @@ function SelectInputWithSearch<T extends FieldValues>(props: Props<T>) {
                     ) : (
                       returnOptions()?.map((item, idx) => (
                         <SelectItem
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }}
+                          // onClick={(e) => {
+                          //   e.preventDefault();
+                          //   e.stopPropagation();
+                          // }}
                           key={idx}
                           value={item.value}
                         >
