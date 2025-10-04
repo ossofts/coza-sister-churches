@@ -111,6 +111,8 @@ const ClockButton = ({
     latestServiceData?.data &&
     moment().diff(moment(latestServiceData?.data?.clockInStartTime)) > 0;
   const disabled =
+    clockInMutation.isPending ||
+    clockOutMutation.isPending ||
     isLatestServiceError ||
     latestServiceLoading ||
     clockedOut ||

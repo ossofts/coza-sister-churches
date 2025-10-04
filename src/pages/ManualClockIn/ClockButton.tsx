@@ -164,7 +164,11 @@ const ClockButton = ({
     isInRange &&
     userId;
 
-  const disabled = !userId || !latestService;
+  const disabled =
+    clockInMutation.isPending ||
+    clockOutMutation.isPending ||
+    !userId ||
+    !latestService;
 
   return (
     <>
