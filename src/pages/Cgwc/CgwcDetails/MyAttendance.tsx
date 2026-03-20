@@ -61,36 +61,36 @@ const MyAttendance = React.memo(
             serviceId: attendance?.service?._id || attendance?.serviceId,
           };
         }) || [],
-      [data]
+      [data],
     );
 
-    // Check If
-    const isNinetyPercent = React.useMemo(() => {
-      const numberOfSessions = sessions?.length ?? 0;
-      const numberOfClockIns = minifiedAttendance.reduce(
-        (total, attendance) => {
-          if (attendance.clockIn) total += 1;
-          return total;
-        },
-        0
-      );
+    // Disable the bump to 90%
+    // const isNinetyPercent = React.useMemo(() => {
+    //   const numberOfSessions = sessions?.length ?? 0;
+    //   const numberOfClockIns = minifiedAttendance.reduce(
+    //     (total, attendance) => {
+    //       if (attendance.clockIn) total += 1;
+    //       return total;
+    //     },
+    //     0
+    //   );
 
-      return numberOfClockIns === numberOfSessions - 1;
-    }, [sessions, minifiedAttendance]);
+    //   return numberOfClockIns === numberOfSessions - 1;
+    // }, [sessions, minifiedAttendance]);
 
     const minifiedSessions = React.useMemo(
       () =>
         sessions?.map((session) => {
           return { serviceId: session._id, name: session.name };
         }) || [],
-      [sessions]
+      [sessions],
     );
 
     const mergedSessionsWithAttendance = React.useMemo(() => {
       if (minifiedAttendance?.length) {
         return mergeDuplicatesByKey<Attendance>(
           [...minifiedSessions, ...minifiedAttendance],
-          "serviceId"
+          "serviceId",
         );
       }
       return mergeDuplicatesByKey<Attendance>(minifiedSessions, "serviceId");
@@ -106,19 +106,26 @@ const MyAttendance = React.memo(
       return 0;
     }, [data]);
 
-    const percantageAttendance =
-      Math.round((cumulativeAttendance / TOTAL_ATTAINABLE_SCORE) * 100) || 0;
+    // Disable the bump to 90%
+    // const percantageAttendance =
+    //   Math.round((cumulativeAttendance / TOTAL_ATTAINABLE_SCORE) * 100) || 0;
 
-    const totalAttendance = (() => {
-      switch (true) {
-        case isNinetyPercent && percantageAttendance < 90:
-          return 90;
-        case cumulativeAttendance === 0 || TOTAL_ATTAINABLE_SCORE === 0:
-          return 0;
-        default:
-          return percantageAttendance;
-      }
-    })();
+    // const totalAttendance = (() => {
+    //   switch (true) {
+    //     case isNinetyPercent && percantageAttendance < 90:
+    //       return 90;
+    //     case cumulativeAttendance === 0 || TOTAL_ATTAINABLE_SCORE === 0:
+    //       return 0;
+    //     default:
+    //       return percantageAttendance;
+    //   }
+    // })();
+
+    const totalAttendance =
+      cumulativeAttendance === 0 || TOTAL_ATTAINABLE_SCORE === 0
+        ? 0
+        : Math.round((cumulativeAttendance / TOTAL_ATTAINABLE_SCORE) * 100) ??
+          0;
 
     const setattendanceState = useCallback(() => {
       if (totalAttendance > 0) {
@@ -149,7 +156,7 @@ const MyAttendance = React.memo(
         </AttendanceContainer>
       </div>
     );
-  }
+  },
 );
 
 export default MyAttendance;
