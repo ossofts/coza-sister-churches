@@ -75,7 +75,7 @@ const MyAttendance = React.memo(
         0
       );
 
-      return numberOfClockIns === numberOfSessions - 1;
+      return numberOfClockIns >= numberOfSessions - 1;
     }, [sessions, minifiedAttendance]);
 
     const minifiedSessions = React.useMemo(
