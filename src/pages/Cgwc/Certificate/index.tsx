@@ -16,7 +16,7 @@ const CertificatePdf = ({
       {/* <CertImage /> */}
       <img
         style={{ minWidth: "1122px", minHeight: "793px" }}
-        src="/cgls_certificate_2025.png"
+        src="/cgls_certificate_2026.png"
         alt=""
         className="w-[1122px] h-[793px]"
       />
@@ -24,8 +24,8 @@ const CertificatePdf = ({
         className={twMerge(
           "absolute left-[50%] text-[#aa6400] font-Pinyon-Script translate-x-[-50%] translate-y-[-50%] whitespace-nowrap",
           length && length > 35
-            ? "text-[50px] bottom-[320px]"
-            : "text-[70px] bottom-[290px]"
+            ? "text-[50px] bottom-[360px]"
+            : "text-[70px] bottom-[330px]",
         )}
       >
         {userName}

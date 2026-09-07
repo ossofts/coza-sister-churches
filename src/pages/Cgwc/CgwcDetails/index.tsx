@@ -20,6 +20,8 @@ import DownloadCertificate from "../Certificate/DownloadCertificate";
 import { useMemo, useState } from "react";
 import moment from "moment";
 
+const showCertificateDate = import.meta.env.VITE_SHOW_CERTIFICATE_DATE;
+
 const CgwcDetails = () => {
   const [totalAttendance, setTotalAttendance] = useState(0);
   const { params } = useCurrentPath();
@@ -30,7 +32,7 @@ const CgwcDetails = () => {
   const { isHOD, isSuperAdmin } = useRole();
 
   const { data: latestService } = useGetLatestService(
-    user!.campus?._id as string
+    user!.campus?._id as string,
   );
 
   const { data: sessions } = useGetServices({
@@ -72,15 +74,21 @@ const CgwcDetails = () => {
     return endDateWithGrace.diff(moment()) > 0;
   }, [cgwc?.data]);
 
+  const cgwcEndDate = useMemo(() => {
+    const endDate = cgwc?.data?.endDate;
+    if (!endDate) return;
+    return endDate?.split("T")[0] + "T09:00:00";
+  }, [cgwc?.data?.endDate]);
+
   const showCertificateCondition = useMemo(() => {
-    const today = new Date().getTime();
-    const finalDay = new Date("2024-10-13T09:00:00").getTime();
-    if (totalAttendance >= 90 && today >= finalDay && cgwcIsActive) {
-      return true;
-    } else {
-      return false;
-    }
-  }, [totalAttendance, cgwcIsActive]);
+    const finalDayValue = showCertificateDate || cgwcEndDate;
+    if (!finalDayValue) return false;
+
+    const finalDay = new Date(finalDayValue).getTime();
+    if (Number.isNaN(finalDay)) return false;
+
+    return totalAttendance >= 90 && Date.now() >= finalDay && cgwcIsActive;
+  }, [totalAttendance, cgwcIsActive, cgwcEndDate]);
 
   if (isLoading || isFetching || messagesIsLoading) return <FullPageSpinner />;
 
