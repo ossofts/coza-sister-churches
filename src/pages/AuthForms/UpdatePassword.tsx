@@ -73,7 +73,7 @@ const UpdatePassword = ({ email = "", onBackClick, otp, reset }: Props) => {
           "An error occurred"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mutation.data, mutation.error, resetMutation.data, resetMutation.error]);
   return (
     <form

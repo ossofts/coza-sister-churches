@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import useUserStore from "@/store/userStore";
 import { UseQueryResult } from "@tanstack/react-query";
 import { createContext } from "react";

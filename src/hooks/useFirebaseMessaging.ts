@@ -28,9 +28,9 @@ const messaging = getMessaging(app);
 
 // const browser = Bowser.parse(window.navigator.userAgent);
 
-var navigator_info = window.navigator;
-var screen_info = window.screen;
-var uid = navigator_info.userAgent.replace(/\D+/g, "");
+const navigator_info = window.navigator;
+const screen_info = window.screen;
+let uid = navigator_info.userAgent.replace(/\D+/g, "");
 uid += screen_info.height || "";
 uid += screen_info.width || "";
 uid += screen_info.pixelDepth || "";

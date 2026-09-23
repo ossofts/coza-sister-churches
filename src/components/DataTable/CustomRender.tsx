@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { ReactNode } from "react";
 import { TableColumn } from "./types";
 import { timeDifference, timeFormatDifference } from "@/utils";

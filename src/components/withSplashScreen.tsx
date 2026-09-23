@@ -2,7 +2,7 @@ import React, { Component, ComponentType } from "react";
 import whiteLogo from "@/assets/images/COZA-Logo-white.svg";
 import blackLogo from "@/assets/images/COZA-Logo-black.svg";
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 function SplashMessage(): JSX.Element {
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
     if (matches) {

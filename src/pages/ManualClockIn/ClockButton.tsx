@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import ReactIf from "@/components/ReactIf";
 import Lottie from "lottie-react";
 import { twMerge } from "tailwind-merge";
@@ -117,7 +117,7 @@ const ClockButton = ({
           "Oops! Something went wrong"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [clockInMutation.data, clockInMutation.error]);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const ClockButton = ({
       );
       refetchLatestAttendance;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [clockOutMutation.data, clockOutMutation.error]);
 
   useEffect(() => {

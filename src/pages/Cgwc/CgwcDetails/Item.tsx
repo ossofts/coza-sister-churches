@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   item: CGWCInstantMessage;
   index: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   onClick?: (route: string, options: { state: CGWCInstantMessage }) => void;
 };
 

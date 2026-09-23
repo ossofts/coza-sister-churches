@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { CGWC } from "@/store/types";
 import { findIndex, forEach, groupBy, merge } from "lodash";
 import moment from "moment-timezone";

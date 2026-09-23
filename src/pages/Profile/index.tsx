@@ -23,7 +23,7 @@ const Profile = () => {
     if (refreshedUser?.data) {
       setUser(refreshedUser?.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [refreshedUser?.data]);
 
   return (
