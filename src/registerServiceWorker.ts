@@ -1,5 +1,9 @@
 export function registerServiceWorker(): void {
-  if ("serviceWorker" in navigator) {
+  if (
+    typeof window !== "undefined" &&
+    "serviceWorker" in navigator &&
+    navigator.serviceWorker
+  ) {
     window.addEventListener("load", async () => {
       try {
         const registration = await navigator.serviceWorker.register(
@@ -11,7 +15,7 @@ export function registerServiceWorker(): void {
         // console.log("Service worker registered:", registration);
         return registration;
       } catch (error) {
-        console.error("Service worker registration failed:", error);
+        console.warn("Service worker registration failed:", error);
       }
     });
   }
