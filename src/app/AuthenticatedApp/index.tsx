@@ -5,9 +5,11 @@ import ROUTES from "@/routes";
 import { FullPageSpinner } from "@/components/Loaders";
 import AppProvider from "@/contexts/AppContext/AppProvider";
 import useRole, { roles } from "@/hooks/useRoles";
+import { usePrefetchUsersByCampus } from "@/services/account";
 
 const AuthenticatedApp = () => {
   const {
+    user,
     isAHOD,
     isAdmin,
     isCGWCApproved,
@@ -76,6 +78,16 @@ const AuthenticatedApp = () => {
   const isAllowedAndCGWCApproved = isCGWCApproved
     ? allowedRoutes()
     : allowedRoutes()?.filter((route) => route.title !== ROUTES.CGWC.title);
+
+  // manual clock-in searches the whole campus roster, which is the slowest
+  // fetch in the app, so warm it for the people who can actually reach it
+  usePrefetchUsersByCampus(
+    isAllowedAndCGWCApproved.some(
+      (route) => route.path === ROUTES.MANUAL_CLOCK_IN.path
+    )
+      ? user.campus?._id
+      : undefined
+  );
 
   return (
     <AppProvider>
