@@ -118,6 +118,10 @@ export type User = {
   roleId: Role["_id"];
   department: Department;
   campus: Campus;
+  // only returned by the getUsers list projection, not by login
+  departmentId?: string;
+  departmentName?: string;
+  campusId?: string;
   status: UserStatus;
   socialMedia: {
     facebook: string;

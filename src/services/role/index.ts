@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../client";
 import { ServerResponse } from "@/types/global.type";
 import { Role } from "@/store/types";
+import { REFERENCE_DATA_STALE_TIME } from "../constants";
 
 const serviceUrl = "/api/role";
 export const useGetRoles = () => {
@@ -20,5 +21,6 @@ export const useGetRolesById = (id: Role["_id"]) => {
     queryFn: () =>
       axiosClient.get(`${serviceUrl}/getRoles/${id}`) as ServerResponse<Role>,
     retry: false,
+    staleTime: REFERENCE_DATA_STALE_TIME,
   });
 };

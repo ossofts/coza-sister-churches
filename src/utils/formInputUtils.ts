@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export const normalizeNumberValue = (e: any, includePeriod = true, max?: number) => {
   const newValue = e.target.value.replace(includePeriod ? /[^0-9.]/g : /[^0-9]/g, "") as string;
 

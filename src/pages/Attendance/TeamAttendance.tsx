@@ -116,12 +116,12 @@ const TeamAttendance = () => {
     });
   }, [membersClockedIn?.data]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const mergedUsers = [...membersClockedInValid, ...allMembers] as any;
 
   const mergedAttendanceWithMemberList = useMemo(
     () => mergeDuplicatesByKey<Attendance>(mergedUsers, "userId"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [membersClockedIn, mergedUsers]
   );
 

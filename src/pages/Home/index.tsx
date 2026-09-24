@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import Timer from "./Timer";
 import ClockButton from "./ClockButton";

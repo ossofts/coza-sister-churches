@@ -1,4 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { LIVE_DATA_REFETCH_INTERVAL } from "../constants";
 import axiosClient from "../client";
 import {
   Attendance,
@@ -24,7 +30,16 @@ export const useGetAttendance = (
   });
 };
 
+const invalidateAttendance = (queryClient: QueryClient) => {
+  queryClient.invalidateQueries({ queryKey: ["getAttendance"] });
+  queryClient.invalidateQueries({ queryKey: ["getDepartmentAttendanceReport"] });
+  queryClient.invalidateQueries({
+    queryKey: ["getDepartmentCGWCAttendanceReport"],
+  });
+};
+
 export const useClockIn = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["clockIn"],
     mutationFn: (body: ClockInPayload) =>
@@ -32,16 +47,19 @@ export const useClockIn = () => {
         `${serviceUrl}/clockin`,
         body
       ) as ServerResponse<Attendance>,
+    onSuccess: () => invalidateAttendance(queryClient),
   });
 };
 
 export const useClockOut = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["clockIn"],
     mutationFn: (attendanceId: string) =>
       axiosClient.put(
         `${serviceUrl}/clock-out/${attendanceId}`
       ) as ServerResponse<Attendance>,
+    onSuccess: () => invalidateAttendance(queryClient),
   });
 };
 
@@ -62,6 +80,7 @@ export const useGetLeadersAttendanceReport = (
         leaderUsers: number;
       }>,
     retry: false,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
     ..._options,
   });
 };
@@ -82,6 +101,7 @@ export const useGetWorkersAttendanceReport = (
         attendance: number;
         workerUsers: number;
       }>,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
     ..._options,
   });
 };
@@ -108,6 +128,7 @@ export const useGetDepartmentAttendanceReport = (
         attendance: number;
         departmentUsers: number;
       }>,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
     ..._options,
   });
 };
@@ -143,6 +164,7 @@ export const useGetDepartmentCGWCAttendanceReport = (
         attendance: number;
         departmentUsers: number;
       }>,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
     ..._options,
   });
 };
@@ -179,6 +201,7 @@ export const useGetWorkersCGWCAttendanceReport = (
         attendance: number;
         workerUsers: number;
       }>,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
     ..._options,
   });
 };

@@ -100,7 +100,7 @@ export default function DataTable<T = object>(props: Props<T>) {
 
 export function TableRows(
   props: Pick<
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     Props<any>,
     | "columns"
     | "data"

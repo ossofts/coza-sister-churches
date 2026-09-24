@@ -67,7 +67,7 @@ const CreateUser = () => {
           "Oops! Something went wrong"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mutation.data, mutation.error]);
 
   // const refresh = () => {

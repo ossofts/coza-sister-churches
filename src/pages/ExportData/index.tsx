@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { ExportSchema } from "./validation";
 import { Spinner } from "@/components/Loaders";
 import { CSVLink } from "react-csv";
+const CSVLinkComponent = CSVLink as any;
 import { attendanceHeaders, ticketsHeaders } from "./utils";
 import ReactIf from "@/components/ReactIf";
 import {
@@ -338,7 +339,7 @@ const ExportData = () => {
                 {isLoading ? (
                   <Spinner color="white" />
                 ) : dataType && reportData[dataType] !== undefined ? (
-                  <CSVLink
+                  <CSVLinkComponent
                     headers={
                       dataType === "attendance"
                         ? attendanceHeaders
@@ -350,7 +351,7 @@ const ExportData = () => {
                     target="_blank"
                   >
                     Download File
-                  </CSVLink>
+                  </CSVLinkComponent>
                 ) : (
                   "Fetch Data"
                 )}

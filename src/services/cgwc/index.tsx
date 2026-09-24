@@ -1,5 +1,6 @@
 import { CGWC, CGWCInstantMessage, DefaultQueryParams } from "@/store/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LIVE_DATA_REFETCH_INTERVAL } from "../constants";
 import axiosClient from "../client";
 import { ServerResponse } from "@/types/global.type";
 import { CreateCgwcInputs } from "@/pages/Cgwc/CreateCgwc";
@@ -34,6 +35,7 @@ export const useGetCGWCInstantMessages = (params: DefaultQueryParams) => {
       axiosClient.get(`${serviceUrl}/getInstantMessage`, {
         params: { ...params },
       }) as ServerResponse<CGWCInstantMessage[]>,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
   });
 };
 
@@ -49,6 +51,7 @@ export const useCreateCGWCMutation = () => {
 };
 
 export const useCreateInstantMessageMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["createInstantMessage"],
     mutationFn: (body: CGWCInstantMessagePayload) =>
@@ -56,5 +59,8 @@ export const useCreateInstantMessageMutation = () => {
         `${serviceUrl}/createInstantMessage`,
         body
       ) as ServerResponse<CGWCInstantMessage>,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getCGWCs"] });
+    },
   });
 };

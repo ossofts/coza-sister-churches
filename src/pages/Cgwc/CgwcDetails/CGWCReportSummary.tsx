@@ -68,7 +68,7 @@ const CGWCReportSummary = ({ title, sessions, CGWCId }: Props) => {
   // };
 
   useEffect(() => {
-    if (!!sessions?.length) {
+    if (sessions?.length) {
       return setServiceId(sessions[0]?._id);
     }
   }, [sessions]);

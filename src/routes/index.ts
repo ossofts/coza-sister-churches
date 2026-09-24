@@ -41,7 +41,7 @@ const WorkforceSummaryDepartments = lazy(
 export type RouteObj = {
   path: string;
   isPrivate: boolean;
-  component: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component:  
   | React.LazyExoticComponent<(...props: any) => JSX.Element>
     | (() => JSX.Element)
     | (() => null);

@@ -62,7 +62,7 @@ const Register = () => {
     if (otp?.length === 6) {
       mutation.mutate();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [otp]);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const Register = () => {
     if (mutation.error) {
       showAlert("error", customError(mutation.error)?.response?.data?.message);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mutation.data, mutation.error]);
   return (
     <div>

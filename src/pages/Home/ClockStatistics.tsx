@@ -9,7 +9,7 @@ import { COLORS } from "@/theme/colors";
 import useAppContext from "@/contexts/AppContext";
 
 const ClockStatistics = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const {
     lastestAttendance: { data: latestAttendanceData }
   } = useAppContext();

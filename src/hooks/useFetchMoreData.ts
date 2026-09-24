@@ -25,7 +25,7 @@ function useFetchMoreData<T>({
         return prev;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isSuccess, dataSet]);
 
   return { data: (data as T[]) || (dataSet as T[]) };
