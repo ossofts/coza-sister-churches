@@ -8,16 +8,19 @@ import { useGetLatestService } from "@/services/service";
 import { ClockInPayload, User } from "@/store/types";
 import useUserStore from "@/store/userStore";
 import { Coordinates } from "@/types/global.type";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import ClockButton from "./ClockButton";
-import { sortArrayByKeyAscending } from "@/utils";
+import { fullName, sortArrayByKeyAscending } from "@/utils";
 import SearchCampusUsers from "@/pages/ManualClockIn/SearchCampusUsers";
 
 type Option = {
   label: string;
   value: string;
 };
+
+// stable identity so SearchCampusUsers can memoise off it before the fetch lands
+const EMPTY_USERS: User[] = [];
 
 const ManualClockIn = () => {
   // const [campusId, setCampusId] = React.useState<string>();
@@ -29,6 +32,10 @@ const ManualClockIn = () => {
 
   const form = useForm<ClockInPayload>({
     // resolver: updateAccountSchema,
+    // the user's own campus is already in the store, so seeding it here starts
+    // the departments and users-by-campus queries on the first render instead
+    // of waiting for the campus list
+    defaultValues: { campusId: campus._id },
   });
   const { handleSubmit, control, formState } = form;
 
@@ -121,11 +128,14 @@ const ManualClockIn = () => {
     );
   };
 
-  const onSelectCampusUser = (userId: string, departmentId: string) => {
-    form.setValue("departmentId", departmentId);
-    form.setValue("userId", userId);
-    setThirdPartyUserId(usersByCampusMap.get(userId));
-  };
+  const onSelectCampusUser = useCallback(
+    (userId: string, departmentId: string) => {
+      form.setValue("departmentId", departmentId);
+      form.setValue("userId", userId);
+      setThirdPartyUserId(usersByCampusMap.get(userId));
+    },
+    [form, usersByCampusMap],
+  );
 
   const campusList = useMemo(
     () =>
@@ -148,7 +158,7 @@ const ManualClockIn = () => {
   const usersByDepartmentList = useMemo(() => {
     const list =
       sortArrayByKeyAscending(users?.data, "firstName")?.map((user) => ({
-        label: `${user.firstName} ${user.lastName}`,
+        label: fullName(user),
         value: user._id,
       })) || ([] as Option[]);
 
@@ -160,26 +170,18 @@ const ManualClockIn = () => {
       !list.some((item) => item.value === thirdPartyUser._id)
     )
       list.unshift({
-        label: `${thirdPartyUser.firstName} ${thirdPartyUser.lastName}`,
+        label: fullName(thirdPartyUser),
         value: thirdPartyUser._id,
       });
 
     return list;
   }, [users?.data, thirdPartyUser]);
 
-  // useEffect(() => {
-  //   if (!campuses?.data) return;
-  //   form.setValue("campusId", campuses?.data[0]?._id);
-  //   form.resetField("departmentId");
-  //   form.resetField("userId");
-  //   setThirdPartyUserId(undefined);
-  // }, [campuses?.data]);
-
   return (
     <>
       <SearchCampusUsers
         disabled={!usersByCampus?.data?.length}
-        usersByCampus={usersByCampus?.data || []}
+        usersByCampus={usersByCampus?.data ?? EMPTY_USERS}
         onSelectCampusUser={onSelectCampusUser}
         isLoading={usersByCampusLoading}
       />
@@ -198,6 +200,7 @@ const ManualClockIn = () => {
             options={campusList}
             isLoading={campusLoading || campusIsFetching}
             error={formState.errors.campusId}
+            selectedLabel={campus.campusName}
           />
 
           <SelectInput
@@ -224,9 +227,7 @@ const ManualClockIn = () => {
             isLoading={usersLoading || usersIsFetching}
             error={formState.errors.userId}
             selectedLabel={
-              thirdPartyUser
-                ? `${thirdPartyUser.firstName} ${thirdPartyUser.lastName}`
-                : undefined
+              thirdPartyUser ? fullName(thirdPartyUser) : undefined
             }
             disabled={!useWatch({ control, name: "campusId" })}
           />
