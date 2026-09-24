@@ -104,10 +104,11 @@ const ManualClockIn = () => {
     longitude: selectCoordinateRef?.long,
   };
 
-  const { isInRange, deviceCoordinates } = useGeolocation({
-    rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates,
-  });
+  const { isInRange, deviceCoordinates, verifyRangeBeforeAction } =
+    useGeolocation({
+      rangeToClockIn: latestService?.data?.rangeToClockIn as number,
+      campusCoordinates: campusCoordinates as Coordinates,
+    });
 
   const onSubmit = () => {};
 
@@ -242,7 +243,7 @@ const ManualClockIn = () => {
               }
               userId={thirdPartyUser?._id as string}
               roleId={thirdPartyUser?.roleId as string}
-              campusCoordinates={campusCoordinates as Coordinates}
+              verifyRangeBeforeAction={verifyRangeBeforeAction}
             />
           </div>
         </form>

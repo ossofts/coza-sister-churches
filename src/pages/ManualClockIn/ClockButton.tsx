@@ -27,7 +27,10 @@ type Props = {
   roleId: string;
   campusId: string;
   departmentId: string;
-  campusCoordinates: Coordinates;
+  // shared with the page so the two of them do not each ask for location
+  verifyRangeBeforeAction: ReturnType<
+    typeof useGeolocation
+  >["verifyRangeBeforeAction"];
 };
 
 const ClockButton = ({
@@ -36,7 +39,7 @@ const ClockButton = ({
   campusId,
   departmentId,
   deviceCoordinates,
-  campusCoordinates,
+  verifyRangeBeforeAction,
   isInRangeProp: isInRange,
 }: Props) => {
   const [openClockOutConfirmation, setOpenClockOutConfirmation] =
@@ -47,11 +50,6 @@ const ClockButton = ({
 
   const clockInMutation = useClockIn();
   const clockOutMutation = useClockOut();
-
-  const { verifyRangeBeforeAction } = useGeolocation({
-    rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates,
-  });
 
   const { data: latestAttendanceData, refetch: refetchLatestAttendance } =
     useGetAttendance(

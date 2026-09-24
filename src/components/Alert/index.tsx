@@ -30,9 +30,17 @@ type Props = {
   title?: string;
   isOpen: boolean;
   seconds?: number | null;
+  onClose?: () => void;
 };
 
-export const Alert = ({ type, message, isOpen, seconds, title }: Props) => {
+export const Alert = ({
+  type,
+  message,
+  isOpen,
+  seconds,
+  title,
+  onClose,
+}: Props) => {
   const [open, setOpen] = useState(isOpen);
   // const isDesktop = useMediaQuery({
   //   query: "(min-width: 768px)",
@@ -54,16 +62,19 @@ export const Alert = ({ type, message, isOpen, seconds, title }: Props) => {
 
   useEffect(() => {
     if (seconds === null) return;
-    if (seconds) {
-      setTimeout(() => {
-        setOpen(false);
-      }, seconds * 1000);
-    } else {
-      setTimeout(() => {
-        setOpen(false);
-      }, 5000);
-    }
+    const timeout = window.setTimeout(
+      () => setOpen(false),
+      (seconds || 5) * 1000,
+    );
+    return () => window.clearTimeout(timeout);
   }, [seconds]);
+
+  useEffect(() => {
+    if (open) return;
+    // let the drawer finish closing before the host tears the root down
+    const timeout = window.setTimeout(() => onClose?.(), 500);
+    return () => window.clearTimeout(timeout);
+  }, [open, onClose]);
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent className="dark:bg-opacity-50 backdrop-blur-md">
