@@ -1,4 +1,5 @@
 import axiosClient from "@/services/client";
+import { REFERENCE_DATA_STALE_TIME } from "@/services/constants";
 import { LoginResponse, RegisterInputs } from "../../pages/AuthForms/types";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { DefaultQueryParams, Department, User } from "@/store/types";
@@ -69,6 +70,7 @@ export const useGetUsersByDepartmentId = (
       axiosClient.get(`${userServiceUrl}/getUsers`, {
         params: { departmentId },
       }) as ServerResponse<User[]>,
+    staleTime: REFERENCE_DATA_STALE_TIME,
     ..._options,
   });
 };
@@ -94,6 +96,7 @@ export const useGetUsers = (
       axiosClient.get(`${userServiceUrl}/getUsers`, {
         params: { ...params },
       }) as ServerResponse<User[]>,
+    staleTime: REFERENCE_DATA_STALE_TIME,
     ..._options,
   });
 };

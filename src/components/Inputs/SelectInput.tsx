@@ -31,6 +31,9 @@ type Props<T extends FieldValues> = {
   error?: FieldError;
   disabled?: boolean;
   isLoading?: boolean;
+  // label to fall back to when the selected value has no matching option yet,
+  // e.g. while the options are still being fetched
+  selectedLabel?: string;
   onChange?: (e: string) => void;
 };
 
@@ -48,6 +51,7 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
     inputExtraClass,
     disabled = false,
     isLoading = false,
+    selectedLabel,
     onChange,
   } = props;
 
@@ -69,11 +73,16 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
           )}
           <Select
             onValueChange={(e) => {
+              // radix mirrors the value into a hidden native <select>; when the
+              // value is set programmatically to an option that hasn't loaded
+              // yet, that select rejects it and echoes "" back here, which would
+              // wipe the field. a real selection never reports an empty value.
+              if (!e) return;
               field.onChange(e);
               if (!onChange) return;
               onChange(e);
             }}
-            defaultValue={field.value}
+            value={field.value}
           >
             <FormControl>
               <SelectTrigger
@@ -85,10 +94,15 @@ function SelectInput<T extends FieldValues>(props: Props<T>) {
                   error
                     ? "border-error"
                     : "border border-gray-500 focus:border-2 focus:border-brandColor-600 bg-neutral-50 dark:bg-neutral-700",
-                  inputExtraClass
+                  inputExtraClass,
                 )}
               >
-                <SelectValue placeholder={placeholder} />
+                <SelectValue placeholder={placeholder}>
+                  {options?.find((option) => option.value === field.value)
+                    ?.label ??
+                    selectedLabel ??
+                    ""}
+                </SelectValue>
               </SelectTrigger>
             </FormControl>
             <SelectContent>

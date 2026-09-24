@@ -1,7 +1,8 @@
 import axiosClient from "@/services/client";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { Service } from "../../contexts/AppContext/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LIVE_DATA_REFETCH_INTERVAL } from "../constants";
 import { DefaultQueryParams } from "@/store/types";
 import { CreateService } from "@/pages/Cgwc/types";
 
@@ -23,6 +24,8 @@ export const useGetLatestService = (campusId: string) => {
         `${serviceUrl}/getLatestServiceByCampusId/${campusId}`
       ) as ServerResponse<Service>,
     retry: false,
+    refetchInterval: LIVE_DATA_REFETCH_INTERVAL,
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -42,6 +45,7 @@ export const useGetServices = (
 };
 
 export const useCreateServiceMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["createService"],
     mutationFn: (body: CreateService) =>
@@ -49,5 +53,9 @@ export const useCreateServiceMutation = () => {
         `${serviceUrl}/createService`,
         body
       ) as ServerResponse<Service>,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getLatestService"] });
+      queryClient.invalidateQueries({ queryKey: ["getServices"] });
+    },
   });
 };

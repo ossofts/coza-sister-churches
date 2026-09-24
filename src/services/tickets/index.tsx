@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosClient from "../client";
+import { REFERENCE_DATA_STALE_TIME } from "../constants";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import {
   CreateTicketPayload,
@@ -33,6 +34,7 @@ export const useGetTicketCategories = () => {
         TicketCategory[]
       >,
     select: (data) => data.data,
+    staleTime: REFERENCE_DATA_STALE_TIME,
   });
 };
 
