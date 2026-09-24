@@ -7,6 +7,7 @@ import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
   registerType: "autoUpdate",
+  injectRegister: null,
   includeAssests: [
     "COZA-Logo-white.png",
     "COZA-Logo-white.png",

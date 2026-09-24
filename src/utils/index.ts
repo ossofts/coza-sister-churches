@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CGWC } from "@/store/types";
 import { findIndex, forEach, groupBy, merge } from "lodash";
 import moment from "moment-timezone";
@@ -44,13 +43,13 @@ export function isThisYear(date: string) {
 
 export const sortByDate = (arrObject: any[] | [], key: string) => {
   return [...arrObject]?.sort(
-    (a, b) => moment(b[key]).unix() - moment(a[key]).unix()
+    (a, b) => moment(b[key]).unix() - moment(a[key]).unix(),
   );
 };
 
 export function mergeDuplicatesByKey<T>(
   array: any[],
-  key: keyof T = "_id" as keyof T
+  key: keyof T = "_id" as keyof T,
 ) {
   const grouped = groupBy(array, key);
 
@@ -76,7 +75,7 @@ export const sortStringAscending = (arrObject?: any[], key?: string) => {
 
 export const concatDateTimeToEpoc = (
   date: string | Date,
-  time: string | Date
+  time: string | Date,
 ) => {
   const concatedTime = `${moment(date).format("YYYY-MM-DD")}T${time + ":00"}.000Z`;
 
@@ -92,7 +91,7 @@ export const concatDateTimeToEpoc = (
 export const groupListByKey = (
   array: any[] = [],
   key: string,
-  returnType: "entries" | "values" = "entries"
+  returnType: "entries" | "values" = "entries",
 ) => {
   const map: any = {};
 
@@ -125,7 +124,7 @@ export const groupListByKey = (
 export const replaceArrayItemByNestedKey = (
   array: any[],
   newObject: any,
-  keyValue: any[]
+  keyValue: any[],
 ) => {
   if (!array || !array.length) return [];
 
@@ -147,4 +146,8 @@ export function sortArrayByKeyAscending<T>(arrObject?: T[], key?: keyof T) {
   if (arrObject && key)
     return [...arrObject].sort((a, b) => (a[key] > b[key] ? 1 : -1));
   return [];
+}
+
+export function fullName(person: { firstName?: string; lastName?: string }) {
+  return `${person.firstName ?? ""} ${person.lastName ?? ""}`.trim();
 }

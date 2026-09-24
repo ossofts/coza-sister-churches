@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Coordinates } from "@/types/global.type";
 import showAlert from "./useAlert";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 const distanceBetweenTwoCoordinates = (
   deviceCoordinates: Coordinates,
@@ -137,7 +137,7 @@ const useGeolocation = (props: Props) => {
         }
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   return {

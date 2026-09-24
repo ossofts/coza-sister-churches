@@ -57,7 +57,7 @@ const CreateDepartment = () => {
         customError(mutation.error)?.response?.data?.message ?? "Oops! Something went wrong"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mutation.data, mutation.error]);
 
   if (campusLoading || campusIsFetching) return <FullPageSpinner />;

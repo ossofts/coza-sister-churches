@@ -44,7 +44,7 @@ const UpdateAccount = ({ email = "", user }: Props) => {
   const { register, handleSubmit, control, formState } = form;
 
   const onSubmit = (data: RegisterInputs) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     const body = {
       email: data.email?.toLowerCase(),
       firstName: data.firstName,
@@ -73,7 +73,7 @@ const UpdateAccount = ({ email = "", user }: Props) => {
           "An error occurred"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [mutation.data, mutation.error]);
   return (
     <div>

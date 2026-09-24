@@ -15,9 +15,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
-      refetchInterval: 60000,
+      refetchInterval: false,
       refetchOnWindowFocus: false,
-      retry: false,
+      retry: 1,
     },
   },
 });
@@ -31,7 +31,7 @@ function App() {
         .querySelector("[name=viewport]")!
         .setAttribute(
           "content",
-          "width=device-width, initial-scale=1, maximum-scale=1"
+          "width=device-width, initial-scale=1, maximum-scale=1",
         );
     }
   }, []);

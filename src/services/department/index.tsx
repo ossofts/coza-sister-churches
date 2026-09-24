@@ -3,6 +3,7 @@ import axiosClient from "../client";
 import { QueryOptions, ServerResponse } from "@/types/global.type";
 import { Department } from "@/store/types";
 import { CreateDepartmentPayload } from "@/pages/WorkforceManagement/types";
+import { REFERENCE_DATA_STALE_TIME } from "../constants";
 
 const serviceUrl = "/api/department";
 
@@ -16,11 +17,13 @@ export const useGetDepartmentsByCampusId = (
       axiosClient.get(
         `${serviceUrl}/getDepartmentByCampus/${campusId}`
       ) as ServerResponse<Department[]>,
+    staleTime: REFERENCE_DATA_STALE_TIME,
     ..._options,
   });
 };
 
 export const useCreateDepartment = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["createDepartment"],
     mutationFn: (body: CreateDepartmentPayload) =>
@@ -28,6 +31,11 @@ export const useCreateDepartment = () => {
         `${serviceUrl}/createDepartment`,
         body
       ) as ServerResponse<Department>,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getDepartmentsByCampusId"],
+      });
+    },
   });
 };
 

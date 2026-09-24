@@ -5,6 +5,8 @@ import {
   getToken,
   MessagePayload,
   onMessage,
+  isSupported,
+  Messaging,
 } from "firebase/messaging";
 import md5 from "blueimp-md5";
 // import Bowser from "bowser";
@@ -24,16 +26,37 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
 
-// const browser = Bowser.parse(window.navigator.userAgent);
+let messagingInstance: Messaging | null = null;
 
-var navigator_info = window.navigator;
-var screen_info = window.screen;
-var uid = navigator_info.userAgent.replace(/\D+/g, "");
-uid += screen_info.height || "";
-uid += screen_info.width || "";
-uid += screen_info.pixelDepth || "";
+export async function getMessagingSafe(): Promise<Messaging | null> {
+  try {
+    if (
+      typeof window === "undefined" ||
+      !("Notification" in window) ||
+      !("serviceWorker" in navigator) ||
+      !navigator.serviceWorker
+    ) {
+      return null;
+    }
+    const supported = await isSupported().catch(() => false);
+    if (!supported) {
+      return null;
+    }
+    messagingInstance ??= getMessaging(app);
+    return messagingInstance;
+  } catch (err) {
+    console.warn("Firebase Messaging unavailable:", err);
+    return null;
+  }
+}
+
+const navigator_info = typeof window !== "undefined" ? window.navigator : null;
+const screen_info = typeof window !== "undefined" ? window.screen : null;
+let uid = navigator_info?.userAgent?.replace(/\D+/g, "") || "";
+uid += screen_info?.height || "";
+uid += screen_info?.width || "";
+uid += screen_info?.pixelDepth || "";
 
 export function useFirebaseMessaging() {
   const [fcmToken, setFcmToken] = useState<string | null>(null);
@@ -42,20 +65,13 @@ export function useFirebaseMessaging() {
 
   const mutation = usePostFcmToken();
 
-  const getFCMToken = async () => {
-    // console.log("getFCMToken");
+  const getFCMToken = async (messaging: Messaging) => {
     try {
-      // Wait for service worker installation to be ready
-      //   const serviceWorkerRegistration = await navigator.serviceWorker.ready;
-      //   console.log({ serviceWorkerRegistration });
-      //   console.log("Service Worker is ready");
-
       const currentToken = await getToken(messaging, {
         vapidKey: import.meta.env.VITE_APP_FIREBASE_VAPID_KEY,
       });
 
       if (currentToken) {
-        // console.log("FCM token:", currentToken);
         setFcmToken(currentToken);
         await sendTokenToBackend(currentToken);
       } else {
@@ -67,8 +83,8 @@ export function useFirebaseMessaging() {
   };
 
   const sendTokenToBackend = async (token: string) => {
-    const email = user?.email; // Get this from your app's state or user input
-    const deviceId = md5(uid); // Generate or retrieve a unique device ID
+    const email = user?.email;
+    const deviceId = md5(uid);
 
     try {
       const data = await mutation.mutateAsync({
@@ -85,66 +101,52 @@ export function useFirebaseMessaging() {
     }
   };
 
-  const onMessageListener = () => {
-    return new Promise((resolve) => {
-      onMessage(messaging, (payload) => {
-        // console.log({ payload });
-        resolve(payload);
-      });
-    });
-  };
-
   useEffect(() => {
-    const requestPermission = async () => {
+    let active = true;
+    let unsubscribeFn: (() => void) | null = null;
+
+    const initMessaging = async () => {
+      const messaging = await getMessagingSafe();
+      if (!messaging || !active) return;
+
       try {
         const permission = await Notification.requestPermission();
-        if (permission === "granted") {
+        if (permission === "granted" && active) {
           console.log("Notification permission granted.");
-          await getFCMToken();
+          await getFCMToken(messaging);
         } else {
           console.log("Unable to get permission to notify.");
         }
       } catch (error) {
         console.error("Error requesting notification permission:", error);
       }
+
+      if (!active) return;
+
+      try {
+        unsubscribeFn = onMessage(messaging, (payload) => {
+          if (!active) return;
+          setNotification(payload);
+          toast(payload.notification?.title, {
+            description: payload.notification?.body as string,
+            action: {
+              label: "Ok",
+              onClick: () => console.log("Ok"),
+            },
+          });
+        });
+      } catch (err) {
+        console.warn("Failed to subscribe to foreground messages:", err);
+      }
     };
 
-    requestPermission();
-
-    // const unsubscribe = onMessage(messaging, (payload) => {
-    //   console.log("Message received. ", payload);
-    //   setNotification(payload);
-    // });
-
-    const unsubscribe = onMessageListener().then((payload) => {
-      // console.log("Message received. ", payload);
-      setNotification(payload as MessagePayload);
-      // console.log({
-      //   "notification-title": (payload as MessagePayload).notification?.title,
-      //   "notification-body": (payload as MessagePayload).notification
-      //     ?.body as string,
-      // });
-
-      toast((payload as MessagePayload).notification?.title, {
-        description: (payload as MessagePayload).notification?.body as string,
-        action: {
-          label: "Ok",
-          onClick: () => console.log("Ok"),
-        },
-      });
-
-      // showAlert(
-      //   "info",
-      //   (payload as MessagePayload).notification?.body as string,
-      //   {
-      //     seconds: null,
-      //     title: (payload as MessagePayload).notification?.title,
-      //   }
-      // );
-    });
+    initMessaging();
 
     return () => {
-      unsubscribe.catch((err) => console.log("unsubscribe failed", err));
+      active = false;
+      if (unsubscribeFn) {
+        unsubscribeFn();
+      }
     };
   }, []);
 

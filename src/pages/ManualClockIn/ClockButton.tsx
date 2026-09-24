@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import ReactIf from "@/components/ReactIf";
 import Lottie from "lottie-react";
 import { twMerge } from "tailwind-merge";
@@ -27,7 +27,10 @@ type Props = {
   roleId: string;
   campusId: string;
   departmentId: string;
-  campusCoordinates: Coordinates;
+  // shared with the page so the two of them do not each ask for location
+  verifyRangeBeforeAction: ReturnType<
+    typeof useGeolocation
+  >["verifyRangeBeforeAction"];
 };
 
 const ClockButton = ({
@@ -36,7 +39,7 @@ const ClockButton = ({
   campusId,
   departmentId,
   deviceCoordinates,
-  campusCoordinates,
+  verifyRangeBeforeAction,
   isInRangeProp: isInRange,
 }: Props) => {
   const [openClockOutConfirmation, setOpenClockOutConfirmation] =
@@ -47,11 +50,6 @@ const ClockButton = ({
 
   const clockInMutation = useClockIn();
   const clockOutMutation = useClockOut();
-
-  const { verifyRangeBeforeAction } = useGeolocation({
-    rangeToClockIn: latestService?.data?.rangeToClockIn as number,
-    campusCoordinates: campusCoordinates as Coordinates,
-  });
 
   const { data: latestAttendanceData, refetch: refetchLatestAttendance } =
     useGetAttendance(
@@ -117,7 +115,7 @@ const ClockButton = ({
           "Oops! Something went wrong"
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [clockInMutation.data, clockInMutation.error]);
 
   useEffect(() => {
@@ -137,7 +135,7 @@ const ClockButton = ({
       );
       refetchLatestAttendance;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [clockOutMutation.data, clockOutMutation.error]);
 
   useEffect(() => {

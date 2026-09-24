@@ -10,7 +10,7 @@ declare module "pull-to-refresh-react" {
   }
 
   export interface PullToRefreshProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     onRefresh: (() => Promise<any>) | (() => void);
     textError?: string;
     textStart?: string;
